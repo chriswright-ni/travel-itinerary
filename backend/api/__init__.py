@@ -4,6 +4,7 @@ from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 import requests
+from api.routes.search_routes import search_bp
 
 load_dotenv()
 PLACES_API_KEY = os.getenv("PLACES_API_KEY")
@@ -17,6 +18,12 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///travel_itinerary.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     
+    app.register_blueprint(search_bp)
+
+    # @app.route("/hello", methods=["GET"])
+    # def hello():
+    #     return "Hello World!"
+
     # @app.route("/search", methods=["GET"])
     # def search():
     #     url = "https://places-api.foursquare.com/places/search"
