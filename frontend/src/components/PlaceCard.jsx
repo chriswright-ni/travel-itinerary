@@ -5,7 +5,9 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-function PlaceCard() {
+function PlaceCard({place}) {
+  /* Note: Place is a prop so needs destructured using {} */
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       {/* <CardMedia
@@ -13,9 +15,10 @@ function PlaceCard() {
         image="/static/images/cards/contemplative-reptile.jpg"
         title="green iguana"
       /> */}
+      
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Place Name
+          {place.name}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           Place Description
