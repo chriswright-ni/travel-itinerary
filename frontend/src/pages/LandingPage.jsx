@@ -3,6 +3,7 @@ import PlaceCard from "../components/PlaceCard";
 import "../css/LandingPage.css";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import BottomNav from "../components/BottomNav";
 
 function LandingPage() {
   return (
@@ -31,6 +32,7 @@ function LandingPage() {
             <PlaceCard />
           </Grid>
         </Grid>
+        <BottomNav />
       </Box>
      
     </>
