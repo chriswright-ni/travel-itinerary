@@ -9,15 +9,31 @@ import { useState, useEffect } from "react";
 
 function LandingPage() {
 
-  // const [places, setPlaces] = useState()
+  const [places, setPlaces] = useState([])
 
-  const places = [
-    {id: 1, name: "Starbucks", category: "Cafe"},
-    {id: 2, name: "Zios", category: "Restaurant"},
-    {id: 3, name: "Costa", category: "Cafe"},
-    {id: 4, name: "Bob & Berts", category: "Cafe"},
-    {id: 5, name: "Mcdonalds", category: "Restaurant"},
-  ]
+ 
+  useEffect(() => {
+    const getPlaces = async () => {
+      const response = await fetch("http://127.0.0.1:5000/search")
+      const data = await response.json() // Array of objects
+      console.log("Inside useEffect")
+      console.log(data)
+      setPlaces(data)
+    }
+    getPlaces();
+  }, [])
+
+  console.log("TESTING")
+  console.log(places);
+ 
+
+  // const places2 = [
+  //   {id: 1, name: "Starbucks", category: "Cafe"},
+  //   {id: 2, name: "Zios", category: "Restaurant"},
+  //   {id: 3, name: "Costa", category: "Cafe"},
+  //   {id: 4, name: "Bob & Berts", category: "Cafe"},
+  //   {id: 5, name: "Mcdonalds", category: "Restaurant"},
+  // ]
 
   return (
     <>
@@ -40,6 +56,7 @@ function LandingPage() {
             </Grid>
           ))}
         </Grid>
+        
         <BottomNav />
       </Box>
      

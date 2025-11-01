@@ -27,9 +27,56 @@ def search():
     data = response.json()
     place_data = data.get("results", []) # The second argument, [], is the default value if the get method produces a type error
 
-    for place in place_data:
+
+    # The results data from thr Foursquare Places API is an array of objects
+    # Cleaning the data to remove unnecessary fields - creating a smaller array of objects
+    places = []
+    for i, place in enumerate(place_data):
+      place_cleaned = {
+        "id": i + 1,
+        "name": place.get("name")
+      }
       print(place.get("name"))
+      places.append(place_cleaned);
 
-    return jsonify(data)
+    return jsonify(places)
 
 
+# @search_bp.route("/search", methods=["GET"])
+# def search():
+#     data = {
+#       "places": [
+#         {
+#           "id": 1,
+#           "name": "Central Park",
+#           "location": "New York City, USA",
+#           "description": "A large public park in Manhattan known for its scenic landscapes, walking paths, and cultural landmarks."
+#         },
+#         {
+#           "id": 2,
+#           "name": "Eiffel Tower",
+#           "location": "Paris, France",
+#           "description": "An iconic iron tower built in 1889, offering panoramic views of Paris and a symbol of French culture."
+#         },
+#         {
+#           "id": 3,
+#           "name": "Mount Fuji",
+#           "location": "Honshu, Japan",
+#           "description": "Japan’s tallest mountain and a sacred symbol, popular for hiking and photography."
+#         },
+#         {
+#           "id": 4,
+#           "name": "Santorini",
+#           "location": "Cyclades Islands, Greece",
+#           "description": "A volcanic island known for its whitewashed buildings, blue-domed churches, and beautiful sunsets."
+#         },
+#         {
+#           "id": 5,
+#           "name": "Machu Picchu",
+#           "location": "Cusco Region, Peru",
+#           "description": "An ancient Incan city set high in the Andes Mountains, renowned for its archaeological significance and breathtaking views."
+#         }
+#       ]
+# }
+
+#     return jsonify(data)

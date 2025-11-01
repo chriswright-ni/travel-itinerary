@@ -13,6 +13,8 @@ PLACES_API_KEY = os.getenv("PLACES_API_KEY")
 def create_app():
     
     app = Flask(__name__)
+
+    CORS(app)
    
     # SQL Alchemy configuration per documentation
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///travel_itinerary.db"
