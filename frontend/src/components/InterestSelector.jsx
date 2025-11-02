@@ -1,16 +1,9 @@
-import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
-import Typography from '@mui/joy/Typography';
-import Card from '@mui/joy/Card';
 import InterestChip from './InterestChip';
 
-const interests = ["Cafes", "Museums"];
+const interests = ["Cafes", "Museums", "Shopping"];
 
-function InterestSelector() {
-
-  function handleClick(interest) {
-    console.log(`${interest} clicked!`);
-  }
+function InterestSelector({onInterestSelect}) {
 
   return (
     <Box
@@ -28,7 +21,7 @@ function InterestSelector() {
       }}
     >
       {interests.map((interest) => (
-        <InterestChip label={interest} key={interest} onClick={() => handleClick(interest)}/>
+        <InterestChip label={interest} key={interest} onClick={() => onInterestSelect(interest)}/>
       ))}
     </Box>
   );

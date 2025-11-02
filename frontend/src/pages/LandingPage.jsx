@@ -24,6 +24,20 @@ function LandingPage() {
   //   }
   //   getPlaces();
   // }, [])
+
+  async function getPlaces(interest) {
+    const response = await fetch(`http://127.0.0.1:5000/places?interestCategory=${interest}`)
+    const data = await response.json() // Array of objects
+    console.log("Inside API call")
+    console.log(data)
+    setPlaces(data)
+  }
+
+  function handleInterestSelect(interest) {
+    console.log(`${interest} clicked!`);
+    console.log(`Calling API for ${interest}`);
+    getPlaces(interest)
+  }
  
   return (
     <>
@@ -36,7 +50,7 @@ function LandingPage() {
         }}
       >
         <SearchBar />
-        <InterestSelector />
+        <InterestSelector onInterestSelect={handleInterestSelect}/>
         
         <Grid container spacing={2}>
           {places.map((place) => (

@@ -1,43 +1,20 @@
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Autocomplete from '@mui/material/Autocomplete';
+import { SearchBox } from '@mapbox/search-js-react';
 
 
-function SearchBar() {
+const SearchBar = () => {
   return (
-    <Stack spacing={2} sx={{ width: "auto" }}>
-   
-      <Autocomplete
-        id="free-solo-2-demo"
-        disableClearable
-        options={top100Films.map((option) => option.title)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Search input"
-            slotProps={{
-              input: {
-                ...params.InputProps,
-                type: 'search',
-              },
-            }}
-          />
-        )}
-        sx={{display: "flex", flexDirection: "column", bgcolor: "grey.100", p: 2,
-        }}
-      />
-    </Stack>
-  );
+    <div>
+    <SearchBox
+    // ACCESS TOKEN BELOW IS PUBLIC - FOR DEMO PURPOSE ONLY - THIS WILL BE REPLACE BY BACKEND API CALL
+      accessToken=''
+      options={{
+        language: 'en',
+        limit: 10,
+        types: "place" // Set search API to return only cities and places, not countries or POIs
+      }}
+    />
+    </div>
+  )
 }
-
-const top100Films = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 },
-];
 
 export default SearchBar;
