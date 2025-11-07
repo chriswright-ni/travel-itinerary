@@ -2,11 +2,14 @@ import { SearchBox } from '@mapbox/search-js-react';
 
 
 const SearchBar = () => {
+
+  const mapboxAccessToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN;
+
   return (
     <div>
     <SearchBox
     // ACCESS TOKEN BELOW IS PUBLIC - FOR DEMO PURPOSE ONLY - THIS WILL BE REPLACE BY BACKEND API CALL
-      accessToken=''
+      accessToken = {mapboxAccessToken}
       options={{
         language: 'en',
         limit: 10,
