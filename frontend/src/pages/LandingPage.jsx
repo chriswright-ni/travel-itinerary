@@ -82,11 +82,11 @@ function LandingPage() {
           <InterestSelector onInterestSelect={handleInterestSelect} />
           <LocationName />
         </Box>
-        <Box sx={{ mb: 7, mt: 15}}>
+        <Box sx={{ mb: 8, mt: 16}}>
           {/* Margin bottom set to 7 based on MUI bottom nav bar setup */}
-          <Grid container spacing={2}>
+          <Grid container spacing={2} direction={"Column"}>
             {places.map((place) => (
-              <Grid size={6} key={place.id}>
+              <Grid key={place.id}>
                 {" "}
                 {/* Key to be in outer map element*/}
                 <PlaceCard place={place} />
