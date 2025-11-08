@@ -22,7 +22,7 @@ function PlaceCard({ place }) {
         sx={{ width: "25%" }}
       />
       <CardContent sx={{flex: 1}}>
-        <Box>
+        <Box sx={{textAlign: "left"}}>
           <Typography gutterBottom variant="h5" component="div">
             {place.name}
           </Typography>
