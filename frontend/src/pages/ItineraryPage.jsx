@@ -1,6 +1,7 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import BottomNav from "../components/BottomNav";
+import ItineraryItem from "../components/ItineraryItem";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -30,7 +31,10 @@ function ItineraryPage() {
             >
               <Typography component="span">Day 1</Typography>
             </AccordionSummary>
-            <AccordionDetails></AccordionDetails>
+            <AccordionDetails>
+              <ItineraryItem />
+              <ItineraryItem />
+            </AccordionDetails>
           </Accordion>
           <Accordion>
             <AccordionSummary
