@@ -3,6 +3,8 @@ import PlaceCard from "../components/PlaceCard";
 import InterestChip from "../components/InterestChip";
 import InterestSelector from "../components/InterestSelector";
 import LocationName from "../components/LocationName";
+import UseMyLocation from "../components/UseMyLocation";
+import ListMapToggle from "../components/ListMapToggle";
 import "../css/LandingPage.css";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -75,14 +77,20 @@ function LandingPage() {
             right: 0,
             backgroundColor: "#fff",
             zIndex: 1, // Z index is needed do prevent links used in main content showing through the background during scrolling
-            pb: 2
+            pb: 0,
           }}
         >
           <SearchBar />
           <InterestSelector onInterestSelect={handleInterestSelect} />
-          <LocationName />
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <LocationName />
+            <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+              <UseMyLocation />
+              <ListMapToggle />
+            </Box>
+          </Box>
         </Box>
-        <Box sx={{ mb: 8, mt: 16}}>
+        <Box sx={{ mb: 8, mt: 19 }}>
           {/* Margin bottom set to 7 based on MUI bottom nav bar setup */}
           <Grid container spacing={2} direction={"Column"}>
             {places.map((place) => (
