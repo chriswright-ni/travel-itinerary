@@ -2,11 +2,12 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import BottomNav from "../components/BottomNav";
 import ItineraryItem from "../components/ItineraryItem";
+import ItineraryTitle from "../components/ItineraryTitle";
+import ItineraryActions from "../components/ItineraryActions";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-// import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function ItineraryPage() {
   return (
@@ -20,7 +21,8 @@ function ItineraryPage() {
         }}
       >
         <Box>
-          <Typography>No itinerary items added yet!</Typography>
+          <ItineraryTitle />
+          <ItineraryActions />
         </Box>
         <Box>
           <Accordion>
@@ -46,6 +48,9 @@ function ItineraryPage() {
             </AccordionSummary>
             <AccordionDetails></AccordionDetails>
           </Accordion>
+        </Box>
+        <Box>
+          <Typography>No itinerary items added yet!</Typography>
         </Box>
         <BottomNav />
       </Box>
