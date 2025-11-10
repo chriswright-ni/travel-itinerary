@@ -31,7 +31,14 @@ function ItineraryPage() {
               aria-controls="panel1-content"
               id="panel1-header"
             >
-              <Typography component="span">Day 1</Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", width: "50%" }}>
+                <Typography>Day 1</Typography>
+                <Typography>10.12.25</Typography>
+              </Box>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography>5 Items</Typography>
+                <Typography>7 Hours</Typography>
+              </Box>
             </AccordionSummary>
             <AccordionDetails>
               <ItineraryItem />

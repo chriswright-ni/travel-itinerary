@@ -11,6 +11,9 @@ function ItineraryActions() {
       <Button variant="outlined">
         Edit itinerary
       </Button>
+      <Button variant="outlined">
+        Optimise Route
+      </Button>
       <ListMapToggle />
     </Box>
   )

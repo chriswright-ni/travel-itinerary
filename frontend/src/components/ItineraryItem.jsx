@@ -9,24 +9,24 @@ import IconButton from "@mui/material/IconButton";
 
 function ItineraryItem() {
   return (
-    <Card sx={{ maxWidth: "100%", display: "flex" }}>
+    <Card sx={{ maxWidth: "100%", display: "flex", mb: 2 }}>
       <CardMedia
         component="img"
         image={"https://picsum.photos/200"}
-        sx={{ width: "25%" }}
+        sx={{ width: "6rem", height: "8rem" }}
       />
       <CardContent sx={{ flex: 1 }}>
         <Box sx={{ textAlign: "left" }}>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography component="div" sx={{fontSize: "1rem", fontWeight: 500}}>
             09:00 - 12:30
           </Typography>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography component="div" sx={{fontSize: "1.125rem", fontWeight: 600}}>
             Eiffel Tower
           </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          <Typography sx={{ color: "text.secondary", fontSize: "0.875rem", fontWeight: 400 }}>
             Recommended duration: 3 hours
           </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          <Typography sx={{ color: "text.secondary", fontSize: "0.875rem", fontWeight: 400 }}>
             Closes at 11pm
           </Typography>
         </Box>

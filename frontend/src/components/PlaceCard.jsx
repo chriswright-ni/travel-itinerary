@@ -19,7 +19,7 @@ function PlaceCard({ place }) {
       <CardMedia
         component="img"
         image={"https://picsum.photos/200"}
-        sx={{ width: "25%" }}
+        sx={{ width: "25%"}}
       />
       <CardContent sx={{flex: 1}}>
         <Box sx={{textAlign: "left"}}>
