@@ -16,6 +16,10 @@ import Paper from "@mui/material/Paper";
 function LandingPage() {
   // const [places, setPlaces] = useState([]);
   const [coordinates, setcoordinates] = useState([]);
+  const [locationName, setLocationName] = useState();
+
+  console.log(`from landing page: ${coordinates}`)
+  console.log(`from landing page: ${locationName}`)
 
   // Hard coded places for UI dev
   const places = [
@@ -61,10 +65,11 @@ function LandingPage() {
   }
 
   // This function retrives the coordinates from the user's location search selection
-  function handleLocationSelect(coordinates) {
+  function handleLocationSelect(coordinates, locationName) {
     console.log(`Latitude: ${coordinates[1]}`);
     console.log(`Longitude: ${coordinates[0]}`);
     setcoordinates(coordinates)
+    setLocationName(locationName)
   }
 
   return (
@@ -91,7 +96,7 @@ function LandingPage() {
           <SearchBar onLocationSelect={handleLocationSelect}/>
           <InterestSelector onInterestSelect={handleInterestSelect} />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <LocationName />
+            <LocationName locationName={locationName} />
             <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
               <UseMyLocation />
               <ListMapToggle />

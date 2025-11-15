@@ -13,17 +13,26 @@ const SearchBar = ({onLocationSelect}) => {
       options={{
         language: 'en',
         limit: 10,
-        types: "place, city, district, locality", // Set search API to return only cities and places, not countries or POIs
+        types: "place, city, district, locality, region", // Set search API to return only cities and places, not countries or POIs
       }}
       // Res is the user selection from the autocomplete search results
       onRetrieve={(res) => {
-        console.log(res)
         const data = res.features[0];
-        console.log(data.geometry.coordinates)
         const coordinates = data.geometry.coordinates // Array with latitude (element 2) and longitude (element 1) values
+        const locationName = data.properties.full_address // Array with latitude (element 2) and longitude (element 1) values
 
-        onLocationSelect(coordinates)
-      }} 
+        onLocationSelect(coordinates, locationName)
+      }}
+
+      
+      // onSuggest is the list of autocomplete suggestions the user sees when typing
+      // Using onSuggest to filter out airport names
+      // onSuggest={(res) => {
+      //   const suggestions = res.suggestions;
+      //   console.log(suggestions)
+      //   const suggestionsFiltered = suggestions.filter((location) => location.toLowerCase().includes('airport'));
+      //   res.suggestions = suggestionsFiltered
+      // }}
     />
     </div>
   )
