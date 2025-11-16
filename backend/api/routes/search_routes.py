@@ -5,6 +5,8 @@ import os
 
 search_bp = Blueprint("search_routes", __name__)
 
+# Text added for github commit test
+
 load_dotenv()
 PLACES_API_KEY = os.getenv("PLACES_API_KEY")
 MAPBOX_ACCESS_TOKEN = os.getenv("MAPBOX_ACCESS_TOKEN")
