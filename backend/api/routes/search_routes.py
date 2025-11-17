@@ -23,8 +23,9 @@ def suggest():
     "q": search_text,
     "session_token": session_token,
     "access_token": MAPBOX_ACCESS_TOKEN,
-    "types": "city,region,place,street,address,postcode,district",
-    "limit": 10
+    "types": "city,region,place,district",
+    "limit": 10,
+    "language": "en"
   }
 
   response = requests.get(url, params=params)
@@ -32,6 +33,40 @@ def suggest():
   data = response.json()
 
   return data
+
+# This route uses Mapbox search API to obtain detailed location data
+# The location name and coordinates are returned
+@search_bp.route("/api/location/retrieve", methods=["GET"])
+def retrieve():
+  print("inside retrieve route")
+  id = request.args.get("id")
+  session_token = "test_session"
+
+  url = f"https://api.mapbox.com/search/searchbox/v1/retrieve/{id}"
+  
+  params = {
+    "session_token": session_token,
+    "access_token": MAPBOX_ACCESS_TOKEN,
+    
+  }
+
+  response = requests.get(url, params=params)
+  print(response)
+  data = response.json()
+
+  features = data.get("features") 
+  name = features[0].get("properties").get("full_address") 
+  latitude = features[0].get("properties").get("coordinates").get("latitude") 
+  longitude = features[0].get("properties").get("coordinates").get("longitude") 
+  
+  location_data = {
+    "name": name,
+    "latitude": latitude,
+    "longitude": longitude,
+  }
+
+  return location_data
+
 
 @search_bp.route("/hello", methods=["GET"])
 def hello():
