@@ -28,11 +28,22 @@ const SearchBar = ({onLocationSelect}) => {
       // onSuggest is the list of autocomplete suggestions the user sees when typing
       // Using onSuggest to filter out airport names
       // onSuggest={(res) => {
+      //   console.log(res)
       //   const suggestions = res.suggestions;
       //   console.log(suggestions)
-      //   const suggestionsFiltered = suggestions.filter((location) => location.toLowerCase().includes('airport'));
+      //   const suggestionsFiltered = suggestions.filter((location) => !location.name.toLowerCase().includes('airport'));
       //   res.suggestions = suggestionsFiltered
+      //   console.log(res.suggestions)
       // }}
+      // onSuggest={(res) => {
+      //   console.log(res)
+      //   const suggestions = res.suggestions;
+      //   console.log(suggestions)
+      //   const suggestionsFiltered = suggestions.filter((location) => !location.name.toLowerCase().includes('airport'));
+      //   res.suggestions = suggestionsFiltered
+      //   console.log(res.suggestions)
+      //   res.suggestions.splice(0, 10)
+      //   console.log(res.suggestions)
     />
     </div>
   )

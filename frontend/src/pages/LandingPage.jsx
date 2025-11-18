@@ -1,4 +1,5 @@
 import SearchBar from "../components/SearchBar";
+import LocationSearch from "../components/LocationSearch";
 import PlaceCard from "../components/PlaceCard";
 import InterestChip from "../components/InterestChip";
 import InterestSelector from "../components/InterestSelector";
@@ -18,8 +19,8 @@ function LandingPage() {
   const [coordinates, setcoordinates] = useState([]);
   const [locationName, setLocationName] = useState();
 
-  console.log(`from landing page: ${coordinates}`)
-  console.log(`from landing page: ${locationName}`)
+  // console.log(`from landing page: ${coordinates}`)
+  // console.log(`from landing page: ${locationName}`)
 
   // Hard coded places for UI dev
   const places = [
@@ -93,6 +94,7 @@ function LandingPage() {
             pb: 0,
           }}
         >
+          <LocationSearch />
           <SearchBar onLocationSelect={handleLocationSelect}/>
           <InterestSelector onInterestSelect={handleInterestSelect} />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
