@@ -32,7 +32,18 @@ def suggest():
   print(response)
   data = response.json()
 
-  return data
+  suggestions = data.get("suggestions")
+  searchItems = []
+
+  for suggestion in suggestions:
+    searchItem = {
+      "mapbox_id": suggestion.get("mapbox_id"),
+      "place_name": suggestion.get("name"),
+      "place_formatted": suggestion.get("place_formatted"),
+    }
+    searchItems.append(searchItem)
+
+  return jsonify(searchItems)
 
 # This route uses Mapbox search API to obtain detailed location data
 # The location name and coordinates are returned
