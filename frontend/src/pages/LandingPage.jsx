@@ -66,11 +66,24 @@ function LandingPage() {
   }
 
   // This function retrives the coordinates from the user's location search selection
-  function handleLocationSelect(coordinates, locationName) {
-    console.log(`Latitude: ${coordinates[1]}`);
-    console.log(`Longitude: ${coordinates[0]}`);
-    setcoordinates(coordinates)
-    setLocationName(locationName)
+  async function handleLocationSelect(userSelection) {
+
+    if (!userSelection) {
+      return;
+    }
+    
+    const mapbox_id = userSelection.mapbox_id
+    const response = await fetch(
+      `http://127.0.0.1:5000/api/location/retrieve?id=${mapbox_id}`
+    );
+    const data = await response.json(); // Array of objects
+    console.log("Inside retrieve API call");
+    console.log(data);
+    // setOptions(data);
+    // console.log(`Latitude: ${coordinates[1]}`);
+    // console.log(`Longitude: ${coordinates[0]}`);
+    // setcoordinates(coordinates)
+    // setLocationName(locationName)
   }
 
   return (
@@ -94,8 +107,8 @@ function LandingPage() {
             pb: 0,
           }}
         >
-          <LocationSearch />
-          <SearchBar onLocationSelect={handleLocationSelect}/>
+          <LocationSearch onLocationSelect={handleLocationSelect}/>
+          {/* <SearchBar onLocationSelect={handleLocationSelect}/> */}
           <InterestSelector onInterestSelect={handleInterestSelect} />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <LocationName locationName={locationName} />
