@@ -9,6 +9,7 @@ function LocationSearch({onLocationSelect}) {
   const [options, setOptions] = useState([]); // MUI options require an array
   const [userSelection, setUserSelection] = useState('');
 
+
   // const options = [
   //   { label: 'Paris', id: 1 },
   //   { label: 'Belfast', id: 2 },
@@ -31,7 +32,7 @@ function LocationSearch({onLocationSelect}) {
       const fetchData = async () => {
 
         const response = await fetch(
-          `http://127.0.0.1:5000/api/location/suggest?q=${debouncedQuery}`
+          `http://127.0.0.1:5000/api/location/suggest?q=${encodeURIComponent(debouncedQuery)}`
         );
         const data = await response.json(); // Array of objects
         console.log("Inside suggest API call");
@@ -45,6 +46,7 @@ function LocationSearch({onLocationSelect}) {
  
   return (
     <Autocomplete
+      filterOptions={(options) => options} // This line disables MUI's built in filter.  Without this line, multi word searches will return valid API data but won't render to the UI.
       id="auto-complete"
       value={userSelection}
       inputValue={searchText} // The value currently in the search box, not the selected value
@@ -57,6 +59,7 @@ function LocationSearch({onLocationSelect}) {
         if (userSelection) {
           setUserSelection(userSelection);
           onLocationSelect(userSelection);
+          setSearchText(userSelection.place_name);
         } else {
           setSearchText('');
         }

@@ -15,28 +15,27 @@ import { useState, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 
 function LandingPage() {
-  // const [places, setPlaces] = useState([]);
-  const [coordinates, setcoordinates] = useState([]);
-  const [locationName, setLocationName] = useState();
+  const [places, setPlaces] = useState([]);
+  const [locationData, setLocationData] = useState({});
 
   // console.log(`from landing page: ${coordinates}`)
   // console.log(`from landing page: ${locationName}`)
 
   // Hard coded places for UI dev
-  const places = [
-    { id: 1, name: "Place 1" },
-    { id: 2, name: "Place 2" },
-    { id: 3, name: "Place 3" },
-    { id: 4, name: "Place 4" },
-    { id: 5, name: "Place 5" },
-    { id: 6, name: "Place 6" },
-    { id: 7, name: "Place 7" },
-    { id: 8, name: "Place 8" },
-    { id: 9, name: "Place 9" },
-    { id: 10, name: "Place 10" },
-    { id: 11, name: "Place 11" },
-    { id: 12, name: "Place 12" },
-  ];
+  // const places = [
+  //   { id: 1, name: "Place 1" },
+  //   { id: 2, name: "Place 2" },
+  //   { id: 3, name: "Place 3" },
+  //   { id: 4, name: "Place 4" },
+  //   { id: 5, name: "Place 5" },
+  //   { id: 6, name: "Place 6" },
+  //   { id: 7, name: "Place 7" },
+  //   { id: 8, name: "Place 8" },
+  //   { id: 9, name: "Place 9" },
+  //   { id: 10, name: "Place 10" },
+  //   { id: 11, name: "Place 11" },
+  //   { id: 12, name: "Place 12" },
+  // ];
 
   // useEffect(() => {
   //   const getPlaces = async () => {
@@ -51,7 +50,7 @@ function LandingPage() {
 
   async function getPlaces(interest) {
     const response = await fetch(
-      `http://127.0.0.1:5000/places?interestCategory=${interest}`
+      `http://127.0.0.1:5000/places?interestCategory=${encodeURIComponent(interest)}&latitude=${locationData.latitude}&longitude=${locationData.longitude}`
     );
     const data = await response.json(); // Array of objects
     console.log("Inside API call");
@@ -78,7 +77,7 @@ function LandingPage() {
     );
     const data = await response.json(); // Array of objects
     console.log("Inside retrieve API call");
-    console.log(data);
+    setLocationData(data);
     // setOptions(data);
     // console.log(`Latitude: ${coordinates[1]}`);
     // console.log(`Longitude: ${coordinates[0]}`);
@@ -111,7 +110,7 @@ function LandingPage() {
           {/* <SearchBar onLocationSelect={handleLocationSelect}/> */}
           <InterestSelector onInterestSelect={handleInterestSelect} />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <LocationName locationName={locationName} />
+            <LocationName locationName={locationData.name} />
             <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
               <UseMyLocation />
               <ListMapToggle />

@@ -41,6 +41,7 @@ def suggest():
       "place_name": suggestion.get("name"),
       "place_formatted": suggestion.get("place_formatted"),
     }
+
     searchItems.append(searchItem)
 
   return jsonify(searchItems)
@@ -118,6 +119,10 @@ def get_places():
 
     # Get interest category from query string
     interest_category = request.args.get("interestCategory")
+    latitude = float(request.args.get("latitude"))
+    longitude = float(request.args.get("longitude"))
+    ll = f"{latitude:.4f},{longitude:.4f}"
+    
 
     if not interest_category:
       print("No interest category selected") # Update this
@@ -129,7 +134,9 @@ def get_places():
         "X-Places-Api-Version": "2025-06-17",
         "Authorization": f"Bearer {PLACES_API_KEY}"
     }
-    params = {f"query": {interest_category}, "ll": "54.4203,-6.4548", "radius": 5000, "limit": 50} # FSQ places result limit is 50, unless pagination is used
+    print(ll)
+    # params = {f"query": {interest_category}, "ll": "54.4203,-6.4548", "radius": 5000, "limit": 50} # FSQ places result limit is 50, unless pagination is used
+    params = {f"query": {interest_category}, "ll": {ll}, "radius": 5000, "limit": 50} # FSQ places result limit is 50, unless pagination is used
     
     response = requests.get(url, headers=headers, params=params)
     data = response.json()
