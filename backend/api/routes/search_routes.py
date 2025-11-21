@@ -36,13 +36,16 @@ def suggest():
   searchItems = []
 
   for suggestion in suggestions:
-    searchItem = {
-      "mapbox_id": suggestion.get("mapbox_id"),
-      "place_name": suggestion.get("name"),
-      "place_formatted": suggestion.get("place_formatted"),
-    }
-
-    searchItems.append(searchItem)
+    place_name = suggestion.get("name")
+    if "airport" not in place_name.lower():
+      searchItem = {
+        "mapbox_id": suggestion.get("mapbox_id"),
+        "place_name": place_name,
+        "place_formatted": suggestion.get("place_formatted"),
+      }
+      searchItems.append(searchItem)
+    else:
+      continue
 
   return jsonify(searchItems)
 
