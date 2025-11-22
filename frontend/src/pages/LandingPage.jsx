@@ -17,6 +17,14 @@ function LandingPage() {
   // Temporary location data for development with location search API calling
   const latitude = "54.5973";
   const longitude = "-5.9301";
+  const placesTemp = [
+    {"id": 1, "name": "Place 1", "category": "Museum", "distance": 400},
+    {"id": 2, "name": "Place 2", "category": "Museum", "distance": 680},
+    {"id": 3, "name": "Place 3", "category": "Shopping", "distance": 1045},
+    {"id": 4, "name": "Place 4", "category": "Shopping", "distance": 300},
+    {"id": 5, "name": "Place 5", "category": "Shopping", "distance": 378},
+  ]
+
 
   async function getPlaces(interest) {
     const response = await fetch(
@@ -98,9 +106,8 @@ function LandingPage() {
         </Box>
         <Box sx={{ mb: 9, mt: 26, px: 2 }}>
           <Grid container spacing={2} direction={"column"}>
-            {places.map((place) => (
+            {placesTemp.map((place) => (
               <Grid key={place.id}>
-                {" "}
                 {/* Key to be in outer map element*/}
                 <PlaceCard place={place} />
               </Grid>

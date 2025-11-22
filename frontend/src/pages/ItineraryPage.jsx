@@ -8,8 +8,11 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useItineraryContext } from "../contexts/ItineraryContext";
 
 function ItineraryPage() {
+
+  const { itinerary, setItinerary, addDay, removeDay } = useItineraryContext();
   return (
     <>
       <Box
@@ -25,35 +28,37 @@ function ItineraryPage() {
           <ItineraryActions />
         </Box>
         <Box>
+          {itinerary.map((itineraryDay) => (
+            <Accordion key={itineraryDay.dayNumber}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel2-content"
+              id="panel2-header"
+            >
+              <Typography component="span">{`Day ${itineraryDay.dayNumber}`}</Typography>
+            </AccordionSummary>
+            <AccordionDetails></AccordionDetails>
+          </Accordion>
+          ))}
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1-content"
               id="panel1-header"
             >
-              <Box sx={{ display: "flex", flexDirection: "column", width: "50%" }}>
+              {/* <Box sx={{ display: "flex", flexDirection: "column", width: "50%" }}>
                 <Typography>Day 1</Typography>
                 <Typography>10.12.25</Typography>
               </Box>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Typography>5 Items</Typography>
                 <Typography>7 Hours</Typography>
-              </Box>
+              </Box> */}
             </AccordionSummary>
             <AccordionDetails>
               <ItineraryItem />
               <ItineraryItem />
             </AccordionDetails>
-          </Accordion>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2-content"
-              id="panel2-header"
-            >
-              <Typography component="span">Day 2</Typography>
-            </AccordionSummary>
-            <AccordionDetails></AccordionDetails>
           </Accordion>
         </Box>
         <Box>
