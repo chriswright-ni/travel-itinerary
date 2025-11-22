@@ -5,8 +5,6 @@ import os
 
 search_bp = Blueprint("search_routes", __name__)
 
-# Text added for github commit test
-
 load_dotenv()
 PLACES_API_KEY = os.getenv("PLACES_API_KEY")
 MAPBOX_ACCESS_TOKEN = os.getenv("MAPBOX_ACCESS_TOKEN")
@@ -81,40 +79,6 @@ def retrieve():
   }
 
   return location_data
-
-
-@search_bp.route("/hello", methods=["GET"])
-def hello():
-  return "Hello World"
-
-@search_bp.route("/search", methods=["GET"])
-def search():
-    url = "https://places-api.foursquare.com/places/search"
-
-    headers = {
-        "accept": "application/json",
-        "X-Places-Api-Version": "2025-06-17",
-        "Authorization": f"Bearer {PLACES_API_KEY}"
-    }
-    params = {"query": "cafe", "ll": "54.4203,-6.4548", "radius": 5000, "limit": 50} # FSQ places result limit is 50, unless pagination is used
-
-    response = requests.get(url, headers=headers, params=params)
-    data = response.json()
-    place_data = data.get("results", []) # The second argument, [], is the default value if the get method produces a type error
-
-
-    # The results data from the Foursquare Places API is an array of objects
-    # Cleaning the data to remove unnecessary fields - creating a smaller array of objects
-    places = []
-    for i, place in enumerate(place_data):
-      place_cleaned = {
-        "id": i + 1,
-        "name": place.get("name")
-      }
-      print(place.get("name"))
-      places.append(place_cleaned);
-
-    return jsonify(places)
 
 
 @search_bp.route("/places", methods=["GET"])

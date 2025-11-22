@@ -4,16 +4,10 @@ import { useState, useEffect } from "react";
 
 function LocationSearch({onLocationSelect}) {
 
-  const [searchText, setSearchText] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [options, setOptions] = useState([]); // MUI options require an array
-  const [userSelection, setUserSelection] = useState('');
-
-
-  // const options = [
-  //   { label: 'Paris', id: 1 },
-  //   { label: 'Belfast', id: 2 },
-  // ];
+  const [searchText, setSearchText] = useState(''); // The text entered by the user
+  const [debouncedQuery, setDebouncedQuery] = useState(''); // The text sent to the API after the user stops typing
+  const [options, setOptions] = useState([]); // The user options returned from the API.  Note: MUI options require an array.
+  const [userSelection, setUserSelection] = useState(''); // The option selected by the user
 
   // Basic debounce functionality for when searchText changes
   // debouncedQuery gets set 500ms after the user stops typing
@@ -24,7 +18,7 @@ function LocationSearch({onLocationSelect}) {
     return () => clearTimeout(timeoutId);
   }, [searchText]);
 
-  // This useEffect calls the API whenevr debouncedQuery changes
+  // This useEffect calls the API whenever debouncedQuery changes
   useEffect(() => {
     if (debouncedQuery) {
       console.log(`API called for ${debouncedQuery}`)
@@ -48,29 +42,31 @@ function LocationSearch({onLocationSelect}) {
     <Autocomplete
       filterOptions={(options) => options} // This line disables MUI's built in filter.  Without this line, multi word searches will return valid API data but won't render to the UI.
       id="auto-complete"
-      value={userSelection}
+      value={userSelection} // The value selected by the user from the search results
       inputValue={searchText} // The value currently in the search box, not the selected value
       onInputChange={(e, newSearchText, reason) => {
+        // This will only change the searchText due to user input
+        // If the text clears by pressing the X button or deleting all text, it will not change the searchText meaning there won't be another API call
         if (reason === 'input') {
           setSearchText(newSearchText);
         }
       }}
       onChange={(e, userSelection) => {
+        // Triggers when the user selects an option from the search results
         if (userSelection) {
           setUserSelection(userSelection);
-          onLocationSelect(userSelection);
-          setSearchText(userSelection.place_name);
+          onLocationSelect(userSelection);  // Calls handleLocationSelect in Landing Page
+          setSearchText(userSelection.place_name); // Updates the searchText to the user selection - this is to prevent the search showing incomplete names
         } else {
-          setSearchText('');
+          setSearchText(''); // Clears the text when the X button is pressed
         }
       }}
-      options={options}
+      options={options} // The search results displayed in the dropdown
       autoComplete
-      includeInputInList
       renderInput={(params) => (
-        <TextField {...params} label="Search" variant="standard" />
+        <TextField {...params} label="Search for a location" variant="standard" />
       )}
-      getOptionLabel={(option) => `${option.place_name} (${option.place_formatted})`}
+      getOptionLabel={(option) => `${option.place_name} (${option.place_formatted})`}  // Format of search results
     />
   );
 }
