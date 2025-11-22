@@ -8,16 +8,24 @@ import "../css/LandingPage.css";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import BottomNav from "../components/BottomNav";
-import { useSearchContext } from "../contexts/SearchContext"
+import { useSearchContext } from "../contexts/SearchContext";
 
 function LandingPage() {
+  const { locationData, setLocationData, places, setPlaces } =
+    useSearchContext();
 
-  const {locationData, setLocationData, places, setPlaces} = useSearchContext();
+  // Temporary location data for development with location search API calling
+  const latitude = "54.5973";
+  const longitude = "-5.9301";
 
   async function getPlaces(interest) {
     const response = await fetch(
-      `http://127.0.0.1:5000/places?interestCategory=${encodeURIComponent(interest)}&latitude=${locationData.latitude}&longitude=${locationData.longitude}`
+      // `http://127.0.0.1:5000/places?interestCategory=${encodeURIComponent(interest)}&latitude=${locationData.latitude}&longitude=${locationData.longitude}`
+      `http://127.0.0.1:5000/places?interestCategory=${encodeURIComponent(
+        interest
+      )}&latitude=${latitude}&longitude=${longitude}`
     );
+
     const data = await response.json(); // Array of objects
     console.log("Inside API call");
     console.log(data);
@@ -32,12 +40,11 @@ function LandingPage() {
 
   // This function retrives the coordinates from the user's location search selection
   async function handleLocationSelect(userSelection) {
-
     if (!userSelection) {
       return;
     }
-    
-    const mapbox_id = userSelection.mapbox_id
+
+    const mapbox_id = userSelection.mapbox_id;
     const response = await fetch(
       `http://127.0.0.1:5000/api/location/retrieve?id=${mapbox_id}`
     );
@@ -64,22 +71,33 @@ function LandingPage() {
             right: 0,
             backgroundColor: "#fff",
             zIndex: 1, // Z index is needed do prevent links used in main content showing through the background during scrolling
-            pb: 0,
+            px: 2,
+            py: 1,
+            boxShadow: 2
           }}
         >
-          <LocationSearch onLocationSelect={handleLocationSelect}/>
-          <InterestSelector onInterestSelect={handleInterestSelect} />
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <LocationName locationName={locationData?.name ?? "No location selected"} /> 
-            <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+          <LocationSearch onLocationSelect={handleLocationSelect} />
+          <Box sx={{ mt: 1 }}>
+            <InterestSelector onInterestSelect={handleInterestSelect} />
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "column", mt: 1 }}>
+            <LocationName
+              locationName={locationData?.name ?? "No location selected"}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
               <UseMyLocation />
               <ListMapToggle />
             </Box>
           </Box>
         </Box>
-        <Box sx={{ mb: 8, mt: 19 }}>
-          {/* Margin bottom set to 7 based on MUI bottom nav bar setup */}
-          <Grid container spacing={2} direction={"Column"}>
+        <Box sx={{ mb: 9, mt: 26, px: 2 }}>
+          <Grid container spacing={2} direction={"column"}>
             {places.map((place) => (
               <Grid key={place.id}>
                 {" "}

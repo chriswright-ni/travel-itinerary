@@ -102,24 +102,31 @@ def get_places():
         "Authorization": f"Bearer {PLACES_API_KEY}"
     }
     print(ll)
-    # params = {f"query": {interest_category}, "ll": "54.4203,-6.4548", "radius": 5000, "limit": 50} # FSQ places result limit is 50, unless pagination is used
+
     params = {f"query": {interest_category}, "ll": {ll}, "radius": 5000, "limit": 50} # FSQ places result limit is 50, unless pagination is used
     
     response = requests.get(url, headers=headers, params=params)
     data = response.json()
     place_data = data.get("results", []) # The second argument, [], is the default value if the get method produces a type error
     print(f"Finding places with interest category: {interest_category}")
-
     # The results data from the Foursquare Places API is an array of objects
     # Cleaning the data to remove unnecessary fields - creating a smaller array of objects
     places = []
     for i, place in enumerate(place_data):
+      categories = place.get("categories", [])
       place_cleaned = {
         "id": i + 1,
-        "name": place.get("name")
+        "name": place.get("name"),
+        "category": categories[0].get("name"),
+        "distance": place.get("distance")
       }
       print(place.get("name"))
       places.append(place_cleaned);
 
     return jsonify(places)
+    # return jsonify(place_data)
 
+
+@search_bp.route("/hello", methods=["GET"])
+def hello():
+  return "hello world"
