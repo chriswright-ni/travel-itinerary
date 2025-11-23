@@ -22,7 +22,7 @@ export const ItineraryProvider = ({ children }) => {
 
   // This function removes the last day from the itinerary array
   const removeDay = () => {
-    const lastDayNumber = prev.length;
+    const lastDayNumber = itinerary.length;
     setItinerary((prev) =>
       prev.filter((day) => day.dayNumber !== lastDayNumber)
     );

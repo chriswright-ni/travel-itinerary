@@ -13,6 +13,12 @@ import { useItineraryContext } from "../contexts/ItineraryContext";
 function ItineraryPage() {
 
   const { itinerary, setItinerary, addDay, removeDay } = useItineraryContext();
+  
+  const handleClickAddDay = () => {
+    addDay();
+    console.log("new day added")
+  }
+  
   return (
     <>
       <Box
@@ -25,7 +31,7 @@ function ItineraryPage() {
       >
         <Box>
           <ItineraryTitle />
-          <ItineraryActions />
+          <ItineraryActions handleClickAddDay={handleClickAddDay}/>
         </Box>
         <Box>
           {itinerary.map((itineraryDay) => (
