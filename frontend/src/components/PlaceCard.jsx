@@ -13,7 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import PlaceIcon from '@mui/icons-material/Place';
 
-function PlaceCard({ place }) {
+function PlaceCard({ place, handleClickAddToItinerary }) {
   /* Note: Place is a prop so needs destructured using {} */
 
   return (
@@ -41,7 +41,7 @@ function PlaceCard({ place }) {
         </Box>
       </CardContent>
       <CardActions>
-        <IconButton aria-label="Add to Itinerary" size="small">
+        <IconButton aria-label="Add to Itinerary" size="small" onClick={() => handleClickAddToItinerary(place)}>
           <AddIcon fontSize="large" />
         </IconButton>
       </CardActions>

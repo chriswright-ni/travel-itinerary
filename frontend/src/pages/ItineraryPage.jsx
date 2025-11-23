@@ -9,16 +9,20 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useItineraryContext } from "../contexts/ItineraryContext";
+import Grid from "@mui/material/Grid";
+import PlaceCard from "../components/PlaceCard";
 
 function ItineraryPage() {
-
   const { itinerary, setItinerary, addDay, removeDay } = useItineraryContext();
-  
+
   const handleClickAddDay = () => {
     addDay();
-    console.log("new day added")
-  }
-  
+  };
+
+  const handleClickRemoveDay = () => {
+    removeDay();
+  };
+
   return (
     <>
       <Box
@@ -31,20 +35,35 @@ function ItineraryPage() {
       >
         <Box>
           <ItineraryTitle />
-          <ItineraryActions handleClickAddDay={handleClickAddDay}/>
+          <ItineraryActions
+            handleClickAddDay={handleClickAddDay}
+            handleClickRemoveDay={handleClickRemoveDay}
+          />
         </Box>
         <Box>
           {itinerary.map((itineraryDay) => (
             <Accordion key={itineraryDay.dayNumber}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2-content"
-              id="panel2-header"
-            >
-              <Typography component="span">{`Day ${itineraryDay.dayNumber}`}</Typography>
-            </AccordionSummary>
-            <AccordionDetails></AccordionDetails>
-          </Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2-content"
+                id="panel2-header"
+              >
+                <Typography component="span">{`Day ${itineraryDay.dayNumber}`}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid container spacing={2} direction={"column"}>
+                  {itineraryDay.itineraryItems.map((ItineraryItem) => (
+                    <Grid key={ItineraryItem.id}>
+                      {/* Key to be in outer map element*/}
+                      {/* <ItineraryItem
+                        itineraryItem={ItineraryItem}
+                      /> */}
+                      <PlaceCard place={ItineraryItem} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
           ))}
           <Accordion>
             <AccordionSummary

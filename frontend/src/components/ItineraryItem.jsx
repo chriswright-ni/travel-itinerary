@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import RemoveIcon from "@mui/icons-material/Remove";
 import IconButton from "@mui/material/IconButton";
 
-function ItineraryItem() {
+function ItineraryItem(itineraryItem) {
   return (
     <Card sx={{ maxWidth: "100%", display: "flex", mb: 2 }}>
       <CardMedia
@@ -21,7 +21,7 @@ function ItineraryItem() {
             09:00 - 12:30
           </Typography>
           <Typography component="div" sx={{fontSize: "1.125rem", fontWeight: 600}}>
-            Eiffel Tower
+            {itineraryItem.name}
           </Typography>
           <Typography sx={{ color: "text.secondary", fontSize: "0.875rem", fontWeight: 400 }}>
             Recommended duration: 3 hours

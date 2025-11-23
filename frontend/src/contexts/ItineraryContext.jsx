@@ -9,7 +9,7 @@ export const ItineraryProvider = ({ children }) => {
     { dayNumber: 1, itineraryItems: [] },
   ]);
 
-  // This function adds an empty day to the itinerary array
+  // Adds an empty day to the itinerary array
   const addDay = () => {
     const newDayNumber = itinerary.length + 1;
     const newDay = {
@@ -20,7 +20,7 @@ export const ItineraryProvider = ({ children }) => {
     setItinerary((prev) => [...prev, newDay]);
   };
 
-  // This function removes the last day from the itinerary array
+  // Removes the last day from the itinerary array
   const removeDay = () => {
     const lastDayNumber = itinerary.length;
     setItinerary((prev) =>
@@ -28,11 +28,25 @@ export const ItineraryProvider = ({ children }) => {
     );
   };
 
+  // Adds the selected item to the itinerary under day 1
+  const addItemToItinerary = (itineraryItem) => {
+    console.log(itinerary)
+    // Map through the current array state
+    // If the day object day number is 1, create a new object
+    // Add the new itinerary item to the itinerary items array and add this new object to the itinerary array
+    // If the day number is not 1, copy the original day object to the itinerary array
+    setItinerary((prev) => prev.map((day) =>
+      day.dayNumber === 1 ? {...day, itineraryItems: [...day.itineraryItems, itineraryItem]} : day
+    ));
+    console.log(itinerary)
+  };
+
   const value = {
     itinerary,
     setItinerary,
     addDay,
     removeDay,
+    addItemToItinerary,
   };
 
   return (
