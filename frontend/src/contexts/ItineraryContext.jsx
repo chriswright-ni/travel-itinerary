@@ -9,6 +9,8 @@ export const ItineraryProvider = ({ children }) => {
     { dayNumber: 1, itineraryItems: [] },
   ]);
 
+  const [nextItineraryItemId, setNextItineraryItemId] = useState(1);
+
   // Adds an empty day to the itinerary array
   const addDay = () => {
     const newDayNumber = itinerary.length + 1;
@@ -29,8 +31,16 @@ export const ItineraryProvider = ({ children }) => {
   };
 
   // Adds the selected item to the itinerary under day 1
-  const addItemToItinerary = (itineraryItem) => {
-    console.log(itinerary)
+  const addItemToItinerary = (place) => {
+    // Create itinerary item from the place details
+    const itineraryItem = {
+      "id": nextItineraryItemId,
+      "name": place.name,
+      "recommendedDuration": 60,
+    }
+
+    setNextItineraryItemId(prev => (prev + 1))
+
     // Map through the current array state
     // If the day object day number is 1, create a new object
     // Add the new itinerary item to the itinerary items array and add this new object to the itinerary array
@@ -38,7 +48,7 @@ export const ItineraryProvider = ({ children }) => {
     setItinerary((prev) => prev.map((day) =>
       day.dayNumber === 1 ? {...day, itineraryItems: [...day.itineraryItems, itineraryItem]} : day
     ));
-    console.log(itinerary)
+    console.log(itineraryItem)
   };
 
   const value = {

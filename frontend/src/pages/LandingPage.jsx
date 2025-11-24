@@ -28,12 +28,8 @@ function LandingPage() {
     {"id": 5, "name": "Place 5", "category": "Shopping", "distance": 378},
   ]
 
-  const handleClickAddToItinerary = (itineraryItem) => {
-    // console.log(itineraryItem)
-    addItemToItinerary(itineraryItem)
-    // console.log(itinerary)
-    // console.log(itinerary[0].itineraryItems)
-
+  const handleClickAddToItinerary = (place) => {
+    addItemToItinerary(place)
   }
 
   async function getPlaces(interest) {

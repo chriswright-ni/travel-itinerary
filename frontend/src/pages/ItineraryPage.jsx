@@ -52,13 +52,13 @@ function ItineraryPage() {
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container spacing={2} direction={"column"}>
-                  {itineraryDay.itineraryItems.map((ItineraryItem) => (
-                    <Grid key={ItineraryItem.id}>
+                  {itineraryDay.itineraryItems.map((itineraryItem) => (
+                    <Grid key={itineraryItem.id}>
                       {/* Key to be in outer map element*/}
-                      {/* <ItineraryItem
-                        itineraryItem={ItineraryItem}
-                      /> */}
-                      <PlaceCard place={ItineraryItem} />
+                      <ItineraryItem
+                        itineraryItem={itineraryItem}
+                      />
+                      {/* <PlaceCard place={ItineraryItem} /> */}
                     </Grid>
                   ))}
                 </Grid>
@@ -81,8 +81,7 @@ function ItineraryPage() {
               </Box> */}
             </AccordionSummary>
             <AccordionDetails>
-              <ItineraryItem />
-              <ItineraryItem />
+
             </AccordionDetails>
           </Accordion>
         </Box>

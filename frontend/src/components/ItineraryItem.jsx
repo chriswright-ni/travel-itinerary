@@ -7,34 +7,53 @@ import Box from "@mui/material/Box";
 import RemoveIcon from "@mui/icons-material/Remove";
 import IconButton from "@mui/material/IconButton";
 
-function ItineraryItem(itineraryItem) {
+function ItineraryItem({itineraryItem}) {
+ 
   return (
     <Card sx={{ maxWidth: "100%", display: "flex", mb: 2 }}>
-      <CardMedia
+      {/* <CardMedia
         component="img"
         image={"https://picsum.photos/200"}
         sx={{ width: "6rem", height: "8rem" }}
-      />
+      /> */}
       <CardContent sx={{ flex: 1 }}>
         <Box sx={{ textAlign: "left" }}>
-          <Typography component="div" sx={{fontSize: "1rem", fontWeight: 500}}>
+          <Typography
+            component="div"
+            sx={{ fontSize: "1rem", fontWeight: 500 }}
+          >
             09:00 - 12:30
           </Typography>
-          <Typography component="div" sx={{fontSize: "1.125rem", fontWeight: 600}}>
+          <Typography
+            component="div"
+            sx={{ fontSize: "1.125rem", fontWeight: 600 }}
+          >
             {itineraryItem.name}
           </Typography>
-          <Typography sx={{ color: "text.secondary", fontSize: "0.875rem", fontWeight: 400 }}>
-            Recommended duration: 3 hours
+          <Typography
+            sx={{
+              color: "text.secondary",
+              fontSize: "0.875rem",
+              fontWeight: 400,
+            }}
+          >
+            {itineraryItem.recommendedDuration}
           </Typography>
-          <Typography sx={{ color: "text.secondary", fontSize: "0.875rem", fontWeight: 400 }}>
+          <Typography
+            sx={{
+              color: "text.secondary",
+              fontSize: "0.875rem",
+              fontWeight: 400,
+            }}
+          >
             Closes at 11pm
           </Typography>
         </Box>
       </CardContent>
       <CardActions>
-        <IconButton aria-label="Remove from Itinerary" size="small">
+        {/* <IconButton aria-label="Remove from Itinerary" size="small">
           <RemoveIcon fontSize="large" />
-        </IconButton>
+        </IconButton> */}
       </CardActions>
     </Card>
   );
