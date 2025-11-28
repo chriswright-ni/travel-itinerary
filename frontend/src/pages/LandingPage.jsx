@@ -10,23 +10,32 @@ import Grid from "@mui/material/Grid";
 import BottomNav from "../components/BottomNav";
 import { useSearchContext } from "../contexts/SearchContext";
 import { useItineraryContext } from "../contexts/ItineraryContext";
+import { useEffect } from "react";
 
 function LandingPage() {
-  const { locationData, setLocationData, places, setPlaces } =
+  const { locationData, setLocationData} =
     useSearchContext();
 
-  const { addItemToItinerary, itinerary } = useItineraryContext();
+  const { addItemToItinerary, itinerary, places, setPlaces, updatePlacesById  } = useItineraryContext();
 
   // Temporary location data for development with location search API calling
   const latitude = "54.5973";
   const longitude = "-5.9301";
   const placesTemp = [
-    {"id": 1, "name": "Place 1", "category": "Museum", "distance": 400},
-    {"id": 2, "name": "Place 2", "category": "Museum", "distance": 680},
-    {"id": 3, "name": "Place 3", "category": "Shopping", "distance": 1045},
-    {"id": 4, "name": "Place 4", "category": "Shopping", "distance": 300},
-    {"id": 5, "name": "Place 5", "category": "Shopping", "distance": 378},
+    {"id": 1, "name": "Eiffel Tower", "category": "Landmark", "distance": 400, "rating": 4.8},
+    {"id": 2, "name": "Louis Vuitton", "category": "Shopping", "distance": 680, "rating": 4.9},
+    {"id": 3, "name": "Le Louvre", "category": "Art", "distance": 1045, "rating": 4.5},
+    {"id": 4, "name": "Notre Dame", "category": "History", "distance": 300, "rating": 4.5},
+    {"id": 5, "name": "Chanel", "category": "Shopping", "distance": 378, "rating": 4.6},
   ]
+
+  // Temp useEffect to store temp places data for the purpose of development without making API calls
+  useEffect(() => {
+    setPlaces(placesTemp);
+    updatePlacesById(placesTemp);
+    // console.log(placesTemp)
+    
+  }, [])
 
   const handleClickAddToItinerary = (place) => {
     addItemToItinerary(place)
@@ -106,7 +115,7 @@ function LandingPage() {
               }}
             >
               <UseMyLocation />
-              <ListMapToggle />
+              {/* <ListMapToggle /> */}
             </Box>
           </Box>
         </Box>

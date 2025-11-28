@@ -19,7 +19,7 @@ function ItineraryActions({handleClickAddDay, handleClickRemoveDay}) {
       </Button>
       <Button variant="outlined">Edit itinerary</Button>
       <Button variant="outlined">Optimise Route</Button>
-      <ListMapToggle />
+      {/* <ListMapToggle /> */}
     </Box>
   );
 }

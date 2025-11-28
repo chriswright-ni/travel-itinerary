@@ -11,12 +11,18 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useItineraryContext } from "../contexts/ItineraryContext";
 import Grid from "@mui/material/Grid";
 import PlaceCard from "../components/PlaceCard";
+import Button from "@mui/material/Button";
+import { useState } from "react";
 
 function ItineraryPage() {
-  const { itinerary, setItinerary, addDay, removeDay } = useItineraryContext();
+  const { itinerary, setItinerary, addDay, removeDay, places, placesById } =
+    useItineraryContext();
+  const { editMode, setEditMode } = useState(false);
 
   const handleClickAddDay = () => {
     addDay();
+    console.log(places); // Test code
+    console.log(placesById); // Test code
   };
 
   const handleClickRemoveDay = () => {
@@ -41,8 +47,11 @@ function ItineraryPage() {
           />
         </Box>
         <Box>
-          {itinerary.map((itineraryDay) => (
-            <Accordion key={itineraryDay.dayNumber}>
+          {itinerary.map((itineraryDay, index) => (
+            <Accordion
+              key={itineraryDay.dayNumber}
+              defaultExpanded={index === 0 ? true : false}
+            >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel2-content"
@@ -52,42 +61,28 @@ function ItineraryPage() {
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container spacing={2} direction={"column"}>
-                  {itineraryDay.itineraryItems.map((itineraryItem) => (
-                    <Grid key={itineraryItem.id}>
-                      {/* Key to be in outer map element*/}
-                      <ItineraryItem
-                        itineraryItem={itineraryItem}
-                      />
-                      {/* <PlaceCard place={ItineraryItem} /> */}
-                    </Grid>
-                  ))}
+                  {itineraryDay.itineraryItems.length === 0 ? (
+                    <Box>
+                      <Typography>No itinerary items added yet!</Typography>
+                    </Box>
+                  ) : (
+                    itineraryDay.itineraryItems.map((itineraryItem) => (
+                      <Grid key={itineraryItem.id}>
+                        {/* Key to be in outer map element*/}
+                        <ItineraryItem itineraryItem={itineraryItem} />
+                        {/* <PlaceCard place={ItineraryItem} /> */}
+                      </Grid>
+                    ))
+                  )}
                 </Grid>
+                <Button variant="outlined" fullWidth>
+                  Add Item
+                </Button>
               </AccordionDetails>
             </Accordion>
           ))}
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1-content"
-              id="panel1-header"
-            >
-              {/* <Box sx={{ display: "flex", flexDirection: "column", width: "50%" }}>
-                <Typography>Day 1</Typography>
-                <Typography>10.12.25</Typography>
-              </Box>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography>5 Items</Typography>
-                <Typography>7 Hours</Typography>
-              </Box> */}
-            </AccordionSummary>
-            <AccordionDetails>
+        </Box>
 
-            </AccordionDetails>
-          </Accordion>
-        </Box>
-        <Box>
-          <Typography>No itinerary items added yet!</Typography>
-        </Box>
         <BottomNav />
       </Box>
     </>

@@ -9,7 +9,23 @@ export const ItineraryProvider = ({ children }) => {
     { dayNumber: 1, itineraryItems: [] },
   ]);
 
-  const [nextItineraryItemId, setNextItineraryItemId] = useState(1);
+  const [nextItineraryItemId, setNextItineraryItemId] = useState(1); // Counter to assign itinerary ids
+  const [places, setPlaces] = useState([])
+  const [placesById, setPlacesById] = useState({}) // Object of places accessible by id
+
+  // Creates an object to store places by their id
+  const updatePlacesById = (places) => {
+    setPlacesById(prev => {
+      // console.log(prev)
+      const placesCopy = {...prev}; // REMEMBER not to mutate objects in state (this avoids the issue of not triggering re-renders)
+      for (const place of places) {
+        // console.log(place);
+        placesCopy[place.id] = place;
+      }
+      // console.log(placesCopy);
+      return placesCopy
+    });
+  }
 
   // Adds an empty day to the itinerary array
   const addDay = () => {
@@ -31,7 +47,8 @@ export const ItineraryProvider = ({ children }) => {
   };
 
   // Adds the selected item to the itinerary under day 1
-  const addItemToItinerary = (place) => {
+  const addItemToItinerary = (placeId) => {
+    const place = placesById[placeId];
     // Create itinerary item from the place details
     const itineraryItem = {
       "id": nextItineraryItemId,
@@ -57,6 +74,11 @@ export const ItineraryProvider = ({ children }) => {
     addDay,
     removeDay,
     addItemToItinerary,
+    places,
+    setPlaces,
+    placesById,
+    setPlacesById,
+    updatePlacesById
   };
 
   return (

@@ -41,7 +41,7 @@ function PlaceCard({ place, handleClickAddToItinerary }) {
         </Box>
       </CardContent>
       <CardActions>
-        <IconButton aria-label="Add to Itinerary" size="small" onClick={() => handleClickAddToItinerary(place)}>
+        <IconButton aria-label="Add to Itinerary" size="small" onClick={() => handleClickAddToItinerary(place.id)}>
           <AddIcon fontSize="large" />
         </IconButton>
       </CardActions>
