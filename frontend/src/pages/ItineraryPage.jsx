@@ -69,6 +69,13 @@ function ItineraryPage() {
     console.log(`edit mode: ${editMode}`);
   };
 
+  const findDayId = (itemId) => {
+    if (itinerary.some((day) => day.dayNumber === itemId)) {
+      return itemId;
+    }
+    return itinerary.find((day) => day.itineraryItems.some((item) => item.id === itemId))
+  }
+
   const handleDragEnd = (event, dayNumber) => {
     const { active, over } = event;
     console.log("Day number in handleDragEnd: ", dayNumber);
@@ -86,6 +93,11 @@ function ItineraryPage() {
           }
         }))
     }
+  };
+
+  const handleDragOver = (event) => {
+    const { active, over } = event;
+    
   };
 
   const sensors = useSensors(
@@ -164,6 +176,7 @@ function ItineraryPage() {
                   onDragEnd={(event) =>
                     handleDragEnd(event, itineraryDay.dayNumber)
                   }
+                  onDragOver={handleDragOver}
                 >
                   <SortableContext
                     items={itineraryDay.itineraryItems.map((item) => item.id)}
@@ -187,7 +200,7 @@ function ItineraryPage() {
                   </SortableContext>
                 </DndContext>
                 <Button variant="outlined" fullWidth>
-                  Add Item
+                  + Add an item
                 </Button>
               </AccordionDetails>
               <AccordionActions>
