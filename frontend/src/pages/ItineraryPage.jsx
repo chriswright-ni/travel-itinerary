@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import BottomNav from "../components/BottomNav";
 import ItineraryItem from "../components/ItineraryItem";
 import ItineraryTitle from "../components/ItineraryTitle";
-import ItineraryActions from "../components/ItineraryActions";
+// import ItineraryActions from "../components/ItineraryActions";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -12,12 +12,19 @@ import { useItineraryContext } from "../contexts/ItineraryContext";
 import Grid from "@mui/material/Grid";
 import PlaceCard from "../components/PlaceCard";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import IconButton from "@mui/material/IconButton";
+import AccordionActions from "@mui/material/AccordionActions";
 
 function ItineraryPage() {
-  const { itinerary, setItinerary, addDay, removeDay, places, placesById } =
+  const { itinerary, setItinerary, addDay, removeDay, places, placesById, removeItem } =
     useItineraryContext();
-  const { editMode, setEditMode } = useState(false);
+  const [ editMode, setEditMode ] = useState(false);
+
+  useEffect(() => {
+    console.log("Itinerary update: ", itinerary)
+  }, [itinerary])
 
   const handleClickAddDay = () => {
     addDay();
@@ -25,8 +32,19 @@ function ItineraryPage() {
     console.log(placesById); // Test code
   };
 
-  const handleClickRemoveDay = () => {
-    removeDay();
+  const handleClickRemoveDay = (dayToRemove) => {
+    removeDay(dayToRemove);
+  };
+
+  const handleClickRemoveFromItinerary = (itemIdToRemove, dayNumber) => {
+    removeItem(itemIdToRemove, dayNumber);
+  };
+
+  // Toggles the itinerary edit mode
+  // In edit mode, the add day, remove day and remove item become visible
+  const handleClickEditItinerary = () => {
+    setEditMode(prev => !prev)
+    console.log(`edit mode: ${editMode}`)
   };
 
   return (
@@ -41,10 +59,9 @@ function ItineraryPage() {
       >
         <Box>
           <ItineraryTitle />
-          <ItineraryActions
-            handleClickAddDay={handleClickAddDay}
-            handleClickRemoveDay={handleClickRemoveDay}
-          />
+
+          <Button variant="outlined" onClick={handleClickEditItinerary}>{editMode ? "Done" : "Edit itinerary"}</Button>
+          <Button variant="outlined">Optimise Route</Button>
         </Box>
         <Box>
           {itinerary.map((itineraryDay, index) => (
@@ -69,7 +86,7 @@ function ItineraryPage() {
                     itineraryDay.itineraryItems.map((itineraryItem) => (
                       <Grid key={itineraryItem.id}>
                         {/* Key to be in outer map element*/}
-                        <ItineraryItem itineraryItem={itineraryItem} />
+                        <ItineraryItem itineraryItem={itineraryItem} editMode={editMode} handleClickRemoveFromItinerary={() => handleClickRemoveFromItinerary(itineraryItem.id, itineraryDay.dayNumber)} />
                         {/* <PlaceCard place={ItineraryItem} /> */}
                       </Grid>
                     ))
@@ -79,10 +96,26 @@ function ItineraryPage() {
                   Add Item
                 </Button>
               </AccordionDetails>
+              <AccordionActions>
+                {editMode ? 
+                <Button
+                variant="outlined"
+                fullWidth
+                onClick={() => handleClickRemoveDay(itineraryDay.dayNumber)}
+                >Remove Day
+                </Button>
+              : ""}
+              </AccordionActions>
             </Accordion>
           ))}
         </Box>
-
+        <Box>
+          {editMode ? 
+          <Button variant="outlined" fullWidth onClick={handleClickAddDay}>
+            Add day
+          </Button>
+          : ""}
+        </Box>
         <BottomNav />
       </Box>
     </>

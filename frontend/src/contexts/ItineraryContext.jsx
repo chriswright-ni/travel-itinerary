@@ -38,11 +38,18 @@ export const ItineraryProvider = ({ children }) => {
     setItinerary((prev) => [...prev, newDay]);
   };
 
-  // Removes the last day from the itinerary array
-  const removeDay = () => {
-    const lastDayNumber = itinerary.length;
-    setItinerary((prev) =>
-      prev.filter((day) => day.dayNumber !== lastDayNumber)
+  // Removes the selected day from the itinerary array and renumbers the days
+  const removeDay = (dayToRemove) => {
+    setItinerary((prev) => {
+      const updatedDays = prev.filter((day) => day.dayNumber !== dayToRemove)
+
+      const updatedDaysRenumbered = updatedDays.map((day, index) => ({
+        ...day,
+        dayNumber: index + 1
+      }))
+
+      return updatedDaysRenumbered
+    }
     );
   };
 
@@ -68,6 +75,13 @@ export const ItineraryProvider = ({ children }) => {
     console.log(itineraryItem)
   };
 
+   // Removes the selected item from the itinerary
+   const removeItem = (itemIdToRemove, dayNumber) => {
+    setItinerary((prev) => (prev.map((day) => 
+      day.dayNumber === dayNumber ? {...day, itineraryItems: [...day.itineraryItems.filter((item) => item.id !== itemIdToRemove)]} : day
+    )));
+   }
+
   const value = {
     itinerary,
     setItinerary,
@@ -78,7 +92,8 @@ export const ItineraryProvider = ({ children }) => {
     setPlaces,
     placesById,
     setPlacesById,
-    updatePlacesById
+    updatePlacesById,
+    removeItem
   };
 
   return (

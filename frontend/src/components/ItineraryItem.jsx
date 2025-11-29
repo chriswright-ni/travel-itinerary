@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import RemoveIcon from "@mui/icons-material/Remove";
 import IconButton from "@mui/material/IconButton";
 
-function ItineraryItem({itineraryItem}) {
+function ItineraryItem({itineraryItem, editMode, handleClickRemoveFromItinerary}) {
  
   return (
     <Card sx={{ maxWidth: "100%", display: "flex", mb: 2 }}>
@@ -51,9 +51,11 @@ function ItineraryItem({itineraryItem}) {
         </Box>
       </CardContent>
       <CardActions>
-        {/* <IconButton aria-label="Remove from Itinerary" size="small">
+        {editMode ? 
+        <IconButton aria-label="Remove from Itinerary" size="small" onClick={handleClickRemoveFromItinerary}>
           <RemoveIcon fontSize="large" />
-        </IconButton> */}
+        </IconButton>
+        : ""}
       </CardActions>
     </Card>
   );
