@@ -28,6 +28,7 @@ import {
   SortableContext,
   useSortable,
   verticalListSortingStrategy,
+  arrayMove,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -68,15 +69,30 @@ function ItineraryPage() {
     console.log(`edit mode: ${editMode}`);
   };
 
-  const handleDragEnd = (event) => {
-    console.log("Drag ended", event);
+  const handleDragEnd = (event, dayNumber) => {
+    const { active, over } = event;
+    console.log("Day number in handleDragEnd: ", dayNumber);
+
+    if (over && active.id !== over.id) {
+      setItinerary((prev) =>
+        prev.map((day) => {
+          if (day.dayNumber === dayNumber) {
+            const oldIndex = day.itineraryItems.findIndex((item) => item.id === active.id);
+            const newIndex = day.itineraryItems.findIndex((item) => item.id === over.id);
+            const itineraryReordered = arrayMove(day.itineraryItems, oldIndex, newIndex);
+            return {...day, itineraryItems: itineraryReordered}
+          } else {
+            return day;
+          }
+        }))
+    }
   };
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 8,
-      }
+      },
     }),
     useSensor(KeyboardSensor)
   );
@@ -94,18 +110,16 @@ function ItineraryPage() {
     const style = {
       transform: transform ? CSS.Transform.toString(transform) : undefined,
       transition,
-      touchAction: "none"
+      touchAction: "none",
     };
+
     return (
       <Grid ref={setNodeRef} style={style} {...attributes} {...listeners}>
         <ItineraryItem
           itineraryItem={itineraryItem}
           editMode={editMode}
           handleClickRemoveFromItinerary={() =>
-            handleClickRemoveFromItinerary(
-              itineraryItem.id,
-              dayNumber
-            )
+            handleClickRemoveFromItinerary(itineraryItem.id, dayNumber)
           }
         />
       </Grid>
@@ -147,10 +161,12 @@ function ItineraryPage() {
                 <DndContext
                   sensors={sensors}
                   collisionDetection={closestCenter}
-                  onDragEnd={handleDragEnd}
+                  onDragEnd={(event) =>
+                    handleDragEnd(event, itineraryDay.dayNumber)
+                  }
                 >
                   <SortableContext
-                    items={itineraryDay.itineraryItems.map(item => item.id)}
+                    items={itineraryDay.itineraryItems.map((item) => item.id)}
                     strategy={verticalListSortingStrategy}
                   >
                     <Grid container spacing={2} direction={"column"}>
@@ -179,7 +195,9 @@ function ItineraryPage() {
                   <Button
                     variant="outlined"
                     fullWidth
-                    onClick={() => handleClickRemoveDay(itineraryDay.dayNumber)}
+                    onClick={(event) =>
+                      handleClickRemoveDay(event, itineraryDay.dayNumber)
+                    }
                   >
                     Remove Day
                   </Button>
