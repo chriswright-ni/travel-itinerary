@@ -16,15 +16,36 @@ import { useEffect, useState } from "react";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import IconButton from "@mui/material/IconButton";
 import AccordionActions from "@mui/material/AccordionActions";
+import {
+  DndContext,
+  closestCenter,
+  useSensors,
+  useSensor,
+  PointerSensor,
+  KeyboardSensor,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 function ItineraryPage() {
-  const { itinerary, setItinerary, addDay, removeDay, places, placesById, removeItem } =
-    useItineraryContext();
-  const [ editMode, setEditMode ] = useState(false);
+  const {
+    itinerary,
+    setItinerary,
+    addDay,
+    removeDay,
+    places,
+    placesById,
+    removeItem,
+  } = useItineraryContext();
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    console.log("Itinerary update: ", itinerary)
-  }, [itinerary])
+    console.log("Itinerary update: ", itinerary);
+  }, [itinerary]);
 
   const handleClickAddDay = () => {
     addDay();
@@ -43,8 +64,52 @@ function ItineraryPage() {
   // Toggles the itinerary edit mode
   // In edit mode, the add day, remove day and remove item become visible
   const handleClickEditItinerary = () => {
-    setEditMode(prev => !prev)
-    console.log(`edit mode: ${editMode}`)
+    setEditMode((prev) => !prev);
+    console.log(`edit mode: ${editMode}`);
+  };
+
+  const handleDragEnd = (event) => {
+    console.log("Drag ended", event);
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      }
+    }),
+    useSensor(KeyboardSensor)
+  );
+
+  const SortableItineraryItem = ({ itineraryItem, dayNumber }) => {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      transition,
+      isDragging,
+    } = useSortable({ id: itineraryItem.id });
+
+    const style = {
+      transform: transform ? CSS.Transform.toString(transform) : undefined,
+      transition,
+      touchAction: "none"
+    };
+    return (
+      <Grid ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <ItineraryItem
+          itineraryItem={itineraryItem}
+          editMode={editMode}
+          handleClickRemoveFromItinerary={() =>
+            handleClickRemoveFromItinerary(
+              itineraryItem.id,
+              dayNumber
+            )
+          }
+        />
+      </Grid>
+    );
   };
 
   return (
@@ -60,7 +125,9 @@ function ItineraryPage() {
         <Box>
           <ItineraryTitle />
 
-          <Button variant="outlined" onClick={handleClickEditItinerary}>{editMode ? "Done" : "Edit itinerary"}</Button>
+          <Button variant="outlined" onClick={handleClickEditItinerary}>
+            {editMode ? "Done" : "Edit itinerary"}
+          </Button>
           <Button variant="outlined">Optimise Route</Button>
         </Box>
         <Box>
@@ -77,44 +144,60 @@ function ItineraryPage() {
                 <Typography component="span">{`Day ${itineraryDay.dayNumber}`}</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Grid container spacing={2} direction={"column"}>
-                  {itineraryDay.itineraryItems.length === 0 ? (
-                    <Box>
-                      <Typography>No itinerary items added yet!</Typography>
-                    </Box>
-                  ) : (
-                    itineraryDay.itineraryItems.map((itineraryItem) => (
-                      <Grid key={itineraryItem.id}>
-                        {/* Key to be in outer map element*/}
-                        <ItineraryItem itineraryItem={itineraryItem} editMode={editMode} handleClickRemoveFromItinerary={() => handleClickRemoveFromItinerary(itineraryItem.id, itineraryDay.dayNumber)} />
-                        {/* <PlaceCard place={ItineraryItem} /> */}
-                      </Grid>
-                    ))
-                  )}
-                </Grid>
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
+                >
+                  <SortableContext
+                    items={itineraryDay.itineraryItems.map(item => item.id)}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <Grid container spacing={2} direction={"column"}>
+                      {itineraryDay.itineraryItems.length === 0 ? (
+                        <Box>
+                          <Typography>No itinerary items added yet!</Typography>
+                        </Box>
+                      ) : (
+                        itineraryDay.itineraryItems.map((itineraryItem) => (
+                          <SortableItineraryItem
+                            key={itineraryItem.id}
+                            itineraryItem={itineraryItem}
+                            dayNumber={itineraryDay.dayNumber}
+                          />
+                        ))
+                      )}
+                    </Grid>
+                  </SortableContext>
+                </DndContext>
                 <Button variant="outlined" fullWidth>
                   Add Item
                 </Button>
               </AccordionDetails>
               <AccordionActions>
-                {editMode ? 
-                <Button
-                variant="outlined"
-                fullWidth
-                onClick={() => handleClickRemoveDay(itineraryDay.dayNumber)}
-                >Remove Day
-                </Button>
-              : ""}
+                {editMode ? (
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => handleClickRemoveDay(itineraryDay.dayNumber)}
+                  >
+                    Remove Day
+                  </Button>
+                ) : (
+                  ""
+                )}
               </AccordionActions>
             </Accordion>
           ))}
         </Box>
         <Box>
-          {editMode ? 
-          <Button variant="outlined" fullWidth onClick={handleClickAddDay}>
-            Add day
-          </Button>
-          : ""}
+          {editMode ? (
+            <Button variant="outlined" fullWidth onClick={handleClickAddDay}>
+              Add day
+            </Button>
+          ) : (
+            ""
+          )}
         </Box>
         <BottomNav />
       </Box>
