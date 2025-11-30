@@ -117,7 +117,7 @@ function ItineraryPage() {
       transform,
       transition,
       isDragging,
-    } = useSortable({ id: itineraryItem.id });
+    } = useSortable({ id: itineraryItem.id, disabled: editMode ? false : true});
 
     const style = {
       transform: transform ? CSS.Transform.toString(transform) : undefined,

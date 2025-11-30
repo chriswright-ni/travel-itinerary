@@ -65,12 +65,14 @@ export const ItineraryProvider = ({ children }) => {
 
     setNextItineraryItemId(prev => (prev + 1))
 
+    const dayNum = itineraryItem.id % 2 === 0 ? 1 : 2
+
     // Map through the current array state
     // If the day object day number is 1, create a new object
     // Add the new itinerary item to the itinerary items array and add this new object to the itinerary array
     // If the day number is not 1, copy the original day object to the itinerary array
     setItinerary((prev) => prev.map((day) =>
-      day.dayNumber === 1 ? {...day, itineraryItems: [...day.itineraryItems, itineraryItem]} : day
+      day.dayNumber === dayNum ? {...day, itineraryItems: [...day.itineraryItems, itineraryItem]} : day
     ));
     console.log(itineraryItem)
   };

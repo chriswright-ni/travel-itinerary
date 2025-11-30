@@ -4,19 +4,23 @@ import InterestSelector from "../components/InterestSelector";
 import LocationName from "../components/LocationName";
 import UseMyLocation from "../components/UseMyLocation";
 import ListMapToggle from "../components/ListMapToggle";
+import DaySelectDrawer from "../components/DaySelectDrawer";
 import "../css/LandingPage.css";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import BottomNav from "../components/BottomNav";
 import { useSearchContext } from "../contexts/SearchContext";
 import { useItineraryContext } from "../contexts/ItineraryContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function LandingPage() {
   const { locationData, setLocationData} =
     useSearchContext();
 
   const { addItemToItinerary, itinerary, places, setPlaces, updatePlacesById  } = useItineraryContext();
+
+  const [daySelectOpen, setDaySelectOpen] = useState(false);
+  const days = itinerary.map((day) => day.dayNumber)
 
   // Temporary location data for development with location search API calling
   const latitude = "54.5973";
@@ -37,9 +41,15 @@ function LandingPage() {
     
   }, [])
 
-  const handleClickAddToItinerary = (place) => {
-    addItemToItinerary(place)
+  // const handleClickAddToItinerary = (place) => {
+  //   addItemToItinerary(place)
+  // }
+
+  const handleClickAddToItinerary = () => {
+    setDaySelectOpen(true)
   }
+
+
 
   async function getPlaces(interest) {
     const response = await fetch(
@@ -129,6 +139,7 @@ function LandingPage() {
             ))}
           </Grid>
         </Box>
+        <DaySelectDrawer open={daySelectOpen} onClose={() => setDaySelectOpen(false)} days={days} />
 
         <BottomNav />
       </Box>
