@@ -36,6 +36,8 @@ export const ItineraryProvider = ({ children }) => {
     };
     // prev is current value of the state
     setItinerary((prev) => [...prev, newDay]);
+
+    return newDayNumber;
   };
 
   // Removes the selected day from the itinerary array and renumbers the days
@@ -54,7 +56,7 @@ export const ItineraryProvider = ({ children }) => {
   };
 
   // Adds the selected item to the itinerary under day 1
-  const addItemToItinerary = (placeId) => {
+  const addItemToItinerary = (placeId, dayNumber) => {
     const place = placesById[placeId];
     // Create itinerary item from the place details
     const itineraryItem = {
@@ -65,14 +67,12 @@ export const ItineraryProvider = ({ children }) => {
 
     setNextItineraryItemId(prev => (prev + 1))
 
-    const dayNum = itineraryItem.id % 2 === 0 ? 1 : 2
-
     // Map through the current array state
     // If the day object day number is 1, create a new object
     // Add the new itinerary item to the itinerary items array and add this new object to the itinerary array
     // If the day number is not 1, copy the original day object to the itinerary array
     setItinerary((prev) => prev.map((day) =>
-      day.dayNumber === dayNum ? {...day, itineraryItems: [...day.itineraryItems, itineraryItem]} : day
+      day.dayNumber === dayNumber ? {...day, itineraryItems: [...day.itineraryItems, itineraryItem]} : day
     ));
     console.log(itineraryItem)
   };

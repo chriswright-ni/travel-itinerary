@@ -17,9 +17,10 @@ function LandingPage() {
   const { locationData, setLocationData} =
     useSearchContext();
 
-  const { addItemToItinerary, itinerary, places, setPlaces, updatePlacesById  } = useItineraryContext();
+  const { addItemToItinerary, itinerary, places, setPlaces, updatePlacesById, addDay } = useItineraryContext();
 
   const [daySelectOpen, setDaySelectOpen] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState({})
   const days = itinerary.map((day) => day.dayNumber)
 
   // Temporary location data for development with location search API calling
@@ -45,9 +46,21 @@ function LandingPage() {
   //   addItemToItinerary(place)
   // }
 
-  const handleClickAddToItinerary = () => {
+  const handleClickAddToItinerary = (place) => {
+    setSelectedPlace(place)
     setDaySelectOpen(true)
   }
+
+  const handleDaySelect = (dayNumber) => {
+    addItemToItinerary(selectedPlace, dayNumber)
+    setDaySelectOpen(false)
+  }
+
+  const handleClickAddDay = () => {
+    const newDayNumber = addDay();
+    addItemToItinerary(selectedPlace, newDayNumber)
+    setDaySelectOpen(false)
+  };
 
 
 
@@ -139,7 +152,7 @@ function LandingPage() {
             ))}
           </Grid>
         </Box>
-        <DaySelectDrawer open={daySelectOpen} onClose={() => setDaySelectOpen(false)} days={days} />
+        <DaySelectDrawer open={daySelectOpen} onClose={() => setDaySelectOpen(false)} days={days} handleDaySelect={handleDaySelect} handleClickAddDay={handleClickAddDay}/>
 
         <BottomNav />
       </Box>

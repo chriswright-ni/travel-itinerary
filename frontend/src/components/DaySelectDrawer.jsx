@@ -1,28 +1,35 @@
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
 
-
-function DaySelectDrawer({open, onClose, days}) {
-  
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
-  };
-
+function DaySelectDrawer({ open, onClose, days, handleDaySelect, handleClickAddDay }) {
   const DayList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={{ width: 250 }} role="presentation">
       <List>
-        {days.map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemText primary={`Day ${text}`} />
+        {days.map((dayNumber) => (
+          <ListItem key={dayNumber} disablePadding>
+            <ListItemButton
+              onClick={() => {
+                handleDaySelect(dayNumber);
+              }}
+            >
+              <ListItemText primary={`Day ${dayNumber}`} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
+      <Divider />
+      <ListItemButton
+        onClick={() => {
+          handleClickAddDay();
+        }}
+      >
+        <ListItemText primary={`+ Add to a new day`} />
+      </ListItemButton>
     </Box>
   );
 
@@ -35,4 +42,4 @@ function DaySelectDrawer({open, onClose, days}) {
   );
 }
 
-export default DaySelectDrawer
+export default DaySelectDrawer;
