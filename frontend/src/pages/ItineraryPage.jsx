@@ -157,7 +157,7 @@ function ItineraryPage() {
           minHeight: "100vh",
         }}
       >
-        <Box>
+        <Box sx={{mb: 2}}>
           <ItineraryTitle />
 
           <Button variant="outlined" onClick={handleClickEditItinerary}>
@@ -175,6 +175,7 @@ function ItineraryPage() {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel2-content"
                 id="panel2-header"
+                sx={{backgroundColor: "primary.light", borderBottom: "1px solid #E0E0E0"}}
               >
                 <Typography component="span">{`Day ${itineraryDay.dayNumber}`}</Typography>
               </AccordionSummary>

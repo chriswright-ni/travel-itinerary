@@ -17,7 +17,7 @@ function PlaceCard({ place, handleClickAddToItinerary }) {
   /* Note: Place is a prop so needs destructured using {} */
 
   return (
-    <Card sx={{ maxWidth: "100%", display: "flex", alignItems:"center", borderRadius: 2 }}>
+    <Card sx={{ maxWidth: "100%", display: "flex", alignItems:"center", borderRadius: 2, backgroundColor: "background.paper", boxShadow: 2 }}>
       {/* <CardMedia
         component="img"
         image={"https://picsum.photos/200"}
@@ -34,15 +34,15 @@ function PlaceCard({ place, handleClickAddToItinerary }) {
               {place.category}
             </Typography>
             <FiberManualRecordIcon sx={{ fontSize: "0.375rem", mx: 1 }} />
-            <Typography variant="body2" sx={{ color: "text.secondary", fontSize: "1rem" }}>
-              {`${place.distance}m`}
+            <Typography variant="body2" sx={{ color: "primary.main", fontSize: "1rem" }}>
+              {`${place.distance}m away`}
             </Typography>
           </Box>
         </Box>
       </CardContent>
       <CardActions>
         <IconButton aria-label="Add to Itinerary" size="small" onClick={() => handleClickAddToItinerary(place.id)}>
-          <AddIcon fontSize="large" />
+          <AddIcon fontSize="large" color="primary" />
         </IconButton>
       </CardActions>
     </Card>

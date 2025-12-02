@@ -67,11 +67,15 @@ function LocationSearch({ onLocationSelect }) {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="Search for a location"
+          placeholder="Search for a place or location"
           variant="outlined"
           sx={{
-            borderRadius: 10,
-            backgroundColor: "#f0f0f0",
+            borderRadius: 3,
+            backgroundColor: "background.default",
+            // boxShadow: 1,
+            '& fieldset': {
+              border: 'none', 
+            },
           }}
         />
       )}

@@ -22,6 +22,7 @@ function LandingPage() {
 
   const [daySelectOpen, setDaySelectOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState({})
+  const [selectedInterest, setSelectedInterest] = useState("")
   const days = itinerary.map((day) => day.dayNumber)
 
   const navigate = useNavigate()
@@ -89,8 +90,13 @@ function LandingPage() {
 
   function handleInterestSelect(interest) {
     console.log(`${interest} clicked!`);
+    if (interest === selectedInterest) {
+      return;
+    }
     console.log(`Calling API for ${interest}`);
-    getPlaces(interest);
+    setSelectedInterest(interest);
+    // API call function getPlaces is commented out for UI development purposes
+    // getPlaces(interest);
   }
 
   // This function retrives the coordinates from the user's location search selection
@@ -127,13 +133,13 @@ function LandingPage() {
             backgroundColor: "#fff",
             zIndex: 1, // Z index is needed do prevent links used in main content showing through the background during scrolling
             px: 2,
-            py: 1,
+            pt: 3,
             boxShadow: 2
           }}
         >
           <LocationSearch onLocationSelect={handleLocationSelect} />
           <Box sx={{ mt: 1 }}>
-            <InterestSelector onInterestSelect={handleInterestSelect} />
+            <InterestSelector onInterestSelect={handleInterestSelect} selected={selectedInterest} />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", mt: 1 }}>
             <LocationName
@@ -151,7 +157,7 @@ function LandingPage() {
             </Box>
           </Box>
         </Box>
-        <Box sx={{ mb: 9, mt: 26, px: 2 }}>
+        <Box sx={{ mb: 9, mt: 28, px: 2 }}>
           <Grid container spacing={2} direction={"column"}>
             {placesTemp.map((place) => (
               <Grid key={place.id}>
