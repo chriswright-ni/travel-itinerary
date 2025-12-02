@@ -31,6 +31,7 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useNavigate } from "react-router-dom";
 
 function ItineraryPage() {
   const {
@@ -41,8 +42,11 @@ function ItineraryPage() {
     places,
     placesById,
     removeItem,
+    setActiveDay
   } = useItineraryContext();
   const [editMode, setEditMode] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("Itinerary update: ", itinerary);
@@ -68,6 +72,11 @@ function ItineraryPage() {
     setEditMode((prev) => !prev);
     console.log(`edit mode: ${editMode}`);
   };
+
+  const handleClickAddItemToDay = (dayNumber) => {
+    setActiveDay(dayNumber)
+    navigate("/")
+  }
 
   const findDayId = (itemId) => {
     if (itinerary.some((day) => day.dayNumber === itemId)) {
@@ -95,10 +104,10 @@ function ItineraryPage() {
     }
   };
 
-  const handleDragOver = (event) => {
-    const { active, over } = event;
+  // const handleDragOver = (event) => {
+  //   const { active, over } = event;
     
-  };
+  // };
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -176,7 +185,7 @@ function ItineraryPage() {
                   onDragEnd={(event) =>
                     handleDragEnd(event, itineraryDay.dayNumber)
                   }
-                  onDragOver={handleDragOver}
+                  // onDragOver={handleDragOver}
                 >
                   <SortableContext
                     items={itineraryDay.itineraryItems.map((item) => item.id)}
@@ -199,7 +208,7 @@ function ItineraryPage() {
                     </Grid>
                   </SortableContext>
                 </DndContext>
-                <Button variant="outlined" fullWidth>
+                <Button variant="outlined" fullWidth onClick={() => {handleClickAddItemToDay(itineraryDay.dayNumber)}}>
                   + Add an item
                 </Button>
               </AccordionDetails>
@@ -208,8 +217,8 @@ function ItineraryPage() {
                   <Button
                     variant="outlined"
                     fullWidth
-                    onClick={(event) =>
-                      handleClickRemoveDay(event, itineraryDay.dayNumber)
+                    onClick={() =>
+                      handleClickRemoveDay(itineraryDay.dayNumber)
                     }
                   >
                     Remove Day

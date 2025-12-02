@@ -12,6 +12,7 @@ export const ItineraryProvider = ({ children }) => {
   const [nextItineraryItemId, setNextItineraryItemId] = useState(1); // Counter to assign itinerary ids
   const [places, setPlaces] = useState([])
   const [placesById, setPlacesById] = useState({}) // Object of places accessible by id
+  const [activeDay, setActiveDay] = useState()
 
   // Creates an object to store places by their id
   const updatePlacesById = (places) => {
@@ -42,6 +43,7 @@ export const ItineraryProvider = ({ children }) => {
 
   // Removes the selected day from the itinerary array and renumbers the days
   const removeDay = (dayToRemove) => {
+    console.log("remove day: ", dayToRemove)
     setItinerary((prev) => {
       const updatedDays = prev.filter((day) => day.dayNumber !== dayToRemove)
 
@@ -95,7 +97,9 @@ export const ItineraryProvider = ({ children }) => {
     placesById,
     setPlacesById,
     updatePlacesById,
-    removeItem
+    removeItem,
+    activeDay,
+    setActiveDay
   };
 
   return (

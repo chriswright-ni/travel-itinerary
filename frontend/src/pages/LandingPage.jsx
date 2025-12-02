@@ -12,16 +12,19 @@ import BottomNav from "../components/BottomNav";
 import { useSearchContext } from "../contexts/SearchContext";
 import { useItineraryContext } from "../contexts/ItineraryContext";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
   const { locationData, setLocationData} =
     useSearchContext();
 
-  const { addItemToItinerary, itinerary, places, setPlaces, updatePlacesById, addDay } = useItineraryContext();
+  const { addItemToItinerary, itinerary, places, setPlaces, updatePlacesById, addDay, activeDay, setActiveDay } = useItineraryContext();
 
   const [daySelectOpen, setDaySelectOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState({})
   const days = itinerary.map((day) => day.dayNumber)
+
+  const navigate = useNavigate()
 
   // Temporary location data for development with location search API calling
   const latitude = "54.5973";
@@ -47,6 +50,12 @@ function LandingPage() {
   // }
 
   const handleClickAddToItinerary = (place) => {
+    if (activeDay) {
+      addItemToItinerary(place, activeDay)
+      setActiveDay(null)
+      navigate("/itinerary")
+      return;
+    } 
     setSelectedPlace(place)
     setDaySelectOpen(true)
   }

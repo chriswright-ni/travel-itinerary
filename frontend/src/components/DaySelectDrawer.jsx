@@ -5,10 +5,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 
 function DaySelectDrawer({ open, onClose, days, handleDaySelect, handleClickAddDay }) {
   const DayList = (
     <Box sx={{ width: 250 }} role="presentation">
+      <Box sx={{p: 2}}>
+        <Typography>Select a day</Typography>
+      </Box>
+      <Divider/>
       <List>
         {days.map((dayNumber) => (
           <ListItem key={dayNumber} disablePadding>
