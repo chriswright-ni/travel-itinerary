@@ -59,12 +59,16 @@ export const ItineraryProvider = ({ children }) => {
 
   // Adds the selected item to the itinerary under day 1
   const addItemToItinerary = (placeId, dayNumber) => {
+    
+    
     const place = placesById[placeId];
+
     // Create itinerary item from the place details
     const itineraryItem = {
       "id": nextItineraryItemId,
       "name": place.name,
       "recommendedDuration": 60,
+      "placeId": placeId
     }
 
     setNextItineraryItemId(prev => (prev + 1))

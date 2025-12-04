@@ -42,7 +42,7 @@ function ItineraryPage() {
     places,
     placesById,
     removeItem,
-    setActiveDay
+    setActiveDay,
   } = useItineraryContext();
   const [editMode, setEditMode] = useState(false);
 
@@ -74,16 +74,18 @@ function ItineraryPage() {
   };
 
   const handleClickAddItemToDay = (dayNumber) => {
-    setActiveDay(dayNumber)
-    navigate("/")
-  }
+    setActiveDay(dayNumber);
+    navigate("/");
+  };
 
   const findDayId = (itemId) => {
     if (itinerary.some((day) => day.dayNumber === itemId)) {
       return itemId;
     }
-    return itinerary.find((day) => day.itineraryItems.some((item) => item.id === itemId))
-  }
+    return itinerary.find((day) =>
+      day.itineraryItems.some((item) => item.id === itemId)
+    );
+  };
 
   const handleDragEnd = (event, dayNumber) => {
     const { active, over } = event;
@@ -93,20 +95,29 @@ function ItineraryPage() {
       setItinerary((prev) =>
         prev.map((day) => {
           if (day.dayNumber === dayNumber) {
-            const oldIndex = day.itineraryItems.findIndex((item) => item.id === active.id);
-            const newIndex = day.itineraryItems.findIndex((item) => item.id === over.id);
-            const itineraryReordered = arrayMove(day.itineraryItems, oldIndex, newIndex);
-            return {...day, itineraryItems: itineraryReordered}
+            const oldIndex = day.itineraryItems.findIndex(
+              (item) => item.id === active.id
+            );
+            const newIndex = day.itineraryItems.findIndex(
+              (item) => item.id === over.id
+            );
+            const itineraryReordered = arrayMove(
+              day.itineraryItems,
+              oldIndex,
+              newIndex
+            );
+            return { ...day, itineraryItems: itineraryReordered };
           } else {
             return day;
           }
-        }))
+        })
+      );
     }
   };
 
   // const handleDragOver = (event) => {
   //   const { active, over } = event;
-    
+
   // };
 
   const sensors = useSensors(
@@ -126,7 +137,10 @@ function ItineraryPage() {
       transform,
       transition,
       isDragging,
-    } = useSortable({ id: itineraryItem.id, disabled: editMode ? false : true});
+    } = useSortable({
+      id: itineraryItem.id,
+      disabled: editMode ? false : true,
+    });
 
     const style = {
       transform: transform ? CSS.Transform.toString(transform) : undefined,
@@ -157,7 +171,7 @@ function ItineraryPage() {
           minHeight: "100vh",
         }}
       >
-        <Box sx={{mb: 2}}>
+        <Box sx={{ mb: 2 }}>
           <ItineraryTitle />
 
           <Button variant="outlined" onClick={handleClickEditItinerary}>
@@ -170,12 +184,22 @@ function ItineraryPage() {
             <Accordion
               key={itineraryDay.dayNumber}
               defaultExpanded={index === 0 ? true : false}
+              sx={{
+                // borderRadius: 2,
+                mx: 2,
+                // mb: 2
+                
+              }}
             >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel2-content"
                 id="panel2-header"
-                sx={{backgroundColor: "primary.light", borderBottom: "1px solid #E0E0E0"}}
+                sx={{
+                  // backgroundColor: "primary.light",
+                  border: "1px solid #E0E0E0",
+                  overflow: "hidden",
+                }}
               >
                 <Typography component="span">{`Day ${itineraryDay.dayNumber}`}</Typography>
               </AccordionSummary>
@@ -209,7 +233,13 @@ function ItineraryPage() {
                     </Grid>
                   </SortableContext>
                 </DndContext>
-                <Button variant="outlined" fullWidth onClick={() => {handleClickAddItemToDay(itineraryDay.dayNumber)}}>
+                <Button
+                  variant="contained"
+                  // fullWidth
+                  onClick={() => {
+                    handleClickAddItemToDay(itineraryDay.dayNumber);
+                  }}
+                >
                   + Add an item
                 </Button>
               </AccordionDetails>
@@ -218,9 +248,7 @@ function ItineraryPage() {
                   <Button
                     variant="outlined"
                     fullWidth
-                    onClick={() =>
-                      handleClickRemoveDay(itineraryDay.dayNumber)
-                    }
+                    onClick={() => handleClickRemoveDay(itineraryDay.dayNumber)}
                   >
                     Remove Day
                   </Button>

@@ -21,7 +21,7 @@ function LandingPage() {
   const { addItemToItinerary, itinerary, places, setPlaces, updatePlacesById, addDay, activeDay, setActiveDay } = useItineraryContext();
 
   const [daySelectOpen, setDaySelectOpen] = useState(false);
-  const [selectedPlace, setSelectedPlace] = useState({})
+  const [selectedPlaceId, setSelectedPlaceId] = useState(null)
   const [selectedInterest, setSelectedInterest] = useState("")
   const days = itinerary.map((day) => day.dayNumber)
 
@@ -50,25 +50,25 @@ function LandingPage() {
   //   addItemToItinerary(place)
   // }
 
-  const handleClickAddToItinerary = (place) => {
+  const handleClickAddToItinerary = (placeId) => {
     if (activeDay) {
       addItemToItinerary(place, activeDay)
       setActiveDay(null)
       navigate("/itinerary")
       return;
     } 
-    setSelectedPlace(place)
+    setSelectedPlaceId(placeId)
     setDaySelectOpen(true)
   }
 
   const handleDaySelect = (dayNumber) => {
-    addItemToItinerary(selectedPlace, dayNumber)
+    addItemToItinerary(selectedPlaceId, dayNumber)
     setDaySelectOpen(false)
   }
 
   const handleClickAddDay = () => {
     const newDayNumber = addDay();
-    addItemToItinerary(selectedPlace, newDayNumber)
+    addItemToItinerary(selectedPlaceId, newDayNumber)
     setDaySelectOpen(false)
   };
 
@@ -167,7 +167,7 @@ function LandingPage() {
             ))}
           </Grid>
         </Box>
-        <DaySelectDrawer open={daySelectOpen} onClose={() => setDaySelectOpen(false)} days={days} handleDaySelect={handleDaySelect} handleClickAddDay={handleClickAddDay}/>
+        <DaySelectDrawer open={daySelectOpen} onClose={() => setDaySelectOpen(false)} itinerary={itinerary} handleDaySelect={handleDaySelect} handleClickAddDay={handleClickAddDay} placeId={selectedPlaceId}/>
 
         <BottomNav />
       </Box>

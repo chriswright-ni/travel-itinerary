@@ -7,25 +7,38 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 
-function DaySelectDrawer({ open, onClose, days, handleDaySelect, handleClickAddDay }) {
+function DaySelectDrawer({
+  open,
+  onClose,
+  itinerary,
+  handleDaySelect,
+  handleClickAddDay,
+  placeId,
+}) {
   const DayList = (
     <Box sx={{ width: 250 }} role="presentation">
-      <Box sx={{p: 2}}>
+      <Box sx={{ p: 2 }}>
         <Typography>Select a day</Typography>
       </Box>
-      <Divider/>
+      <Divider />
       <List>
-        {days.map((dayNumber) => (
-          <ListItem key={dayNumber} disablePadding>
+        {itinerary.map((day) => {
+          const itemExists = day.itineraryItems.some(
+            (item) => item.placeId === placeId
+          );
+          return (
+          <ListItem key={day.dayNumber} disablePadding>
             <ListItemButton
               onClick={() => {
-                handleDaySelect(dayNumber);
+                handleDaySelect(day.dayNumber);
               }}
+              disabled={itemExists ? true : false}
             >
-              <ListItemText primary={`Day ${dayNumber}`} />
+              <ListItemText primary={itemExists ? `Aleady added to Day ${day.dayNumber}` : `Day ${day.dayNumber}`} />
             </ListItemButton>
-          </ListItem>
-        ))}
+          </ListItem>);
+          
+        })}
       </List>
       <Divider />
       <ListItemButton
