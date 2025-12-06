@@ -14,7 +14,7 @@ import { useItineraryContext } from "../contexts/ItineraryContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function LandingPage() {
+function SearchPage() {
   const { locationData, setLocationData} =
     useSearchContext();
 
@@ -52,7 +52,7 @@ function LandingPage() {
 
   const handleClickAddToItinerary = (placeId) => {
     if (activeDay) {
-      addItemToItinerary(place, activeDay)
+      addItemToItinerary(placeId, activeDay)
       setActiveDay(null)
       navigate("/itinerary")
       return;
@@ -176,4 +176,4 @@ function LandingPage() {
 }
 
 
-export default LandingPage;
+export default SearchPage;

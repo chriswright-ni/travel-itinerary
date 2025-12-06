@@ -13,6 +13,11 @@ export const ItineraryProvider = ({ children }) => {
   const [places, setPlaces] = useState([])
   const [placesById, setPlacesById] = useState({}) // Object of places accessible by id
   const [activeDay, setActiveDay] = useState()
+  const [tripDetails, setTripDetails] = useState({
+    days: 3,
+    startDate: null,
+    tripName: ""
+  })
 
   // Creates an object to store places by their id
   const updatePlacesById = (places) => {
@@ -103,7 +108,9 @@ export const ItineraryProvider = ({ children }) => {
     updatePlacesById,
     removeItem,
     activeDay,
-    setActiveDay
+    setActiveDay,
+    tripDetails,
+    setTripDetails
   };
 
   return (

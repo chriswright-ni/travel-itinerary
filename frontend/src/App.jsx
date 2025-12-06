@@ -1,6 +1,7 @@
 import "./App.css";
-import LandingPage from "./pages/LandingPage";
+import SearchPage from "./pages/SearchPage.jsx";
 import ItineraryPage from "./pages/ItineraryPage";
+import TripSetupPage from "./pages/TripSetupPage";
 import { Routes, Route } from "react-router-dom";
 import { SearchProvider } from "./contexts/SearchContext";
 import { ItineraryProvider } from "./contexts/ItineraryContext";
@@ -14,7 +15,8 @@ function App() {
         <SearchProvider>
           <ItineraryProvider>
             <Routes>
-              <Route path="/" element={<LandingPage />} />
+              <Route path="/" element={<TripSetupPage />} />
+              <Route path="/search" element={<SearchPage />} />
               <Route path="/itinerary" element={<ItineraryPage />} />
             </Routes>
           </ItineraryProvider>

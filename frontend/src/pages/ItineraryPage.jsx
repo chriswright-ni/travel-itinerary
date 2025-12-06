@@ -2,7 +2,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import BottomNav from "../components/BottomNav";
 import ItineraryItem from "../components/ItineraryItem";
-import ItineraryTitle from "../components/ItineraryTitle";
+// import ItineraryTitle from "../components/ItineraryTitle";
 // import ItineraryActions from "../components/ItineraryActions";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -32,6 +32,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useNavigate } from "react-router-dom";
+import TextField from "@mui/material/TextField";
 
 function ItineraryPage() {
   const {
@@ -43,6 +44,8 @@ function ItineraryPage() {
     placesById,
     removeItem,
     setActiveDay,
+    tripDetails,
+    setTripDetails,
   } = useItineraryContext();
   const [editMode, setEditMode] = useState(false);
 
@@ -172,7 +175,24 @@ function ItineraryPage() {
         }}
       >
         <Box sx={{ mb: 2 }}>
-          <ItineraryTitle />
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <TextField
+              id="trip-name"
+              // label="What is your trip called?"
+              value={tripDetails.tripName}
+              variant="outlined"
+              onChange={(e) => setTripDetails((prev) => ({
+                ...prev,
+                tripName: e.target.value
+              }))}
+              slotProps={{
+                input: {
+                  readOnly: editMode ? false : true,
+                },
+              }}
+              fullWidth
+            />
+          </Box>
 
           <Button variant="outlined" onClick={handleClickEditItinerary}>
             {editMode ? "Done" : "Edit itinerary"}
@@ -188,7 +208,6 @@ function ItineraryPage() {
                 // borderRadius: 2,
                 mx: 2,
                 // mb: 2
-                
               }}
             >
               <AccordionSummary
