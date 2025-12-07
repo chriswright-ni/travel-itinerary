@@ -34,7 +34,7 @@ function TripSetupPage() {
 
   const { setLocationData } = useSearchContext();
 
-  const { setTripDetails } = useItineraryContext();
+  const { setTripDetails, initialiseItinerary, itinerary } = useItineraryContext();
 
   const navigate = useNavigate()
 
@@ -70,6 +70,10 @@ function TripSetupPage() {
       startDate: date,
       tripName: tripName
     });
+    console.log("days ", days)
+
+    const newItem = initialiseItinerary(days)
+    console.log("test ", newItem)
 
     navigate("/search")
 

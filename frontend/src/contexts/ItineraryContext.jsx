@@ -12,7 +12,7 @@ export const ItineraryProvider = ({ children }) => {
   const [nextItineraryItemId, setNextItineraryItemId] = useState(1); // Counter to assign itinerary ids
   const [places, setPlaces] = useState([])
   const [placesById, setPlacesById] = useState({}) // Object of places accessible by id
-  const [activeDay, setActiveDay] = useState()
+  const [activeDay, setActiveDay] = useState(null)
   const [tripDetails, setTripDetails] = useState({
     days: 3,
     startDate: null,
@@ -95,6 +95,23 @@ export const ItineraryProvider = ({ children }) => {
     )));
    }
 
+   // Creates a new itinerary based on the user's number of days selection
+   // on the trip setup page
+   // Resets the active day and next itinerary item states
+   const initialiseItinerary = (days) => {
+    const newItinerary = []
+    for (let i = 0; i < days; i++) {
+      newItinerary.push({
+        dayNumber: i + 1,
+        itineraryItems: []
+      })
+    }
+    setItinerary(newItinerary);
+    setActiveDay(null);
+    setNextItineraryItemId(1);
+    return newItinerary
+   }
+
   const value = {
     itinerary,
     setItinerary,
@@ -110,7 +127,8 @@ export const ItineraryProvider = ({ children }) => {
     activeDay,
     setActiveDay,
     tripDetails,
-    setTripDetails
+    setTripDetails,
+    initialiseItinerary
   };
 
   return (

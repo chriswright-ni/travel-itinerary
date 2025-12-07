@@ -33,6 +33,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
+import dayjs from "dayjs";
 
 function ItineraryPage() {
   const {
@@ -164,6 +165,8 @@ function ItineraryPage() {
     );
   };
 
+  console.log("itinerary ", itinerary)
+
   return (
     <>
       <Box
@@ -201,6 +204,7 @@ function ItineraryPage() {
         </Box>
         <Box>
           {itinerary.map((itineraryDay, index) => (
+            
             <Accordion
               key={itineraryDay.dayNumber}
               defaultExpanded={index === 0 ? true : false}
@@ -220,7 +224,7 @@ function ItineraryPage() {
                   overflow: "hidden",
                 }}
               >
-                <Typography component="span">{`Day ${itineraryDay.dayNumber}`}</Typography>
+                <Typography component="span">{`Day ${itineraryDay.dayNumber} ${dayjs(tripDetails.startDate).add(index, "day").format("ddd D MMM")}`}</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <DndContext
