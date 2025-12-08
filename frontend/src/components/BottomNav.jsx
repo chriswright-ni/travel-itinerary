@@ -29,7 +29,7 @@ function BottomNav() {
           value="search"
           icon={<SearchIcon />}
           component={Link}
-          to='/'
+          to='/search'
         />
         <BottomNavigationAction
           label="Itinerary"

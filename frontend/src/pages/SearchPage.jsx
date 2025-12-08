@@ -18,7 +18,7 @@ function SearchPage() {
   const { locationData, setLocationData} =
     useSearchContext();
 
-  const { addItemToItinerary, itinerary, places, setPlaces, updatePlacesById, addDay, activeDay, setActiveDay } = useItineraryContext();
+  const { addItemToItinerary, itinerary, places, setPlaces, updatePlacesById, addDay, activeDay, setActiveDay, addedPlaceIds } = useItineraryContext();
 
   const [daySelectOpen, setDaySelectOpen] = useState(false);
   const [selectedPlaceId, setSelectedPlaceId] = useState(null)
@@ -162,7 +162,7 @@ function SearchPage() {
             {placesTemp.map((place) => (
               <Grid key={place.id}>
                 {/* Key to be in outer map element*/}
-                <PlaceCard place={place} handleClickAddToItinerary={handleClickAddToItinerary} />
+                <PlaceCard place={place} handleClickAddToItinerary={handleClickAddToItinerary} isAdded={addedPlaceIds.has(place.id)} />
               </Grid>
             ))}
           </Grid>

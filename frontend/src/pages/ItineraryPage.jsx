@@ -165,7 +165,7 @@ function ItineraryPage() {
     );
   };
 
-  console.log("itinerary ", itinerary)
+  console.log("itinerary ", itinerary);
 
   return (
     <>
@@ -178,16 +178,24 @@ function ItineraryPage() {
         }}
       >
         <Box sx={{ mb: 2 }}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TextField
               id="trip-name"
               // label="What is your trip called?"
               value={tripDetails.tripName}
               variant="outlined"
-              onChange={(e) => setTripDetails((prev) => ({
-                ...prev,
-                tripName: e.target.value
-              }))}
+              onChange={(e) =>
+                setTripDetails((prev) => ({
+                  ...prev,
+                  tripName: e.target.value,
+                }))
+              }
               slotProps={{
                 input: {
                   readOnly: editMode ? false : true,
@@ -195,6 +203,9 @@ function ItineraryPage() {
               }}
               fullWidth
             />
+            <Button variant="outlined" onClick={() => navigate("/")}>
+              New Trip
+            </Button>
           </Box>
 
           <Button variant="outlined" onClick={handleClickEditItinerary}>
@@ -204,7 +215,6 @@ function ItineraryPage() {
         </Box>
         <Box>
           {itinerary.map((itineraryDay, index) => (
-            
             <Accordion
               key={itineraryDay.dayNumber}
               defaultExpanded={index === 0 ? true : false}
@@ -224,7 +234,11 @@ function ItineraryPage() {
                   overflow: "hidden",
                 }}
               >
-                <Typography component="span">{`Day ${itineraryDay.dayNumber} ${dayjs(tripDetails.startDate).add(index, "day").format("ddd D MMM")}`}</Typography>
+                <Typography component="span">{`Day ${
+                  itineraryDay.dayNumber
+                } ${tripDetails.startDate ? dayjs(tripDetails.startDate)
+                  .add(index, "day")
+                  .format("ddd D MMM") :""}`}</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <DndContext
