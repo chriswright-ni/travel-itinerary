@@ -5,7 +5,7 @@ import TripSetupPage from "./pages/TripSetupPage";
 import { Routes, Route } from "react-router-dom";
 import { SearchProvider } from "./contexts/SearchContext";
 import { ItineraryProvider } from "./contexts/ItineraryContext";
-import theme from "./themes/theme.js";
+import theme from "./themes/theme_five.js";
 import { ThemeProvider } from "@mui/material/styles";
 
 function App() {

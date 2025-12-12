@@ -6,16 +6,22 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import RemoveIcon from "@mui/icons-material/Remove";
 import IconButton from "@mui/material/IconButton";
+import ItineraryItemMenu from "../components/ItineraryItemMenu";
 
-function ItineraryItem({itineraryItem, editMode, handleClickRemoveFromItinerary}) {
- 
+
+function ItineraryItem({
+  itineraryItem,
+  editMode,
+  handleClickRemoveFromItinerary,
+}) {
   return (
-    <Card sx={{ maxWidth: "100%", display: "flex", mb: 2 }}>
+    <Card sx={{ maxWidth: "100%", display: "flex", mb: 2, position: "relative" }}>
       {/* <CardMedia
         component="img"
         image={"https://picsum.photos/200"}
         sx={{ width: "6rem", height: "8rem" }}
       /> */}
+      <ItineraryItemMenu />
       <CardContent sx={{ flex: 1 }}>
         <Box sx={{ textAlign: "left" }}>
           <Typography
@@ -51,11 +57,17 @@ function ItineraryItem({itineraryItem, editMode, handleClickRemoveFromItinerary}
         </Box>
       </CardContent>
       <CardActions>
-        {editMode ? 
-        <IconButton aria-label="Remove from Itinerary" size="small" onClick={handleClickRemoveFromItinerary}>
-          <RemoveIcon fontSize="large" />
-        </IconButton>
-        : ""}
+        {editMode ? (
+          <IconButton
+            aria-label="Remove from Itinerary"
+            size="small"
+            onClick={handleClickRemoveFromItinerary}
+          >
+            <RemoveIcon fontSize="large" />
+          </IconButton>
+        ) : (
+          ""
+        )}
       </CardActions>
     </Card>
   );
