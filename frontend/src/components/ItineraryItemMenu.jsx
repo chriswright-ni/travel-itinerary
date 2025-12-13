@@ -8,9 +8,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ScheduleIcon from "@mui/icons-material/Schedule";
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 
-function ItineraryItemMenu() {
+function ItineraryItemMenu({
+  itineraryItemId,
+  handleClickRemoveFromItinerary,
+  dayNumber,
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -53,7 +57,12 @@ function ItineraryItemMenu() {
           </ListItemIcon>
           <ListItemText>Change time</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            handleClickRemoveFromItinerary(itineraryItemId, dayNumber);
+            handleClose();
+          }}
+        >
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>

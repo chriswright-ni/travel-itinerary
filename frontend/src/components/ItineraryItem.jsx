@@ -13,6 +13,7 @@ function ItineraryItem({
   itineraryItem,
   editMode,
   handleClickRemoveFromItinerary,
+  dayNumber
 }) {
   return (
     <Card sx={{ maxWidth: "100%", display: "flex", mb: 2, position: "relative" }}>
@@ -21,7 +22,7 @@ function ItineraryItem({
         image={"https://picsum.photos/200"}
         sx={{ width: "6rem", height: "8rem" }}
       /> */}
-      <ItineraryItemMenu />
+      <ItineraryItemMenu itineraryItemId={itineraryItem.id} dayNumber={dayNumber} handleClickRemoveFromItinerary={handleClickRemoveFromItinerary}/>
       <CardContent sx={{ flex: 1 }}>
         <Box sx={{ textAlign: "left" }}>
           <Typography
@@ -56,19 +57,6 @@ function ItineraryItem({
           </Typography>
         </Box>
       </CardContent>
-      <CardActions>
-        {editMode ? (
-          <IconButton
-            aria-label="Remove from Itinerary"
-            size="small"
-            onClick={handleClickRemoveFromItinerary}
-          >
-            <RemoveIcon fontSize="large" />
-          </IconButton>
-        ) : (
-          ""
-        )}
-      </CardActions>
     </Card>
   );
 }

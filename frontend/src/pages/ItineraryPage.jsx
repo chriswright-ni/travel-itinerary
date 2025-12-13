@@ -160,6 +160,7 @@ function ItineraryPage() {
           handleClickRemoveFromItinerary={() =>
             handleClickRemoveFromItinerary(itineraryItem.id, dayNumber)
           }
+          dayNumber={dayNumber}
         />
       </Grid>
     );
