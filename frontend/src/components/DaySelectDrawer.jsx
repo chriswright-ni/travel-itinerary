@@ -13,7 +13,7 @@ function DaySelectDrawer({
   itinerary,
   handleDaySelect,
   handleClickAddDay,
-  placeId,
+  itemId
 }) {
   const DayList = (
     <Box sx={{ width: 250 }} role="presentation">
@@ -23,9 +23,11 @@ function DaySelectDrawer({
       <Divider />
       <List>
         {itinerary.map((day) => {
+          console.log("item id: ", itemId)
           const itemExists = day.itineraryItems.some(
-            (item) => item.placeId === placeId
+            (item) => item.id === itemId
           );
+          console.log("item exists? ", itemExists)
           return (
           <ListItem key={day.dayNumber} disablePadding>
             <ListItemButton
@@ -34,7 +36,7 @@ function DaySelectDrawer({
               }}
               disabled={itemExists ? true : false}
             >
-              <ListItemText primary={itemExists ? `Aleady added to Day ${day.dayNumber}` : `Day ${day.dayNumber}`} />
+              <ListItemText primary={itemExists ? `Aleady in Day ${day.dayNumber}` : `Day ${day.dayNumber}`} />
             </ListItemButton>
           </ListItem>);
           

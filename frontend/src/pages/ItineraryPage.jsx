@@ -34,6 +34,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
+import DaySelectDrawer from "../components/DaySelectDrawer";
 
 function ItineraryPage() {
   const {
@@ -47,8 +48,14 @@ function ItineraryPage() {
     setActiveDay,
     tripDetails,
     setTripDetails,
+    moveItem
   } = useItineraryContext();
   const [editMode, setEditMode] = useState(false);
+
+  const [daySelectOpen, setDaySelectOpen] = useState(false); // Day select bottom drawer state on itinerary page
+  const [currentDayNumber, setCurrentDayNumber] = useState(null); // The current day number the item to be moved is in
+  const [itemIdToMove, setItemIdToMove] = useState(null); // The itinerary item id to be moved
+  // const [selectedItemId, setSelectedItemId] = useState(null); // Selected itinerary item for moving to another day
 
   const navigate = useNavigate();
 
@@ -81,6 +88,30 @@ function ItineraryPage() {
     setActiveDay(dayNumber);
     navigate("/");
   };
+
+  // When the user clicks the move to another day in the itinerary item card,
+  // this function sets the itemId and currentDay of the selected item that will be moved
+  const handleClickMoveItem = (itemIdToMove, currentDayNumber) => {
+    setItemIdToMove(itemIdToMove);
+    setCurrentDayNumber(currentDayNumber);
+    setDaySelectOpen(true);
+  }
+
+  // When the user selects the day to move the item to in the bottom day select drawer,
+  // this function calls the moveItem function
+  const handleClickMoveItemDaySelect = (newDayNumber) => {
+    moveItem(itemIdToMove, currentDayNumber, newDayNumber)
+    setDaySelectOpen(false);
+  }
+
+  // When the user selects the add to a new day optiob in the bottom day select drawer,
+  // this function adds a new day, and calls the moveItem function with the newly
+  // created day number
+  const handleClickMoveItemNewDay = () => {
+    const newDayNumber = addDay();
+    moveItem(itemIdToMove, currentDayNumber, newDayNumber)
+    setDaySelectOpen(false);
+  }
 
   const findDayId = (itemId) => {
     if (itinerary.some((day) => day.dayNumber === itemId)) {
@@ -161,6 +192,9 @@ function ItineraryPage() {
             handleClickRemoveFromItinerary(itineraryItem.id, dayNumber)
           }
           dayNumber={dayNumber}
+          handleClickMoveItem={() => 
+            handleClickMoveItem(itineraryItem.id, dayNumber)
+          }
         />
       </Grid>
     );
@@ -306,6 +340,14 @@ function ItineraryPage() {
             ""
           )}
         </Box>
+        <DaySelectDrawer
+          open={daySelectOpen}
+          onClose={() => setDaySelectOpen(false)}
+          itinerary={itinerary}
+          handleDaySelect={handleClickMoveItemDaySelect}
+          handleClickAddDay={handleClickMoveItemNewDay}
+          itemId={itemIdToMove}
+        />
         <BottomNav />
       </Box>
     </>

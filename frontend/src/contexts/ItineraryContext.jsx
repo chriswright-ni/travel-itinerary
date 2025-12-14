@@ -14,18 +14,17 @@ export const ItineraryProvider = ({ children }) => {
   const [placesById, setPlacesById] = useState({}); // Object of places accessible by id
   const [activeDay, setActiveDay] = useState(null);
   const [tripDetails, setTripDetails] = useState({
+    // Setting uo the initial trip parameters
     days: 3,
     startDate: null,
     tripName: "",
   });
 
   // Creates a set of all placeIds that have been added to the itinerary
-  const getAddedPlaceIds = () => 
+  const getAddedPlaceIds = () =>
     new Set(
-      itinerary.flatMap((day) => day.itineraryItems.map((item) => item.placeId)),
+      itinerary.flatMap((day) => day.itineraryItems.map((item) => item.placeId))
     );
-  ;
-  
   // Updates the set of addedPlaceIds when the itinerary state changes
   const addedPlaceIds = useMemo(() => getAddedPlaceIds(), [itinerary]);
 
@@ -134,6 +133,37 @@ export const ItineraryProvider = ({ children }) => {
     return newItinerary;
   };
 
+  // Movies the itinerary item from the current day to the new day
+  const moveItem = (itemIdToMove, currentDayNumber, newDayNumber) => {
+    setItinerary((prev) => {
+
+      // Get itinerary item from item id
+      const currentDay = prev.find((day) => day.dayNumber === currentDayNumber)
+      const itemToMove = currentDay.itineraryItems.find((item) => item.id === itemIdToMove)
+      if (!itemToMove) {
+        return prev;
+      }
+
+      return prev.map((day) => {
+        if (day.dayNumber === currentDayNumber) {
+          return {
+            ...day,
+            itineraryItems: [
+              ...day.itineraryItems.filter((item) => item.id !== itemIdToMove),
+            ],
+          };
+        }
+        if (day.dayNumber === newDayNumber) {
+          return {
+            ...day,
+            itineraryItems: [...day.itineraryItems, itemToMove],
+          };
+        }
+        return day;
+      });
+    });
+  };
+
   const value = {
     itinerary,
     setItinerary,
@@ -152,6 +182,7 @@ export const ItineraryProvider = ({ children }) => {
     setTripDetails,
     initialiseItinerary,
     addedPlaceIds,
+    moveItem,
   };
 
   return (

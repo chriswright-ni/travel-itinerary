@@ -8,21 +8,28 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import IconButton from "@mui/material/IconButton";
 import ItineraryItemMenu from "../components/ItineraryItemMenu";
 
-
 function ItineraryItem({
   itineraryItem,
   editMode,
   handleClickRemoveFromItinerary,
-  dayNumber
+  dayNumber,
+  handleClickMoveItem,
 }) {
   return (
-    <Card sx={{ maxWidth: "100%", display: "flex", mb: 2, position: "relative" }}>
+    <Card
+      sx={{ maxWidth: "100%", display: "flex", mb: 2, position: "relative" }}
+    >
       {/* <CardMedia
         component="img"
         image={"https://picsum.photos/200"}
         sx={{ width: "6rem", height: "8rem" }}
       /> */}
-      <ItineraryItemMenu itineraryItemId={itineraryItem.id} dayNumber={dayNumber} handleClickRemoveFromItinerary={handleClickRemoveFromItinerary}/>
+      <ItineraryItemMenu
+        itineraryItemId={itineraryItem.id}
+        dayNumber={dayNumber}
+        handleClickRemoveFromItinerary={handleClickRemoveFromItinerary}
+        handleClickMoveItem={handleClickMoveItem}
+      />
       <CardContent sx={{ flex: 1 }}>
         <Box sx={{ textAlign: "left" }}>
           <Typography

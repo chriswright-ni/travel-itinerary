@@ -15,36 +15,62 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function SearchPage() {
-  const { locationData, setLocationData} =
-    useSearchContext();
+  const { locationData, setLocationData } = useSearchContext();
 
-  const { addItemToItinerary, itinerary, places, setPlaces, updatePlacesById, addDay, activeDay, setActiveDay, addedPlaceIds } = useItineraryContext();
+  const {
+    addItemToItinerary,
+    itinerary,
+    places,
+    setPlaces,
+    updatePlacesById,
+    addDay,
+    activeDay,
+    setActiveDay,
+    addedPlaceIds,
+  } = useItineraryContext();
 
-  const [daySelectOpen, setDaySelectOpen] = useState(false);
-  const [selectedPlaceId, setSelectedPlaceId] = useState(null)
-  const [selectedInterest, setSelectedInterest] = useState("")
-  const days = itinerary.map((day) => day.dayNumber)
+  const [daySelectOpen, setDaySelectOpen] = useState(false); // Day select bottom drawer state on search page
+  const [selectedPlaceId, setSelectedPlaceId] = useState(null); // Selected place for adding to itinerary
+  const [selectedInterest, setSelectedInterest] = useState("");
+  const days = itinerary.map((day) => day.dayNumber);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Temporary location data for development with location search API calling
   const latitude = "54.5973";
   const longitude = "-5.9301";
   const placesTemp = [
-    {"id": 1, "name": "Eiffel Tower", "category": "Landmark", "distance": 400, "rating": 4.8},
-    {"id": 2, "name": "Louis Vuitton", "category": "Shopping", "distance": 680, "rating": 4.9},
-    {"id": 3, "name": "Le Louvre", "category": "Art", "distance": 1045, "rating": 4.5},
-    {"id": 4, "name": "Notre Dame", "category": "History", "distance": 300, "rating": 4.5},
-    {"id": 5, "name": "Chanel", "category": "Shopping", "distance": 378, "rating": 4.6},
-  ]
+    {
+      id: 1,
+      name: "Eiffel Tower",
+      category: "Landmark",
+      distance: 400,
+      rating: 4.8,
+    },
+    {
+      id: 2,
+      name: "Louis Vuitton",
+      category: "Shopping",
+      distance: 680,
+      rating: 4.9,
+    },
+    { id: 3, name: "Le Louvre", category: "Art", distance: 1045, rating: 4.5 },
+    {
+      id: 4,
+      name: "Notre Dame",
+      category: "History",
+      distance: 300,
+      rating: 4.5,
+    },
+    { id: 5, name: "Chanel", category: "Shopping", distance: 378, rating: 4.6 },
+  ];
 
   // Temp useEffect to store temp places data for the purpose of development without making API calls
   useEffect(() => {
     setPlaces(placesTemp);
     updatePlacesById(placesTemp);
     // console.log(placesTemp)
-    
-  }, [])
+  }, []);
 
   // const handleClickAddToItinerary = (place) => {
   //   addItemToItinerary(place)
@@ -52,27 +78,26 @@ function SearchPage() {
 
   const handleClickAddToItinerary = (placeId) => {
     if (activeDay) {
-      addItemToItinerary(placeId, activeDay)
-      setActiveDay(null)
-      navigate("/itinerary")
+      addItemToItinerary(placeId, activeDay);
+      setActiveDay(null);
+      navigate("/itinerary");
       return;
-    } 
-    setSelectedPlaceId(placeId)
-    setDaySelectOpen(true)
-  }
+    }
+    setSelectedPlaceId(placeId);
+    setDaySelectOpen(true);
+  };
 
-  const handleDaySelect = (dayNumber) => {
-    addItemToItinerary(selectedPlaceId, dayNumber)
-    setDaySelectOpen(false)
-  }
+  // Adds item to itinerary after the day is selected from the bottom drawer
+  const handleAddItemToItinerary = (dayNumber) => {
+    addItemToItinerary(selectedPlaceId, dayNumber);
+    setDaySelectOpen(false);
+  };
 
   const handleClickAddDay = () => {
     const newDayNumber = addDay();
-    addItemToItinerary(selectedPlaceId, newDayNumber)
-    setDaySelectOpen(false)
+    addItemToItinerary(selectedPlaceId, newDayNumber);
+    setDaySelectOpen(false);
   };
-
-
 
   async function getPlaces(interest) {
     const response = await fetch(
@@ -134,12 +159,15 @@ function SearchPage() {
             zIndex: 1, // Z index is needed do prevent links used in main content showing through the background during scrolling
             px: 2,
             pt: 3,
-            boxShadow: 2
+            boxShadow: 2,
           }}
         >
           <LocationSearch onLocationSelect={handleLocationSelect} />
           <Box sx={{ mt: 1 }}>
-            <InterestSelector onInterestSelect={handleInterestSelect} selected={selectedInterest} />
+            <InterestSelector
+              onInterestSelect={handleInterestSelect}
+              selected={selectedInterest}
+            />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", mt: 1 }}>
             <LocationName
@@ -162,18 +190,28 @@ function SearchPage() {
             {placesTemp.map((place) => (
               <Grid key={place.id}>
                 {/* Key to be in outer map element*/}
-                <PlaceCard place={place} handleClickAddToItinerary={handleClickAddToItinerary} isAdded={addedPlaceIds.has(place.id)} />
+                <PlaceCard
+                  place={place}
+                  handleClickAddToItinerary={handleClickAddToItinerary}
+                  isAdded={addedPlaceIds.has(place.id)}
+                />
               </Grid>
             ))}
           </Grid>
         </Box>
-        <DaySelectDrawer open={daySelectOpen} onClose={() => setDaySelectOpen(false)} itinerary={itinerary} handleDaySelect={handleDaySelect} handleClickAddDay={handleClickAddDay} placeId={selectedPlaceId}/>
+        <DaySelectDrawer
+          open={daySelectOpen}
+          onClose={() => setDaySelectOpen(false)}
+          itinerary={itinerary}
+          handleDaySelect={handleAddItemToItinerary}
+          handleClickAddDay={handleClickAddDay}
+          // placeId={selectedPlaceId}
+        />
 
         <BottomNav />
       </Box>
     </>
   );
 }
-
 
 export default SearchPage;
