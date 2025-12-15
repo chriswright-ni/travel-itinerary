@@ -34,8 +34,8 @@ function TimeSelectDrawer({ open, onClose, currentStartTime, currentEndTime }) {
     }
   }, [open]);
 
-  console.log("current start time in time select drawer: ", currentStartTime);
-  console.log("start time state in time select drawer: ", startTime);
+  // console.log("current start time in time select drawer: ", currentStartTime);
+  // console.log("start time state in time select drawer: ", startTime);
   // console.log("start time state: ", startTime)
 
   // const startHour = currentStartTime ? currentStartTime.split(":")[0] : 0;

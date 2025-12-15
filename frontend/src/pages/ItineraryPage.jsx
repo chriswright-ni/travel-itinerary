@@ -50,7 +50,8 @@ function ItineraryPage() {
     tripDetails,
     setTripDetails,
     moveItem,
-    changeTime
+    changeTime,
+    calculateItineraryTimes
   } = useItineraryContext();
   const [editMode, setEditMode] = useState(false);
 
@@ -268,7 +269,10 @@ function ItineraryPage() {
           <Button variant="outlined">Optimise Route</Button>
         </Box>
         <Box>
-          {itinerary.map((itineraryDay, index) => (
+          {itinerary.map((itineraryDay, index) => {
+            // Generate itinerary day with dynamically generated start and end times
+            const itineraryDayWithTimes = calculateItineraryTimes(itineraryDay, 30)
+            return (
             <Accordion
               key={itineraryDay.dayNumber}
               defaultExpanded={index === 0 ? true : false}
@@ -313,7 +317,7 @@ function ItineraryPage() {
                           <Typography>No itinerary items added yet!</Typography>
                         </Box>
                       ) : (
-                        itineraryDay.itineraryItems.map((itineraryItem) => (
+                        itineraryDayWithTimes.itineraryItems.map((itineraryItem) => (
                           <SortableItineraryItem
                             key={itineraryItem.id}
                             itineraryItem={itineraryItem}
@@ -347,8 +351,8 @@ function ItineraryPage() {
                   ""
                 )}
               </AccordionActions>
-            </Accordion>
-          ))}
+            </Accordion> )
+})}
         </Box>
         <Box>
           {editMode ? (

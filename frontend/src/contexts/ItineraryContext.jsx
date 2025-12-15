@@ -7,7 +7,7 @@ export const useItineraryContext = () => useContext(ItineraryContext);
 
 export const ItineraryProvider = ({ children }) => {
   const [itinerary, setItinerary] = useState([
-    { dayNumber: 1, itineraryItems: [] },
+    { dayNumber: 1, dayStartTime: "09:00", itineraryItems: [] },
   ]);
 
   const [nextItineraryItemId, setNextItineraryItemId] = useState(1); // Counter to assign itinerary ids
@@ -46,8 +46,10 @@ export const ItineraryProvider = ({ children }) => {
   // Adds an empty day to the itinerary array
   const addDay = () => {
     const newDayNumber = itinerary.length + 1;
+    // TODO: THIS IS DUPLICATE CODE - THE INITIALISE ITINERARY FUNCTION ALSO SETS DAY START TIME AND ITEMS ARRAY
     const newDay = {
       dayNumber: newDayNumber,
+      dayStartTime: "09:00",
       itineraryItems: [],
     };
     // prev is current value of the state
@@ -79,7 +81,7 @@ export const ItineraryProvider = ({ children }) => {
     const itineraryItem = {
       id: nextItineraryItemId,
       name: place.name,
-      recommendedDuration: 60,
+      recommendedDuration: 90,
       placeId: placeId,
       startTime: "09:05",
       endTime: "11:00",
@@ -127,6 +129,7 @@ export const ItineraryProvider = ({ children }) => {
     for (let i = 0; i < days; i++) {
       newItinerary.push({
         dayNumber: i + 1,
+        dayStartTime: "09:00",
         itineraryItems: [],
       });
     }
@@ -195,6 +198,36 @@ export const ItineraryProvider = ({ children }) => {
     });
   };
 
+  // Takes an itinerary day and dynamically generates start and end times for each item
+  // based on recommended duration and the order of the items
+  // This is iniitiated using the day starting time
+  // Buffer is the time between items - this will later be updated using travel times and optional pacing buffers
+  const calculateItineraryTimes = (day, buffer) => {
+
+    const startHour = Number(day.dayStartTime.split(":")[0])
+    const startMin = Number(day.dayStartTime.split(":")[1])
+    
+    let currentTime = dayjs().hour(startHour).minute(startMin).second(0)
+    // console.log("current time: ", currentTime.format("HH:mm"))
+    const updatedDay = {
+      ...day,
+      itineraryItems: day.itineraryItems.map((item) => {
+        const startTimeDynamic = currentTime
+        const endTimeDynamic = startTimeDynamic.add(item.recommendedDuration, "minute")
+        currentTime = endTimeDynamic.add(buffer, "minute")
+        // console.log("new start time: ", startTimeDynamic)
+        // console.log("new end time: ", endTimeDynamic)
+
+        return {
+          ...item,
+          startTime: startTimeDynamic.format("HH:mm"),
+          endTime: endTimeDynamic.format("HH:mm"),
+        }
+      })
+    }
+    return updatedDay
+  }
+
   const value = {
     itinerary,
     setItinerary,
@@ -214,7 +247,8 @@ export const ItineraryProvider = ({ children }) => {
     initialiseItinerary,
     addedPlaceIds,
     moveItem,
-    changeTime
+    changeTime,
+    calculateItineraryTimes
   };
 
   return (
