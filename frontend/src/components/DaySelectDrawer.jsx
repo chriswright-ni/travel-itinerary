@@ -23,11 +23,11 @@ function DaySelectDrawer({
       <Divider />
       <List>
         {itinerary.map((day) => {
-          console.log("item id: ", itemId)
+          // console.log("item id: ", itemId)
           const itemExists = day.itineraryItems.some(
             (item) => item.id === itemId
           );
-          console.log("item exists? ", itemExists)
+          // console.log("item exists? ", itemExists)
           return (
           <ListItem key={day.dayNumber} disablePadding>
             <ListItemButton

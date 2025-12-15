@@ -49,21 +49,23 @@ function ItineraryPage() {
     setActiveDay,
     tripDetails,
     setTripDetails,
-    moveItem
+    moveItem,
+    changeTime
   } = useItineraryContext();
   const [editMode, setEditMode] = useState(false);
 
   const [daySelectOpen, setDaySelectOpen] = useState(false); // Day select bottom drawer state on itinerary page
   const [timeSelectOpen, setTimeSelectOpen] = useState(false); // Time select bottom drawer state on itinerary page
   const [currentDayNumber, setCurrentDayNumber] = useState(null); // The current day number the item to be moved is in
-  const [itemIdToMove, setItemIdToMove] = useState(null); // The itinerary item id to be moved
-  // const [selectedItemId, setSelectedItemId] = useState(null); // Selected itinerary item for moving to another day
+  // const [itemIdToMove, setItemIdToMove] = useState(null); // The itinerary item id to be moved
+  const [selectedItemId, setSelectedItemId] = useState(null); // Selected itinerary item for moving to another day or changing time
+  const [selectedItem, setSelectedItem] = useState(null); // Selected itinerary item for moving to another day or changing time
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("Itinerary update: ", itinerary);
-  }, [itinerary]);
+  // useEffect(() => {
+  //   console.log("Itinerary update: ", itinerary);
+  // }, [itinerary]);
 
   const handleClickAddDay = () => {
     addDay();
@@ -94,7 +96,7 @@ function ItineraryPage() {
   // When the user clicks the move to another day in the itinerary item card,
   // this function sets the itemId and currentDay of the selected item that will be moved
   const handleClickMoveItem = (itemIdToMove, currentDayNumber) => {
-    setItemIdToMove(itemIdToMove);
+    setSelectedItemId(itemIdToMove);
     setCurrentDayNumber(currentDayNumber);
     setDaySelectOpen(true);
   }
@@ -102,7 +104,7 @@ function ItineraryPage() {
   // When the user selects the day to move the item to in the bottom day select drawer,
   // this function calls the moveItem function
   const handleClickMoveItemDaySelect = (newDayNumber) => {
-    moveItem(itemIdToMove, currentDayNumber, newDayNumber)
+    moveItem(selectedItemId, currentDayNumber, newDayNumber)
     setDaySelectOpen(false);
   }
 
@@ -111,12 +113,22 @@ function ItineraryPage() {
   // created day number
   const handleClickMoveItemNewDay = () => {
     const newDayNumber = addDay();
-    moveItem(itemIdToMove, currentDayNumber, newDayNumber)
+    moveItem(selectedItemId, currentDayNumber, newDayNumber)
     setDaySelectOpen(false);
   }
 
-  const handleClickChangeTime = (itemIdToChange, dayNumber) => {
+  const handleClickChangeTime = (itemToChange, dayNumber) => {
+    console.log("itemToChange: ", itemToChange)
+    setSelectedItem(itemToChange)
+    console.log("selectedItem: ", selectedItem)
+    // console.log("selectedItem start Time: ", selectedItem.startTime)
+    setCurrentDayNumber(dayNumber);
     setTimeSelectOpen(true);
+  }
+
+  const handleClickTimeSelect = (newStartTime, newEndTime) => {
+    changeTime(selectedItemId, currentDayNumber, newStartTime, newEndTime)
+    setTimeSelectOpen(false)
   }
 
   const findDayId = (itemId) => {
@@ -201,13 +213,13 @@ function ItineraryPage() {
           handleClickMoveItem={() => 
             handleClickMoveItem(itineraryItem.id, dayNumber)
           }
-          handleClickChangeTime={() => handleClickChangeTime(itineraryItem.id, dayNumber)}
+          handleClickChangeTime={() => handleClickChangeTime(itineraryItem, dayNumber)}
         />
       </Grid>
     );
   };
 
-  console.log("itinerary ", itinerary);
+  // console.log("itinerary ", itinerary);
 
   return (
     <>
@@ -353,11 +365,13 @@ function ItineraryPage() {
           itinerary={itinerary}
           handleDaySelect={handleClickMoveItemDaySelect}
           handleClickAddDay={handleClickMoveItemNewDay}
-          itemId={itemIdToMove}
+          itemId={selectedItemId}
         />
         <TimeSelectDrawer
           open={timeSelectOpen}
           onClose={() => setTimeSelectOpen(false)}
+          currentStartTime={selectedItem?.startTime}
+          currentEndTime={selectedItem?.endTime}
         />
         <BottomNav />
       </Box>

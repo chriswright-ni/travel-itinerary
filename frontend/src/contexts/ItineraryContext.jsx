@@ -81,7 +81,7 @@ export const ItineraryProvider = ({ children }) => {
       name: place.name,
       recommendedDuration: 60,
       placeId: placeId,
-      startTime: "09:00",
+      startTime: "09:05",
       endTime: "11:00",
     };
 
@@ -98,7 +98,7 @@ export const ItineraryProvider = ({ children }) => {
           : day
       )
     );
-    console.log(itineraryItem);
+    // console.log(itineraryItem);
   };
 
   // Removes the selected item from the itinerary

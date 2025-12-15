@@ -16,6 +16,7 @@ function ItineraryItem({
   handleClickMoveItem,
   handleClickChangeTime
 }) {
+  // console.log("item: ", itineraryItem)
   return (
     <Card
       sx={{ maxWidth: "100%", display: "flex", mb: 2, position: "relative" }}
@@ -31,6 +32,7 @@ function ItineraryItem({
         handleClickRemoveFromItinerary={handleClickRemoveFromItinerary}
         handleClickMoveItem={handleClickMoveItem}
         handleClickChangeTime={handleClickChangeTime}
+        itineraryItem={itineraryItem}
       />
       <CardContent sx={{ flex: 1 }}>
         <Box sx={{ textAlign: "left" }}>
