@@ -14,6 +14,7 @@ function ItineraryItem({
   handleClickRemoveFromItinerary,
   dayNumber,
   handleClickMoveItem,
+  handleClickChangeTime
 }) {
   return (
     <Card
@@ -29,6 +30,7 @@ function ItineraryItem({
         dayNumber={dayNumber}
         handleClickRemoveFromItinerary={handleClickRemoveFromItinerary}
         handleClickMoveItem={handleClickMoveItem}
+        handleClickChangeTime={handleClickChangeTime}
       />
       <CardContent sx={{ flex: 1 }}>
         <Box sx={{ textAlign: "left" }}>
@@ -36,7 +38,7 @@ function ItineraryItem({
             component="div"
             sx={{ fontSize: "1rem", fontWeight: 500 }}
           >
-            09:00 - 12:30
+            {itineraryItem.startTime} - {itineraryItem.endTime}
           </Typography>
           <Typography
             component="div"

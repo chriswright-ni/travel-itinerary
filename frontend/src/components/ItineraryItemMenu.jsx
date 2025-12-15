@@ -15,6 +15,7 @@ function ItineraryItemMenu({
   handleClickRemoveFromItinerary,
   dayNumber,
   handleClickMoveItem,
+  handleClickChangeTime,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -57,7 +58,10 @@ function ItineraryItemMenu({
           <ListItemText>Move to another day</ListItemText>
         </MenuItem>
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => {
+          handleClickChangeTime(itineraryItemId, dayNumber)
+          handleClose();
+        }}>
           <ListItemIcon>
             <ScheduleIcon fontSize="small" />
           </ListItemIcon>

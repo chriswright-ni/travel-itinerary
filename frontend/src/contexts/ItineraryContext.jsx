@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { createContext, useContext, useState, useMemo } from "react";
 
 const ItineraryContext = createContext();
@@ -80,6 +81,8 @@ export const ItineraryProvider = ({ children }) => {
       name: place.name,
       recommendedDuration: 60,
       placeId: placeId,
+      startTime: "09:00",
+      endTime: "11:00",
     };
 
     setNextItineraryItemId((prev) => prev + 1);
@@ -136,10 +139,11 @@ export const ItineraryProvider = ({ children }) => {
   // Movies the itinerary item from the current day to the new day
   const moveItem = (itemIdToMove, currentDayNumber, newDayNumber) => {
     setItinerary((prev) => {
-
       // Get itinerary item from item id
-      const currentDay = prev.find((day) => day.dayNumber === currentDayNumber)
-      const itemToMove = currentDay.itineraryItems.find((item) => item.id === itemIdToMove)
+      const currentDay = prev.find((day) => day.dayNumber === currentDayNumber);
+      const itemToMove = currentDay.itineraryItems.find(
+        (item) => item.id === itemIdToMove
+      );
       if (!itemToMove) {
         return prev;
       }
@@ -164,6 +168,33 @@ export const ItineraryProvider = ({ children }) => {
     });
   };
 
+  // Changes the start and end time of the itinerary item, using the time selecter from the time select drawer
+  const changeTime = (itemIdToChange, dayNumber, newStartTime, newEndTime) => {
+    setItinerary((prev) => {
+      // Get itinerary item from item id
+      const itemDay = prev.find((day) => day.dayNumber === dayNumber);
+      const itemToChange = itemDay.itineraryItems.find(
+        (item) => item.id === itemIdToChange
+      );
+      if (!itemToChange) {
+        return prev;
+      }
+
+      return prev.map((day) => {
+        day.dayNumber === currentDayNumber
+          ? {
+              ...day,
+              itineraryItems: day.itineraryItems.map((item) =>
+                item.id === itemIdToChange
+                  ? { ...item, startTime: newStartTime, endTime: newEndTime }
+                  : item
+              ),
+            }
+          : day;
+      });
+    });
+  };
+
   const value = {
     itinerary,
     setItinerary,
@@ -183,6 +214,7 @@ export const ItineraryProvider = ({ children }) => {
     initialiseItinerary,
     addedPlaceIds,
     moveItem,
+    changeTime
   };
 
   return (

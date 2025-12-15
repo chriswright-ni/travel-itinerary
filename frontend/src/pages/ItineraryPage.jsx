@@ -35,6 +35,7 @@ import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
 import DaySelectDrawer from "../components/DaySelectDrawer";
+import TimeSelectDrawer from "../components/TimeSelectDrawer";
 
 function ItineraryPage() {
   const {
@@ -53,6 +54,7 @@ function ItineraryPage() {
   const [editMode, setEditMode] = useState(false);
 
   const [daySelectOpen, setDaySelectOpen] = useState(false); // Day select bottom drawer state on itinerary page
+  const [timeSelectOpen, setTimeSelectOpen] = useState(false); // Time select bottom drawer state on itinerary page
   const [currentDayNumber, setCurrentDayNumber] = useState(null); // The current day number the item to be moved is in
   const [itemIdToMove, setItemIdToMove] = useState(null); // The itinerary item id to be moved
   // const [selectedItemId, setSelectedItemId] = useState(null); // Selected itinerary item for moving to another day
@@ -111,6 +113,10 @@ function ItineraryPage() {
     const newDayNumber = addDay();
     moveItem(itemIdToMove, currentDayNumber, newDayNumber)
     setDaySelectOpen(false);
+  }
+
+  const handleClickChangeTime = (itemIdToChange, dayNumber) => {
+    setTimeSelectOpen(true);
   }
 
   const findDayId = (itemId) => {
@@ -195,6 +201,7 @@ function ItineraryPage() {
           handleClickMoveItem={() => 
             handleClickMoveItem(itineraryItem.id, dayNumber)
           }
+          handleClickChangeTime={() => handleClickChangeTime(itineraryItem.id, dayNumber)}
         />
       </Grid>
     );
@@ -347,6 +354,10 @@ function ItineraryPage() {
           handleDaySelect={handleClickMoveItemDaySelect}
           handleClickAddDay={handleClickMoveItemNewDay}
           itemId={itemIdToMove}
+        />
+        <TimeSelectDrawer
+          open={timeSelectOpen}
+          onClose={() => setTimeSelectOpen(false)}
         />
         <BottomNav />
       </Box>
