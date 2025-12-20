@@ -172,6 +172,7 @@ export const ItineraryProvider = ({ children }) => {
   };
 
   // Changes the start and end time of the itinerary item, using the time selecter from the time select drawer
+  // THIS FUNCTION NEEDS UPDATED - IT NO LONGER WORKS AFTER THE AUTOMATIC TIME CALCULATOR FUNCTION WAS ADDED
   const changeTime = (itemIdToChange, dayNumber, newStartTime, newEndTime) => {
     setItinerary((prev) => {
       // Get itinerary item from item id
@@ -228,6 +229,24 @@ export const ItineraryProvider = ({ children }) => {
     return updatedDay
   }
 
+  const updateDayStartTime = (dayNumber, dayStartTime) => {
+    setItinerary((prev) => {
+    
+      if (!dayStartTime) {
+        return prev;
+      }
+
+      return prev.map((day) => 
+        day.dayNumber === dayNumber
+          ? {
+              ...day,
+              dayStartTime: dayStartTime.format("HH:mm")
+            }
+          : day
+      );
+    });
+  }
+
   const value = {
     itinerary,
     setItinerary,
@@ -248,7 +267,8 @@ export const ItineraryProvider = ({ children }) => {
     addedPlaceIds,
     moveItem,
     changeTime,
-    calculateItineraryTimes
+    calculateItineraryTimes,
+    updateDayStartTime
   };
 
   return (

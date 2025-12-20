@@ -15,21 +15,24 @@ import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 import { useEffect, useState } from "react";
+import Button from "@mui/material/Button";
 
-function TimeSelectDrawer({ open, onClose, currentStartTime, currentEndTime }) {
+function TimeSelectDrawer({ open, onClose, currentStartTime, currentEndTime, handleClickSetTime }) {
   // const [startTime, setStartTime] = useState(dayjs(currentStartTime, 'HH:mm'))
   // const [startTime, setStartTime] = useState(dayjs("09:10", "HH:mm"));
   // const [startTime, setStartTime] = useState(null)
-  const [startTime, setStartTime] = useState(dayjs().hour(0).minute(0).second(0));
-  
+  const [startTime, setStartTime] = useState(
+    dayjs().hour(0).minute(0).second(0)
+  );
 
+  console.log("current start time: ", currentStartTime);
   // This useEffect updates the startTime whenever the drawer is opened
   // This prevents errors on the 1st render of the drawer
   // It occurs only when the currentStartTime is defined
   useEffect(() => {
     if (currentStartTime) {
-      const startHour = Number(currentStartTime.split(":")[0])
-      const startMin = Number(currentStartTime.split(":")[1])
+      const startHour = Number(currentStartTime.split(":")[0]);
+      const startMin = Number(currentStartTime.split(":")[1]);
       setStartTime(dayjs().hour(startHour).minute(startMin).second(0));
     }
   }, [open]);
@@ -62,6 +65,15 @@ function TimeSelectDrawer({ open, onClose, currentStartTime, currentEndTime }) {
           {/* <TimePicker label="Select end time" defaultValue={currentEndTime} /> */}
           {/* <DesktopTimePicker defaultValue={dayjs("2022-04-17T15:30")} /> */}
         </LocalizationProvider>
+        <Divider />
+        <Button
+          onClick={() => {
+            handleClickSetTime(startTime);
+            onClose();
+          }}
+        >
+          Set time
+        </Button>
       </Drawer>
     </div>
   );
