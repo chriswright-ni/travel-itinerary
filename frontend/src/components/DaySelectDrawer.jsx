@@ -13,7 +13,7 @@ function DaySelectDrawer({
   itinerary,
   handleDaySelect,
   handleClickAddDay,
-  itemId
+  itemId,
 }) {
   const DayList = (
     <Box sx={{ width: 250 }} role="presentation">
@@ -29,17 +29,23 @@ function DaySelectDrawer({
           );
           // console.log("item exists? ", itemExists)
           return (
-          <ListItem key={day.dayNumber} disablePadding>
-            <ListItemButton
-              onClick={() => {
-                handleDaySelect(day.dayNumber);
-              }}
-              disabled={itemExists ? true : false}
-            >
-              <ListItemText primary={itemExists ? `Aleady in Day ${day.dayNumber}` : `Day ${day.dayNumber}`} />
-            </ListItemButton>
-          </ListItem>);
-          
+            <ListItem key={day.dayNumber} disablePadding>
+              <ListItemButton
+                onClick={() => {
+                  handleDaySelect(day.dayNumber);
+                }}
+                disabled={itemExists ? true : false}
+              >
+                <ListItemText
+                  primary={
+                    itemExists
+                      ? `Aleady in Day ${day.dayNumber}`
+                      : `Day ${day.dayNumber}`
+                  }
+                />
+              </ListItemButton>
+            </ListItem>
+          );
         })}
       </List>
       <Divider />
@@ -55,7 +61,16 @@ function DaySelectDrawer({
 
   return (
     <div>
-      <Drawer anchor={"bottom"} open={open} onClose={onClose}>
+      <Drawer
+        anchor={"bottom"}
+        open={open}
+        onClose={onClose}
+        slotProps={{
+          backdrop: {
+            style: { opacity: 0.1 },
+          },
+        }}
+      >
         {DayList}
       </Drawer>
     </div>

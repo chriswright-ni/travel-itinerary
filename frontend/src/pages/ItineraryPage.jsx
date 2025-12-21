@@ -93,7 +93,7 @@ function ItineraryPage() {
 
   const handleClickAddItemToDay = (dayNumber) => {
     setActiveDay(dayNumber);
-    navigate("/");
+    navigate("/search");
   };
 
   // When the user clicks the move to another day in the itinerary item card,

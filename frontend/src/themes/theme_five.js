@@ -28,12 +28,16 @@ const theme = createTheme(
       },
       background: {
         default: "#F5F7FA",
-        paper: "#FFFFFF"
+        paper: "#FFFFFF",
+        secondary: "#F5F5F5"
+        // secondary: "#EEEEEE"
+
         
       },
       text: {
         primary: "#0E1F3F",
         secondary: "#6D7787",
+        disabled: "#9E9E9E"
       },
     }
   }

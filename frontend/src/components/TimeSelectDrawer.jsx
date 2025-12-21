@@ -17,7 +17,13 @@ import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 
-function TimeSelectDrawer({ open, onClose, currentStartTime, currentEndTime, handleClickSetTime }) {
+function TimeSelectDrawer({
+  open,
+  onClose,
+  currentStartTime,
+  currentEndTime,
+  handleClickSetTime,
+}) {
   // const [startTime, setStartTime] = useState(dayjs(currentStartTime, 'HH:mm'))
   // const [startTime, setStartTime] = useState(dayjs("09:10", "HH:mm"));
   // const [startTime, setStartTime] = useState(null)
@@ -49,7 +55,16 @@ function TimeSelectDrawer({ open, onClose, currentStartTime, currentEndTime, han
 
   return (
     <div>
-      <Drawer anchor={"bottom"} open={open} onClose={onClose}>
+      <Drawer
+        anchor={"bottom"}
+        open={open}
+        onClose={onClose}
+        slotProps={{
+          backdrop: {
+            style: { opacity: 0.1 },
+          },
+        }}
+      >
         <Typography>Change time</Typography>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker

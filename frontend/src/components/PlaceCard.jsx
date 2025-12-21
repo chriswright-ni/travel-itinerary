@@ -12,8 +12,10 @@ import DoneIcon from "@mui/icons-material/Done";
 import IconButton from "@mui/material/IconButton";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import PlaceIcon from "@mui/icons-material/Place";
+import CheckIcon from "@mui/icons-material/Check";
+import theme from "../themes/theme_five.js";
 
-function PlaceCard({ place, handleClickAddToItinerary, isAdded }) {
+function PlaceCard({ place, handleClickAddToItinerary, isAdded, isSelected, imageUrl }) {
   /* Note: Place is a prop so needs destructured using {} */
 
   return (
@@ -23,9 +25,9 @@ function PlaceCard({ place, handleClickAddToItinerary, isAdded }) {
         display: "flex",
         alignItems: "center",
         borderRadius: 2,
-        backgroundColor: "background.paper",
-        boxShadow: 2,
-        color: isAdded ? "blue" : "black"
+        boxShadow: isSelected && !isAdded ? `0 0 8px 2px ${theme.palette.primary.main}` : "2",
+        bgcolor: isAdded ? "background.secondary" : "background.paper",
+        height: "100px"
       }}
     >
       {/* <CardMedia
@@ -33,7 +35,12 @@ function PlaceCard({ place, handleClickAddToItinerary, isAdded }) {
         image={"https://picsum.photos/200"}
         sx={{ width: "25%" }}
       /> */}
-      <PlaceIcon sx={{ mx: 2 }} />
+      <CardMedia
+        component="img"
+        image={imageUrl}
+        sx={{ width: "20%", height: "100%", objectFit: "cover" }}
+      />
+      {/* <PlaceIcon sx={{ mx: 2 }} /> */}
       <CardContent sx={{ flex: 1 }}>
         <Box sx={{ textAlign: "left" }}>
           <Typography
@@ -54,7 +61,10 @@ function PlaceCard({ place, handleClickAddToItinerary, isAdded }) {
             <FiberManualRecordIcon sx={{ fontSize: "0.375rem", mx: 1 }} />
             <Typography
               variant="body2"
-              sx={{ color: "primary.main", fontSize: "1rem" }}
+              sx={{
+                color: isAdded ? "text.secondary" : "primary.main",
+                fontSize: "1rem",
+              }}
             >
               {`${place.distance}m away`}
             </Typography>
@@ -62,13 +72,27 @@ function PlaceCard({ place, handleClickAddToItinerary, isAdded }) {
         </Box>
       </CardContent>
       <CardActions>
-        <IconButton
-          aria-label="Add to Itinerary"
-          size="small"
-          onClick={() => handleClickAddToItinerary(place.id)}
-        >
-          <AddIcon fontSize="large" color="primary" />
-        </IconButton>
+        {isAdded ? (
+          <Box sx={{display: "flex", alignItems: "center"}}>
+            <IconButton
+              aria-label="Added to Itinerary"
+              size="small"
+              disabled
+              // onClick={() => handleClickAddToItinerary(place.id)}
+            >
+              <CheckIcon fontSize="large" color="text.secondary" />
+            </IconButton>
+            <Typography sx={{color: "text.secondary"}}>Added</Typography>
+          </Box>
+        ) : (
+          <IconButton
+            aria-label="Add to Itinerary"
+            size="small"
+            onClick={() => handleClickAddToItinerary(place.id)}
+          >
+            <AddIcon fontSize="large" color="primary" />
+          </IconButton>
+        )}
       </CardActions>
     </Card>
   );

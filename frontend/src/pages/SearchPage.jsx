@@ -13,6 +13,11 @@ import { useSearchContext } from "../contexts/SearchContext";
 import { useItineraryContext } from "../contexts/ItineraryContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import eiffelTowerImg from "../images/eiffeltower.jpg";
+import louisVuittonImg from "../images/louisvuitton.jpg";
+import chanelImg from "../images/chanel.jpg";
+import leLouvreImg from "../images/lelouvre.jpg";
+import notreDameImg from "../images/notredame.jpg";
 
 function SearchPage() {
   const { locationData, setLocationData } = useSearchContext();
@@ -46,6 +51,7 @@ function SearchPage() {
       category: "Landmark",
       distance: 400,
       rating: 4.8,
+      imageUrl: eiffelTowerImg,
     },
     {
       id: 2,
@@ -53,16 +59,18 @@ function SearchPage() {
       category: "Shopping",
       distance: 680,
       rating: 4.9,
+      imageUrl: louisVuittonImg,
     },
-    { id: 3, name: "Le Louvre", category: "Art", distance: 1045, rating: 4.5 },
+    { id: 3, name: "Le Louvre", category: "Art", distance: 1045, rating: 4.5, imageUrl: leLouvreImg },
     {
       id: 4,
       name: "Notre Dame",
       category: "History",
       distance: 300,
       rating: 4.5,
+      imageUrl: notreDameImg
     },
-    { id: 5, name: "Chanel", category: "Shopping", distance: 378, rating: 4.6 },
+    { id: 5, name: "Chanel", category: "Shopping", distance: 378, rating: 4.6, imageUrl: chanelImg },
   ];
 
   // Temp useEffect to store temp places data for the purpose of development without making API calls
@@ -76,6 +84,8 @@ function SearchPage() {
   //   addItemToItinerary(place)
   // }
 
+  // This is called when the Add to itinerary '+' icon is selected
+  // The if statement is activated if the add item button is selected from the itinerary page
   const handleClickAddToItinerary = (placeId) => {
     if (activeDay) {
       addItemToItinerary(placeId, activeDay);
@@ -194,6 +204,8 @@ function SearchPage() {
                   place={place}
                   handleClickAddToItinerary={handleClickAddToItinerary}
                   isAdded={addedPlaceIds.has(place.id)}
+                  isSelected={place.id === selectedPlaceId}
+                  imageUrl={place.imageUrl}
                 />
               </Grid>
             ))}
@@ -201,7 +213,10 @@ function SearchPage() {
         </Box>
         <DaySelectDrawer
           open={daySelectOpen}
-          onClose={() => setDaySelectOpen(false)}
+          onClose={() => {
+            setSelectedPlaceId(null);
+            setDaySelectOpen(false);
+          }}
           itinerary={itinerary}
           handleDaySelect={handleAddItemToItinerary}
           handleClickAddDay={handleClickAddDay}

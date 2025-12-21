@@ -5,13 +5,23 @@ import SearchIcon from "@mui/icons-material/Search";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Paper from '@mui/material/Paper';
-import {Link} from "react-router-dom"
+import {Link, useLocation} from "react-router-dom"
 
 function BottomNav() {
-  const [value, setValue] = useState("search");
+  // const [value, setValue] = useState("search");
+
+  const location = useLocation();
+
+  const pathToValue = {
+    "/search": "search",
+    "/itinerary": "itinerary",
+    "/map": "map"
+  }
+
+  const value = pathToValue[location.pathname] || "search";
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    // setValue(newValue);
   };
 
   return (
