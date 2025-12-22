@@ -16,27 +16,38 @@ function ItineraryItemMenu({
   dayNumber,
   handleClickMoveItem,
   handleClickChangeTime,
-  itineraryItem
+  itineraryItem,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (e) => {
+    e.stopPropagation();
     setAnchorEl(null);
   };
   // console.log("item: ", itineraryItem)
   return (
     <Box>
-      <IconButton
-        aria-label="Card Menu"
-        size="small"
-        onClick={handleClick}
-        sx={{ position: "absolute", right: 2, top: 5, color: "secondary.main" }}
+      <Box
+        sx={{
+          typography: "button",
+          cursor: "pointer",
+          textTransform: "none",
+          display: "flex",
+          alignItems: "center",
+          color: "secondary.main"
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log("day menu button clicked");
+          handleClick(e)
+        }}
       >
         <MoreVertIcon fontSize="large" />
-      </IconButton>
+      </Box>
+
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -62,10 +73,7 @@ function ItineraryItemMenu({
 
         <MenuItem
           onClick={() => {
-            handleClickChangeTime(
-              itineraryItem,
-              dayNumber,
-            );
+            handleClickChangeTime(itineraryItem, dayNumber);
             handleClose();
           }}
         >

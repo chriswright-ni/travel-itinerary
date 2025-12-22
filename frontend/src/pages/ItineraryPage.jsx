@@ -36,6 +36,8 @@ import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
 import DaySelectDrawer from "../components/DaySelectDrawer";
 import TimeSelectDrawer from "../components/TimeSelectDrawer";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import DayMenu from "../components/DayMenu";
 
 function ItineraryPage() {
   const {
@@ -52,7 +54,7 @@ function ItineraryPage() {
     moveItem,
     changeTime,
     calculateItineraryTimes,
-    updateDayStartTime
+    updateDayStartTime,
   } = useItineraryContext();
   const [editMode, setEditMode] = useState(false);
 
@@ -303,30 +305,75 @@ function ItineraryPage() {
                   // borderRadius: 2,
                   mx: 2,
                   // mb: 2
+                  "&:before": {
+                    display: "none",
+                  },
+                  // overflow: "hidden",
                 }}
+                elevation={0}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel2-content"
                   id="panel2-header"
                   sx={{
-                    // backgroundColor: "primary.light",
+                    // backgroundColor: "transparent",
                     border: "1px solid #E0E0E0",
-                    overflow: "hidden",
+                    // border: "none",
+                    // overflow: "hidden",
+                    // padding: 0,
+                    borderRadius: 2,
+                    // "&:before": {
+                    //   display: "none"
+                    // }
+                    // "& .Mui-focusVisible": {
+                    //   outline: "none",
+                    //   bgcolor: "transparent"
+                    // },
+                    "&:focus": {
+                      outline: "none",
+                      // bgcolor: "transparent"
+                    },
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center"
                   }}
                 >
-                  <Box>
-                    <Typography component="span">{`Day ${
-                      itineraryDay.dayNumber
-                    } ${
-                      tripDetails.startDate
-                        ? dayjs(tripDetails.startDate)
-                            .add(index, "day")
-                            .format("ddd D MMM")
-                        : ""
-                    }`}</Typography>
+                  <Box
+                    sx={{
+                      // backgroundColor: "primary.light",
+                      // border: "1px solid #E0E0E0",
+                      // // overflow: "hidden",
+                      // // bgcolor: "background.paper",
+                      // borderRadius: 2,
+                      // py: 1,
+                      // px: 2,
+                      // width: "100%",
+                      // boxShadow: 2,
+                      display: "flex",
+                      flex: 1,
+                      flexDirection: "column"
+                      
+                    }}
+                  >
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Typography>{`Day ${itineraryDay.dayNumber}`}</Typography>
+                      <FiberManualRecordIcon
+                        sx={{ fontSize: "0.375rem", mx: 1 }}
+                      />
+                      <Typography>{`${
+                        tripDetails.startDate
+                          ? dayjs(tripDetails.startDate)
+                              .add(index, "day")
+                              .format("ddd D MMM")
+                          : "Mon 22 Dec" // CHANGE THIS
+                      }`}</Typography>
+                    </Box>
+                    <Box>
+                      <Typography>{`Start at ${itineraryDay.dayStartTime}`}</Typography>
+                    </Box>
 
-                    <Box
+                    {/* <Box
                       sx={{
                         typography: "button",
                         cursor: "pointer",
@@ -339,7 +386,11 @@ function ItineraryPage() {
                       }}
                     >
                       {`Start at ${itineraryDay.dayStartTime}`}
-                    </Box>
+                    </Box> */}
+                  </Box>
+                  <Box sx={{display: "flex", alignItems: "center"}}>
+                  <DayMenu />
+
                   </Box>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -430,10 +481,16 @@ function ItineraryPage() {
           }}
           // This component is used for both item time selection and day start time selection
           currentStartTime={
-            isDayStartTime ? itinerary[currentDayNumber - 1].dayStartTime : selectedItem?.startTime
+            isDayStartTime
+              ? itinerary[currentDayNumber - 1].dayStartTime
+              : selectedItem?.startTime
           }
           currentEndTime={selectedItem?.endTime}
-          handleClickSetTime={isDayStartTime ? handleClickDayStartTimeSelect : handleClickTimeSelect}
+          handleClickSetTime={
+            isDayStartTime
+              ? handleClickDayStartTimeSelect
+              : handleClickTimeSelect
+          }
         />
         <BottomNav />
       </Box>
