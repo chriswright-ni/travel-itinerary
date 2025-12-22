@@ -83,7 +83,7 @@ function ItineraryItemMenu({
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Delete</ListItemText>
+          <ListItemText>Delete Item</ListItemText>
         </MenuItem>
       </Menu>
     </Box>

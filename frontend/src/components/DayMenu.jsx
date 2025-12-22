@@ -9,14 +9,12 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 
-function ItineraryItemMenu({
-  itineraryItemId,
-  handleClickRemoveFromItinerary,
-  dayNumber,
-  handleClickMoveItem,
-  handleClickChangeTime,
-  itineraryItem,
+function DayMenu({
+  handleClickRemoveDay,
+  itineraryDay,
+  handleClickChangeDayTime,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -66,36 +64,36 @@ function ItineraryItemMenu({
           }}
         >
           <ListItemIcon>
-            <SwapHorizIcon fontSize="small" />
+            <EditCalendarIcon  fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Move to another day</ListItemText>
+          <ListItemText>Change Date</ListItemText>
         </MenuItem>
 
         <MenuItem
-          onClick={() => {
-            handleClickChangeTime(itineraryItem, dayNumber);
-            handleClose();
+          onClick={(e) => {
+            handleClickChangeDayTime(itineraryDay.dayNumber);
+            handleClose(e);
           }}
         >
           <ListItemIcon>
             <ScheduleIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Change time</ListItemText>
+          <ListItemText>Change Start Time</ListItemText>
         </MenuItem>
         <MenuItem
-          onClick={() => {
-            handleClickRemoveFromItinerary(itineraryItemId, dayNumber);
-            handleClose();
+          onClick={(e) => {
+            handleClickRemoveDay(itineraryDay.dayNumber);
+            handleClose(e);
           }}
         >
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Delete</ListItemText>
+          <ListItemText>Delete Day</ListItemText>
         </MenuItem>
       </Menu>
     </Box>
   );
 }
 
-export default ItineraryItemMenu;
+export default DayMenu;

@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import RemoveIcon from "@mui/icons-material/Remove";
 import IconButton from "@mui/material/IconButton";
 import ItineraryItemMenu from "../components/ItineraryItemMenu";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
 function ItineraryItem({
   itineraryItem,
@@ -14,7 +15,7 @@ function ItineraryItem({
   handleClickRemoveFromItinerary,
   dayNumber,
   handleClickMoveItem,
-  handleClickChangeTime
+  handleClickChangeTime,
 }) {
   // console.log("item: ", itineraryItem)
   return (
@@ -35,37 +36,42 @@ function ItineraryItem({
         itineraryItem={itineraryItem}
       />
       <CardContent sx={{ flex: 1 }}>
-        <Box sx={{ textAlign: "left" }}>
-          <Typography
-            component="div"
-            sx={{ fontSize: "1rem", fontWeight: 500 }}
-          >
-            {itineraryItem.startTime} - {itineraryItem.endTime}
-          </Typography>
-          <Typography
-            component="div"
-            sx={{ fontSize: "1.125rem", fontWeight: 600 }}
-          >
-            {itineraryItem.name}
-          </Typography>
-          <Typography
-            sx={{
-              color: "text.secondary",
-              fontSize: "0.875rem",
-              fontWeight: 400,
-            }}
-          >
-            {itineraryItem.recommendedDuration}
-          </Typography>
-          <Typography
-            sx={{
-              color: "text.secondary",
-              fontSize: "0.875rem",
-              fontWeight: 400,
-            }}
-          >
-            Closes at 11pm
-          </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", width: "10%"}}>
+            <DragIndicatorIcon />
+          </Box>
+          <Box sx={{ textAlign: "left" }}>
+            <Typography
+              component="div"
+              sx={{ fontSize: "1rem", fontWeight: 500 }}
+            >
+              {itineraryItem.startTime} - {itineraryItem.endTime}
+            </Typography>
+            <Typography
+              component="div"
+              sx={{ fontSize: "1.125rem", fontWeight: 600 }}
+            >
+              {itineraryItem.name}
+            </Typography>
+            <Typography
+              sx={{
+                color: "text.secondary",
+                fontSize: "0.875rem",
+                fontWeight: 400,
+              }}
+            >
+              {itineraryItem.recommendedDuration}
+            </Typography>
+            <Typography
+              sx={{
+                color: "text.secondary",
+                fontSize: "0.875rem",
+                fontWeight: 400,
+              }}
+            >
+              Closes at 11pm
+            </Typography>
+          </Box>
         </Box>
       </CardContent>
     </Card>

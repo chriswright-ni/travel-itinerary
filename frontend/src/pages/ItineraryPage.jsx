@@ -336,7 +336,7 @@ function ItineraryPage() {
                     },
                     display: "flex",
                     justifyContent: "space-between",
-                    alignItems: "center"
+                    alignItems: "center",
                   }}
                 >
                   <Box
@@ -352,8 +352,7 @@ function ItineraryPage() {
                       // boxShadow: 2,
                       display: "flex",
                       flex: 1,
-                      flexDirection: "column"
-                      
+                      flexDirection: "column",
                     }}
                   >
                     <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -369,28 +368,20 @@ function ItineraryPage() {
                           : "Mon 22 Dec" // CHANGE THIS
                       }`}</Typography>
                     </Box>
-                    <Box>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
                       <Typography>{`Start at ${itineraryDay.dayStartTime}`}</Typography>
+                      <FiberManualRecordIcon
+                        sx={{ fontSize: "0.375rem", mx: 1 }}
+                      />
+                      <Typography>{`${itineraryDay.itineraryItems.length} ${itineraryDay.itineraryItems.length > 1 ? "Items" : "Item"}`}</Typography>
                     </Box>
-
-                    {/* <Box
-                      sx={{
-                        typography: "button",
-                        cursor: "pointer",
-                        textTransform: "none",
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        console.log("day start button clicked");
-                        handleClickChangeDayTime(itineraryDay.dayNumber);
-                      }}
-                    >
-                      {`Start at ${itineraryDay.dayStartTime}`}
-                    </Box> */}
                   </Box>
-                  <Box sx={{display: "flex", alignItems: "center"}}>
-                  <DayMenu />
-
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <DayMenu
+                      itineraryDay={itineraryDay}
+                      handleClickRemoveDay={handleClickRemoveDay}
+                      handleClickChangeDayTime={handleClickChangeDayTime}
+                    />
                   </Box>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -437,7 +428,7 @@ function ItineraryPage() {
                     + Add an item
                   </Button>
                 </AccordionDetails>
-                <AccordionActions>
+                {/* <AccordionActions>
                   {editMode ? (
                     <Button
                       variant="outlined"
@@ -451,7 +442,7 @@ function ItineraryPage() {
                   ) : (
                     ""
                   )}
-                </AccordionActions>
+                </AccordionActions> */}
               </Accordion>
             );
           })}
