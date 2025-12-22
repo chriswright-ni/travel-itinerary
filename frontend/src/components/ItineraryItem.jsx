@@ -16,11 +16,17 @@ function ItineraryItem({
   dayNumber,
   handleClickMoveItem,
   handleClickChangeTime,
+  ref,
+  style,
+  dragAttributes,
+  dragListeners
 }) {
   // console.log("item: ", itineraryItem)
   return (
     <Card
       sx={{ maxWidth: "100%", display: "flex", mb: 2, position: "relative" }}
+      ref={ref}
+      style={style}
     >
       {/* <CardMedia
         component="img"
@@ -37,8 +43,8 @@ function ItineraryItem({
       />
       <CardContent sx={{ flex: 1 }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ display: "flex", alignItems: "center", width: "10%"}}>
-            <DragIndicatorIcon />
+          <Box sx={{ display: "flex", alignItems: "center", width: "10%", cursor: "grab"}} {...dragAttributes} {...dragListeners}>
+            <DragIndicatorIcon sx={{color: "text.secondary"}}/>
           </Box>
           <Box sx={{ textAlign: "left" }}>
             <Typography

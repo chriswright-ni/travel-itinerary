@@ -80,7 +80,7 @@ function PlaceCard({ place, handleClickAddToItinerary, isAdded, isSelected, imag
               disabled
               // onClick={() => handleClickAddToItinerary(place.id)}
             >
-              <CheckIcon fontSize="large" color="text.secondary" />
+              <CheckIcon fontSize="large"/>
             </IconButton>
             <Typography sx={{color: "text.secondary"}}>Added</Typography>
           </Box>

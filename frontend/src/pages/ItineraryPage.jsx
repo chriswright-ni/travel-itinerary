@@ -213,7 +213,7 @@ function ItineraryPage() {
       isDragging,
     } = useSortable({
       id: itineraryItem.id,
-      disabled: editMode ? false : true,
+      // disabled: editMode ? false : true,
     });
 
     const style = {
@@ -223,7 +223,8 @@ function ItineraryPage() {
     };
 
     return (
-      <Grid ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      // <Grid ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <Grid>
         <ItineraryItem
           itineraryItem={itineraryItem}
           editMode={editMode}
@@ -237,6 +238,10 @@ function ItineraryPage() {
           handleClickChangeTime={() =>
             handleClickChangeTime(itineraryItem, dayNumber)
           }
+          ref={setNodeRef}
+          style={style}
+          dragAttributes={attributes}
+          dragListeners={listeners}
         />
       </Grid>
     );
