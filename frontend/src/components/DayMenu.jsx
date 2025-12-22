@@ -66,7 +66,7 @@ function DayMenu({
           <ListItemIcon>
             <EditCalendarIcon  fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Change Date</ListItemText>
+          <ListItemText>Change date</ListItemText>
         </MenuItem>
 
         <MenuItem
@@ -78,7 +78,7 @@ function DayMenu({
           <ListItemIcon>
             <ScheduleIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Change Start Time</ListItemText>
+          <ListItemText>Change start time</ListItemText>
         </MenuItem>
         <MenuItem
           onClick={(e) => {
@@ -89,7 +89,7 @@ function DayMenu({
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Delete Day</ListItemText>
+          <ListItemText>Delete day</ListItemText>
         </MenuItem>
       </Menu>
     </Box>

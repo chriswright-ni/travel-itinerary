@@ -55,8 +55,12 @@ function ItineraryPage() {
     changeTime,
     calculateItineraryTimes,
     updateDayStartTime,
+    expanded,
+    setExpanded
   } = useItineraryContext();
-  const [editMode, setEditMode] = useState(false);
+  
+
+  const navigate = useNavigate();
 
   const [daySelectOpen, setDaySelectOpen] = useState(false); // Day select bottom drawer state on itinerary page
   const [timeSelectOpen, setTimeSelectOpen] = useState(false); // Time select bottom drawer state on itinerary page
@@ -65,15 +69,18 @@ function ItineraryPage() {
   const [selectedItemId, setSelectedItemId] = useState(null); // Selected itinerary item for moving to another day or changing time
   const [selectedItem, setSelectedItem] = useState(null); // Selected itinerary item for moving to another day or changing time
   const [isDayStartTime, setIsDayStartTime] = useState(false); // Boolean sets to true if the day starting time is being changed
-
-  const navigate = useNavigate();
+  
+  
+  
 
   // useEffect(() => {
   //   console.log("Itinerary update: ", itinerary);
   // }, [itinerary]);
 
+  // Calls the addDay function and automatically expands the new day
   const handleClickAddDay = () => {
-    addDay();
+    const newDayNumber = addDay();
+    setExpanded(newDayNumber);
     console.log(places); // Test code
     console.log(placesById); // Test code
   };
@@ -84,13 +91,6 @@ function ItineraryPage() {
 
   const handleClickRemoveFromItinerary = (itemIdToRemove, dayNumber) => {
     removeItem(itemIdToRemove, dayNumber);
-  };
-
-  // Toggles the itinerary edit mode
-  // In edit mode, the add day, remove day and remove item become visible
-  const handleClickEditItinerary = () => {
-    setEditMode((prev) => !prev);
-    console.log(`edit mode: ${editMode}`);
   };
 
   const handleClickAddItemToDay = (dayNumber) => {
@@ -213,7 +213,6 @@ function ItineraryPage() {
       isDragging,
     } = useSortable({
       id: itineraryItem.id,
-      // disabled: editMode ? false : true,
     });
 
     const style = {
@@ -227,7 +226,6 @@ function ItineraryPage() {
       <Grid>
         <ItineraryItem
           itineraryItem={itineraryItem}
-          editMode={editMode}
           handleClickRemoveFromItinerary={() =>
             handleClickRemoveFromItinerary(itineraryItem.id, dayNumber)
           }
@@ -246,8 +244,6 @@ function ItineraryPage() {
       </Grid>
     );
   };
-
-  // console.log("itinerary ", itinerary);
 
   return (
     <>
@@ -278,9 +274,10 @@ function ItineraryPage() {
                   tripName: e.target.value,
                 }))
               }
+              // UPDATE EDIT MODE FOR LOCAL TEXT UPDATE ONLY
               slotProps={{
                 input: {
-                  readOnly: editMode ? false : true,
+                  // readOnly: editMode ? false : true,
                 },
               }}
               fullWidth
@@ -290,9 +287,6 @@ function ItineraryPage() {
             </Button>
           </Box>
 
-          <Button variant="outlined" onClick={handleClickEditItinerary}>
-            {editMode ? "Done" : "Edit itinerary"}
-          </Button>
           <Button variant="outlined">Optimise Route</Button>
         </Box>
         <Box>
@@ -305,7 +299,11 @@ function ItineraryPage() {
             return (
               <Accordion
                 key={itineraryDay.dayNumber}
-                defaultExpanded={index === 0 ? true : false}
+                // defaultExpanded={index === 0 ? true : false}
+                expanded={expanded === itineraryDay.dayNumber}
+                onChange={() => {
+                  setExpanded(expanded === itineraryDay.dayNumber ? null : itineraryDay.dayNumber )
+                }}
                 sx={{
                   // borderRadius: 2,
                   mx: 2,
@@ -378,7 +376,11 @@ function ItineraryPage() {
                       <FiberManualRecordIcon
                         sx={{ fontSize: "0.375rem", mx: 1 }}
                       />
-                      <Typography>{`${itineraryDay.itineraryItems.length} ${itineraryDay.itineraryItems.length > 1 ? "Items" : "Item"}`}</Typography>
+                      <Typography>{`${itineraryDay.itineraryItems.length} ${
+                        itineraryDay.itineraryItems.length > 1
+                          ? "Items"
+                          : "Item"
+                      }`}</Typography>
                     </Box>
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -430,7 +432,7 @@ function ItineraryPage() {
                       handleClickAddItemToDay(itineraryDay.dayNumber);
                     }}
                   >
-                    + Add an item
+                    + Add item
                   </Button>
                 </AccordionDetails>
                 {/* <AccordionActions>
@@ -453,13 +455,9 @@ function ItineraryPage() {
           })}
         </Box>
         <Box>
-          {editMode ? (
-            <Button variant="outlined" fullWidth onClick={handleClickAddDay}>
-              Add day
-            </Button>
-          ) : (
-            ""
-          )}
+          <Button variant="outlined" fullWidth onClick={handleClickAddDay}>
+            Add day
+          </Button>
         </Box>
         <DaySelectDrawer
           open={daySelectOpen}

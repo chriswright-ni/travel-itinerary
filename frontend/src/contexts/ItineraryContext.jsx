@@ -20,6 +20,8 @@ export const ItineraryProvider = ({ children }) => {
     startDate: null,
     tripName: "",
   });
+  const [expanded, setExpanded] = useState(1); // Management of accordion day expanded status - default to day 1 expanded on 1st render
+
 
   // Creates a set of all placeIds that have been added to the itinerary
   const getAddedPlaceIds = () =>
@@ -268,7 +270,9 @@ export const ItineraryProvider = ({ children }) => {
     moveItem,
     changeTime,
     calculateItineraryTimes,
-    updateDayStartTime
+    updateDayStartTime,
+    expanded,
+    setExpanded
   };
 
   return (

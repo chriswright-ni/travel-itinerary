@@ -11,7 +11,6 @@ import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
 function ItineraryItem({
   itineraryItem,
-  editMode,
   handleClickRemoveFromItinerary,
   dayNumber,
   handleClickMoveItem,
