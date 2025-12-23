@@ -15,7 +15,7 @@ export const ItineraryProvider = ({ children }) => {
   const [placesById, setPlacesById] = useState({}); // Object of places accessible by id
   const [activeDay, setActiveDay] = useState(null);
   const [tripDetails, setTripDetails] = useState({
-    // Setting uo the initial trip parameters
+    // Setting up the initial trip parameters
     days: 3,
     startDate: null,
     tripName: "",

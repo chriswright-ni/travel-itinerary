@@ -56,9 +56,8 @@ function ItineraryPage() {
     calculateItineraryTimes,
     updateDayStartTime,
     expanded,
-    setExpanded
+    setExpanded,
   } = useItineraryContext();
-  
 
   const navigate = useNavigate();
 
@@ -69,9 +68,6 @@ function ItineraryPage() {
   const [selectedItemId, setSelectedItemId] = useState(null); // Selected itinerary item for moving to another day or changing time
   const [selectedItem, setSelectedItem] = useState(null); // Selected itinerary item for moving to another day or changing time
   const [isDayStartTime, setIsDayStartTime] = useState(false); // Boolean sets to true if the day starting time is being changed
-  
-  
-  
 
   // useEffect(() => {
   //   console.log("Itinerary update: ", itinerary);
@@ -111,6 +107,7 @@ function ItineraryPage() {
   const handleClickMoveItemDaySelect = (newDayNumber) => {
     moveItem(selectedItemId, currentDayNumber, newDayNumber);
     setDaySelectOpen(false);
+    setExpanded(newDayNumber);
   };
 
   // When the user selects the add to a new day optiob in the bottom day select drawer,
@@ -240,6 +237,7 @@ function ItineraryPage() {
           style={style}
           dragAttributes={attributes}
           dragListeners={listeners}
+          isSelected={itineraryItem.id === selectedItemId}
         />
       </Grid>
     );
@@ -302,7 +300,11 @@ function ItineraryPage() {
                 // defaultExpanded={index === 0 ? true : false}
                 expanded={expanded === itineraryDay.dayNumber}
                 onChange={() => {
-                  setExpanded(expanded === itineraryDay.dayNumber ? null : itineraryDay.dayNumber )
+                  setExpanded(
+                    expanded === itineraryDay.dayNumber
+                      ? null
+                      : itineraryDay.dayNumber
+                  );
                 }}
                 sx={{
                   // borderRadius: 2,
@@ -320,7 +322,7 @@ function ItineraryPage() {
                   aria-controls="panel2-content"
                   id="panel2-header"
                   sx={{
-                    // backgroundColor: "transparent",
+                    backgroundColor: expanded === itineraryDay.dayNumber ? "primary.selected" : "transparent",
                     border: "1px solid #E0E0E0",
                     // border: "none",
                     // overflow: "hidden",
@@ -461,7 +463,10 @@ function ItineraryPage() {
         </Box>
         <DaySelectDrawer
           open={daySelectOpen}
-          onClose={() => setDaySelectOpen(false)}
+          onClose={() => {
+            setDaySelectOpen(false);
+            setSelectedItemId(null);
+          }}
           itinerary={itinerary}
           handleDaySelect={handleClickMoveItemDaySelect}
           handleClickAddDay={handleClickMoveItemNewDay}

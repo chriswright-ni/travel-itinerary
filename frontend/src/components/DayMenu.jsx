@@ -35,7 +35,7 @@ function DayMenu({
           textTransform: "none",
           display: "flex",
           alignItems: "center",
-          color: "secondary.main"
+          color: "primary.main"
         }}
         onClick={(e) => {
           e.stopPropagation();

@@ -8,6 +8,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import IconButton from "@mui/material/IconButton";
 import ItineraryItemMenu from "../components/ItineraryItemMenu";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import theme from "../themes/theme_five.js";
 
 function ItineraryItem({
   itineraryItem,
@@ -18,12 +19,23 @@ function ItineraryItem({
   ref,
   style,
   dragAttributes,
-  dragListeners
+  dragListeners,
+  isSelected,
+  // handleMenuOpen
+  setSelectedItemId
+
 }) {
   // console.log("item: ", itineraryItem)
   return (
     <Card
-      sx={{ maxWidth: "100%", display: "flex", mb: 2, position: "relative" }}
+      sx={{
+        maxWidth: "100%",
+        display: "flex",
+        mb: 2,
+        position: "relative",
+        borderRadius: 2,
+        borderLeft: isSelected ? `4px solid ${theme.palette.primary.main}` : "none"
+      }}
       ref={ref}
       style={style}
     >
@@ -39,11 +51,21 @@ function ItineraryItem({
         handleClickMoveItem={handleClickMoveItem}
         handleClickChangeTime={handleClickChangeTime}
         itineraryItem={itineraryItem}
+        isSelected={isSelected} 
       />
       <CardContent sx={{ flex: 1 }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ display: "flex", alignItems: "center", width: "10%", cursor: "grab"}} {...dragAttributes} {...dragListeners}>
-            <DragIndicatorIcon sx={{color: "text.secondary"}}/>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: "10%",
+              cursor: "grab",
+            }}
+            {...dragAttributes}
+            {...dragListeners}
+          >
+            <DragIndicatorIcon sx={{ color: "text.secondary" }} />
           </Box>
           <Box sx={{ textAlign: "left" }}>
             <Typography

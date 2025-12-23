@@ -7,6 +7,8 @@ const theme = createTheme(
         main: "#2C8AFF",
         // light: "#48D1B1",
         // dark: "#16A085",
+        selected: "#D6E7FF"
+        
       },
       secondary: {
         main: "#FF6A7A",

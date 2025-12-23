@@ -16,13 +16,15 @@ function ItineraryItemMenu({
   dayNumber,
   handleClickMoveItem,
   handleClickChangeTime,
-  itineraryItem
+  itineraryItem,
+ 
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -32,8 +34,10 @@ function ItineraryItemMenu({
       <IconButton
         aria-label="Card Menu"
         size="small"
-        onClick={handleClick}
-        sx={{ position: "absolute", right: 2, top: 5, color: "secondary.main" }}
+        onClick={(e) => {
+          handleClick(e);
+        }}
+        sx={{ position: "absolute", right: 2, top: 5, color: "primary.main" }}
       >
         <MoreVertIcon fontSize="large" />
       </IconButton>
@@ -41,7 +45,9 @@ function ItineraryItemMenu({
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
-        onClose={handleClose}
+        onClose={() => {
+          handleClose();
+        }}
         slotProps={{
           list: {
             "aria-labelledby": "basic-button",
@@ -60,12 +66,9 @@ function ItineraryItemMenu({
           <ListItemText>Move to another day</ListItemText>
         </MenuItem>
 
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
-            handleClickChangeTime(
-              itineraryItem,
-              dayNumber,
-            );
+            handleClickChangeTime(itineraryItem, dayNumber);
             handleClose();
           }}
         >
@@ -73,7 +76,7 @@ function ItineraryItemMenu({
             <ScheduleIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Change time</ListItemText>
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           onClick={() => {
             handleClickRemoveFromItinerary(itineraryItemId, dayNumber);
