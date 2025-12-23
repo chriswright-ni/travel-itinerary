@@ -82,7 +82,7 @@ function ItineraryPage() {
   const handleClickAddDay = () => {
     const newDayNumber = addDay();
     setExpanded(newDayNumber);
-    showNotification("This is a test message 1234")
+    showNotification(`Day ${newDayNumber} added`)
   };
 
   const handleClickRemoveDay = (dayToRemove) => {
@@ -112,6 +112,7 @@ function ItineraryPage() {
     moveItem(selectedItemId, currentDayNumber, newDayNumber);
     setDaySelectOpen(false);
     setExpanded(newDayNumber);
+    showNotification(`Item moved to Day ${newDayNumber}`)
   };
 
   // When the user selects the add to a new day optiob in the bottom day select drawer,
