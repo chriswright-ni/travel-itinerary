@@ -40,6 +40,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import DayMenu from "../components/DayMenu";
 import theme from "../themes/theme_five.js";
 import AddItemButton from "../components/AddItemButton";
+import { useNotificationContext } from "../contexts/NotificationContext";
 
 function ItineraryPage() {
   const {
@@ -61,6 +62,8 @@ function ItineraryPage() {
     setExpanded,
   } = useItineraryContext();
 
+  const { showNotification } = useNotificationContext();
+
   const navigate = useNavigate();
 
   const [daySelectOpen, setDaySelectOpen] = useState(false); // Day select bottom drawer state on itinerary page
@@ -79,8 +82,7 @@ function ItineraryPage() {
   const handleClickAddDay = () => {
     const newDayNumber = addDay();
     setExpanded(newDayNumber);
-    console.log(places); // Test code
-    console.log(placesById); // Test code
+    showNotification("This is a test message 1234")
   };
 
   const handleClickRemoveDay = (dayToRemove) => {

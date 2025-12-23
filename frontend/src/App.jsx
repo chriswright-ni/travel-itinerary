@@ -7,21 +7,26 @@ import { SearchProvider } from "./contexts/SearchContext";
 import { ItineraryProvider } from "./contexts/ItineraryContext";
 import theme from "./themes/theme_five.js";
 import { ThemeProvider } from "@mui/material/styles";
+import { NotificationProvider } from "./contexts/NotificationContext";
+import NotificationSnackbar from "./components/NotificationSnackbar.jsx";
 
 function App() {
   return (
     <div>
-      <ThemeProvider theme={theme}>
-        <SearchProvider>
-          <ItineraryProvider>
-            <Routes>
-              <Route path="/" element={<TripSetupPage />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/itinerary" element={<ItineraryPage />} />
-            </Routes>
-          </ItineraryProvider>
-        </SearchProvider>
-      </ThemeProvider>
+      <NotificationProvider>
+        <ThemeProvider theme={theme}>
+          <SearchProvider>
+            <ItineraryProvider>
+              <Routes>
+                <Route path="/" element={<TripSetupPage />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/itinerary" element={<ItineraryPage />} />
+              </Routes>
+            </ItineraryProvider>
+          </SearchProvider>
+        </ThemeProvider>
+        <NotificationSnackbar />
+      </NotificationProvider>
     </div>
   );
 }
