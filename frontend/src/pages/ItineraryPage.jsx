@@ -38,6 +38,8 @@ import DaySelectDrawer from "../components/DaySelectDrawer";
 import TimeSelectDrawer from "../components/TimeSelectDrawer";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import DayMenu from "../components/DayMenu";
+import theme from "../themes/theme_five.js";
+import AddItemButton from "../components/AddItemButton";
 
 function ItineraryPage() {
   const {
@@ -322,7 +324,10 @@ function ItineraryPage() {
                   aria-controls="panel2-content"
                   id="panel2-header"
                   sx={{
-                    backgroundColor: expanded === itineraryDay.dayNumber ? "primary.selected" : "transparent",
+                    backgroundColor:
+                      expanded === itineraryDay.dayNumber
+                        ? "primary.selected"
+                        : "transparent",
                     border: "1px solid #E0E0E0",
                     // border: "none",
                     // overflow: "hidden",
@@ -408,10 +413,22 @@ function ItineraryPage() {
                     >
                       <Grid container spacing={2} direction={"column"}>
                         {itineraryDay.itineraryItems.length === 0 ? (
-                          <Box>
+                          <Box
+                            sx={{
+                              border: `2px dashed ${theme.palette.text.secondary}`,
+                              borderRadius: 2,
+                              height: "120px",
+                              backgroundColor: "background.paper",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexDirection: "column"
+                            }}
+                          >
                             <Typography>
                               No itinerary items added yet!
                             </Typography>
+                            <AddItemButton handleClickAddItemToDay={() => handleClickAddItemToDay(itineraryDay.dayNumber)} itineraryDay={itineraryDay} />
                           </Box>
                         ) : (
                           itineraryDayWithTimes.itineraryItems.map(
@@ -427,15 +444,11 @@ function ItineraryPage() {
                       </Grid>
                     </SortableContext>
                   </DndContext>
-                  <Button
-                    variant="contained"
-                    // fullWidth
-                    onClick={() => {
-                      handleClickAddItemToDay(itineraryDay.dayNumber);
-                    }}
-                  >
-                    + Add item
-                  </Button>
+                  {itineraryDay.itineraryItems.length === 0 ? (
+                    ""
+                  ) : (
+                    <AddItemButton handleClickAddItemToDay={() => handleClickAddItemToDay(itineraryDay.dayNumber)} itineraryDay={itineraryDay} />
+                  )}
                 </AccordionDetails>
                 {/* <AccordionActions>
                   {editMode ? (
