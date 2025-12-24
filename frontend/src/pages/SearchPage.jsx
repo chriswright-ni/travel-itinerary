@@ -18,6 +18,7 @@ import louisVuittonImg from "../images/louisvuitton.jpg";
 import chanelImg from "../images/chanel.jpg";
 import leLouvreImg from "../images/lelouvre.jpg";
 import notreDameImg from "../images/notredame.jpg";
+import { useNotificationContext } from "../contexts/NotificationContext";
 
 function SearchPage() {
   const { locationData, setLocationData } = useSearchContext();
@@ -33,6 +34,8 @@ function SearchPage() {
     setActiveDay,
     addedPlaceIds,
   } = useItineraryContext();
+
+  const { showNotification } = useNotificationContext();
 
   const [daySelectOpen, setDaySelectOpen] = useState(false); // Day select bottom drawer state on search page
   const [selectedPlaceId, setSelectedPlaceId] = useState(null); // Selected place for adding to itinerary
@@ -89,6 +92,7 @@ function SearchPage() {
   const handleClickAddToItinerary = (placeId) => {
     if (activeDay) {
       addItemToItinerary(placeId, activeDay);
+      showNotification(`Item added to Day ${activeDay}`)
       setActiveDay(null);
       navigate("/itinerary");
       return;
@@ -100,6 +104,7 @@ function SearchPage() {
   // Adds item to itinerary after the day is selected from the bottom drawer
   const handleAddItemToItinerary = (dayNumber) => {
     addItemToItinerary(selectedPlaceId, dayNumber);
+    showNotification(`Item added to Day ${dayNumber}`)
     setDaySelectOpen(false);
   };
 

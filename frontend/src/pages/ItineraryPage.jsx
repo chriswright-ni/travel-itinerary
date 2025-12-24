@@ -87,10 +87,12 @@ function ItineraryPage() {
 
   const handleClickRemoveDay = (dayToRemove) => {
     removeDay(dayToRemove);
+    showNotification(`Day ${dayToRemove} removed`)
   };
 
   const handleClickRemoveFromItinerary = (itemIdToRemove, dayNumber) => {
     removeItem(itemIdToRemove, dayNumber);
+    showNotification(`Item removed from Day ${dayNumber}`)
   };
 
   const handleClickAddItemToDay = (dayNumber) => {
@@ -126,6 +128,7 @@ function ItineraryPage() {
 
   // When the item change time button is clicked, this function sets item to change and the day number
   // before opening the time select drawer
+  // NOTE: THIS FUNCTION MAY BE GETTING REMOVED 
   const handleClickChangeTime = (itemToChange, dayNumber) => {
     // console.log("itemToChange: ", itemToChange);
     setSelectedItem(itemToChange);
@@ -135,6 +138,8 @@ function ItineraryPage() {
     setTimeSelectOpen(true);
   };
 
+  // Sets the updated itinerary item time using the time set in the time select drawer
+  // NOTE: THIS FUNCTION MAY BE GETTING REMOVED 
   const handleClickTimeSelect = (newStartTime, newEndTime) => {
     changeTime(selectedItemId, currentDayNumber, newStartTime, newEndTime);
     setTimeSelectOpen(false);
@@ -149,9 +154,11 @@ function ItineraryPage() {
     setTimeSelectOpen(true);
   };
 
+  // Sets the updated day start time using the time set in the time select drawer
   const handleClickDayStartTimeSelect = (newStartTime) => {
     updateDayStartTime(currentDayNumber, newStartTime);
     setTimeSelectOpen(false);
+    showNotification(`Day ${currentDayNumber} start time updated`)
   };
 
   const findDayId = (itemId) => {
@@ -189,6 +196,7 @@ function ItineraryPage() {
         })
       );
     }
+    showNotification(`Day ${dayNumber} reordered`)
   };
 
   // const handleDragOver = (event) => {

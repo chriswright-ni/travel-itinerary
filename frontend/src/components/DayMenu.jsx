@@ -89,7 +89,7 @@ function DayMenu({
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Delete day</ListItemText>
+          <ListItemText>Remove day</ListItemText>
         </MenuItem>
       </Menu>
     </Box>

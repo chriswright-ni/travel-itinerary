@@ -15,7 +15,7 @@ function NotificationSnackbar() {
 
   return (
     <div>  
-      <Snackbar open={open} autoHideDuration={autoHideDuration} onClose={handleClose}>
+      <Snackbar open={open} autoHideDuration={autoHideDuration} onClose={handleClose} anchorOrigin={{vertical: "bottom", horizontal: "center"}} sx={{bottom: 65}}>
         <Alert
           onClose={handleClose}
           severity={severity}
