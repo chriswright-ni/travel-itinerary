@@ -82,7 +82,7 @@ function DayMenu({
         </MenuItem>
         <MenuItem
           onClick={(e) => {
-            handleClickRemoveDay(itineraryDay.dayNumber);
+            handleClickRemoveDay(itineraryDay);
             handleClose(e);
           }}
         >

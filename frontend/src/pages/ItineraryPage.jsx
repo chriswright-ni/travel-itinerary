@@ -40,6 +40,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import DayMenu from "../components/DayMenu";
 import theme from "../themes/theme_five.js";
 import AddItemButton from "../components/AddItemButton";
+import DeleteDayDialog from "../components/DeleteDayDialog";
 import { useNotificationContext } from "../contexts/NotificationContext";
 
 function ItineraryPage() {
@@ -73,6 +74,8 @@ function ItineraryPage() {
   const [selectedItemId, setSelectedItemId] = useState(null); // Selected itinerary item for moving to another day or changing time
   const [selectedItem, setSelectedItem] = useState(null); // Selected itinerary item for moving to another day or changing time
   const [isDayStartTime, setIsDayStartTime] = useState(false); // Boolean sets to true if the day starting time is being changed
+  const [deleteDayDialogOpen, setDeleteDayDialogOpen] = useState(false); // State to control the delete day dialog
+  const [dayNumberToRemove, setDayNumberToRemove] = useState(null); // The day to be removed to provide data to confirmation dialog
 
   // useEffect(() => {
   //   console.log("Itinerary update: ", itinerary);
@@ -82,17 +85,31 @@ function ItineraryPage() {
   const handleClickAddDay = () => {
     const newDayNumber = addDay();
     setExpanded(newDayNumber);
-    showNotification(`Day ${newDayNumber} added`)
+    showNotification(`Day ${newDayNumber} added`);
   };
 
+  // Calls the removeDay function and displays notification
+  // If the day has items, a confirmation dialog opens
   const handleClickRemoveDay = (dayToRemove) => {
-    removeDay(dayToRemove);
-    showNotification(`Day ${dayToRemove} removed`)
+    if (dayToRemove.itineraryItems.length > 0) {
+      console.log("Test 17:10: ", dayToRemove)
+      setDayNumberToRemove(dayToRemove.dayNumber);
+      setDeleteDayDialogOpen(true);
+    } else {
+      removeDay(dayToRemove.dayNumber);
+      showNotification(`Day ${dayToRemove.dayNumber} removed`);
+    }
+  };
+
+  // Calls the removeDay function from the remove day confirmation dialog
+  const handleRemoveDay = (dayNumberToRemove) => {
+    removeDay(dayNumberToRemove);
+    showNotification(`Day ${dayNumberToRemove} removed`);
   };
 
   const handleClickRemoveFromItinerary = (itemIdToRemove, dayNumber) => {
     removeItem(itemIdToRemove, dayNumber);
-    showNotification(`Item removed from Day ${dayNumber}`)
+    showNotification(`Item removed from Day ${dayNumber}`);
   };
 
   const handleClickAddItemToDay = (dayNumber) => {
@@ -114,7 +131,7 @@ function ItineraryPage() {
     moveItem(selectedItemId, currentDayNumber, newDayNumber);
     setDaySelectOpen(false);
     setExpanded(newDayNumber);
-    showNotification(`Item moved to Day ${newDayNumber}`)
+    showNotification(`Item moved to Day ${newDayNumber}`);
   };
 
   // When the user selects the add to a new day optiob in the bottom day select drawer,
@@ -128,7 +145,7 @@ function ItineraryPage() {
 
   // When the item change time button is clicked, this function sets item to change and the day number
   // before opening the time select drawer
-  // NOTE: THIS FUNCTION MAY BE GETTING REMOVED 
+  // NOTE: THIS FUNCTION MAY BE GETTING REMOVED
   const handleClickChangeTime = (itemToChange, dayNumber) => {
     // console.log("itemToChange: ", itemToChange);
     setSelectedItem(itemToChange);
@@ -139,7 +156,7 @@ function ItineraryPage() {
   };
 
   // Sets the updated itinerary item time using the time set in the time select drawer
-  // NOTE: THIS FUNCTION MAY BE GETTING REMOVED 
+  // NOTE: THIS FUNCTION MAY BE GETTING REMOVED
   const handleClickTimeSelect = (newStartTime, newEndTime) => {
     changeTime(selectedItemId, currentDayNumber, newStartTime, newEndTime);
     setTimeSelectOpen(false);
@@ -158,7 +175,7 @@ function ItineraryPage() {
   const handleClickDayStartTimeSelect = (newStartTime) => {
     updateDayStartTime(currentDayNumber, newStartTime);
     setTimeSelectOpen(false);
-    showNotification(`Day ${currentDayNumber} start time updated`)
+    showNotification(`Day ${currentDayNumber} start time updated`);
   };
 
   const findDayId = (itemId) => {
@@ -196,7 +213,7 @@ function ItineraryPage() {
         })
       );
     }
-    showNotification(`Day ${dayNumber} reordered`)
+    showNotification(`Day ${dayNumber} reordered`);
   };
 
   // const handleDragOver = (event) => {
@@ -300,168 +317,183 @@ function ItineraryPage() {
 
           <Button variant="outlined">Optimise Route</Button>
         </Box>
-        <Box>
-          {itinerary.map((itineraryDay, index) => {
-            // Generate itinerary day with dynamically generated start and end times
-            const itineraryDayWithTimes = calculateItineraryTimes(
-              itineraryDay,
-              30
-            );
-            return (
-              <Accordion
-                key={itineraryDay.dayNumber}
-                // defaultExpanded={index === 0 ? true : false}
-                expanded={expanded === itineraryDay.dayNumber}
-                onChange={() => {
-                  setExpanded(
-                    expanded === itineraryDay.dayNumber
-                      ? null
-                      : itineraryDay.dayNumber
-                  );
-                }}
-                sx={{
-                  // borderRadius: 2,
-                  mx: 2,
-                  // mb: 2
-                  "&:before": {
-                    display: "none",
-                  },
-                  // overflow: "hidden",
-                }}
-                elevation={0}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel2-content"
-                  id="panel2-header"
-                  sx={{
-                    backgroundColor:
+        <Box sx={{ pb: 15 }}>
+          <Box>
+            {itinerary.map((itineraryDay, index) => {
+              // Generate itinerary day with dynamically generated start and end times
+              const itineraryDayWithTimes = calculateItineraryTimes(
+                itineraryDay,
+                30
+              );
+              return (
+                <Accordion
+                  key={itineraryDay.dayNumber}
+                  // defaultExpanded={index === 0 ? true : false}
+                  expanded={expanded === itineraryDay.dayNumber}
+                  onChange={() => {
+                    setExpanded(
                       expanded === itineraryDay.dayNumber
-                        ? "primary.selected"
-                        : "transparent",
-                    border: "1px solid #E0E0E0",
-                    // border: "none",
-                    // overflow: "hidden",
-                    // padding: 0,
-                    borderRadius: 2,
-                    // "&:before": {
-                    //   display: "none"
-                    // }
-                    // "& .Mui-focusVisible": {
-                    //   outline: "none",
-                    //   bgcolor: "transparent"
-                    // },
-                    "&:focus": {
-                      outline: "none",
-                      // bgcolor: "transparent"
-                    },
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                        ? null
+                        : itineraryDay.dayNumber
+                    );
                   }}
+                  sx={{
+                    // borderRadius: 2,
+                    mx: 2,
+                    mb: 1,
+                    "&:before": {
+                      display: "none",
+                    },
+                    // overflow: "hidden",
+                  }}
+                  elevation={0}
                 >
-                  <Box
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel2-content"
+                    id="panel2-header"
                     sx={{
-                      // backgroundColor: "primary.light",
-                      // border: "1px solid #E0E0E0",
-                      // // overflow: "hidden",
-                      // // bgcolor: "background.paper",
-                      // borderRadius: 2,
-                      // py: 1,
-                      // px: 2,
-                      // width: "100%",
-                      // boxShadow: 2,
+                      backgroundColor:
+                        expanded === itineraryDay.dayNumber
+                          ? "primary.selected"
+                          : "transparent",
+                      border: "1px solid #E0E0E0",
+                      // border: "none",
+                      // overflow: "hidden",
+                      // padding: 0,
+                      borderRadius: 2,
+                      // "&:before": {
+                      //   display: "none"
+                      // }
+                      // "& .Mui-focusVisible": {
+                      //   outline: "none",
+                      //   bgcolor: "transparent"
+                      // },
+                      "&:focus": {
+                        outline: "none",
+                        // bgcolor: "transparent"
+                      },
                       display: "flex",
-                      flex: 1,
-                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                     }}
                   >
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Typography>{`Day ${itineraryDay.dayNumber}`}</Typography>
-                      <FiberManualRecordIcon
-                        sx={{ fontSize: "0.375rem", mx: 1 }}
-                      />
-                      <Typography>{`${
-                        tripDetails.startDate
-                          ? dayjs(tripDetails.startDate)
-                              .add(index, "day")
-                              .format("ddd D MMM")
-                          : "Mon 22 Dec" // CHANGE THIS
-                      }`}</Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Typography>{`Start at ${itineraryDay.dayStartTime}`}</Typography>
-                      <FiberManualRecordIcon
-                        sx={{ fontSize: "0.375rem", mx: 1 }}
-                      />
-                      <Typography>{`${itineraryDay.itineraryItems.length} ${
-                        itineraryDay.itineraryItems.length > 1
-                          ? "Items"
-                          : "Item"
-                      }`}</Typography>
-                    </Box>
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <DayMenu
-                      itineraryDay={itineraryDay}
-                      handleClickRemoveDay={handleClickRemoveDay}
-                      handleClickChangeDayTime={handleClickChangeDayTime}
-                    />
-                  </Box>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <DndContext
-                    sensors={sensors}
-                    collisionDetection={closestCenter}
-                    onDragEnd={(event) =>
-                      handleDragEnd(event, itineraryDay.dayNumber)
-                    }
-                    // onDragOver={handleDragOver}
-                  >
-                    <SortableContext
-                      items={itineraryDay.itineraryItems.map((item) => item.id)}
-                      strategy={verticalListSortingStrategy}
+                    <Box
+                      sx={{
+                        // backgroundColor: "primary.light",
+                        // border: "1px solid #E0E0E0",
+                        // // overflow: "hidden",
+                        // // bgcolor: "background.paper",
+                        // borderRadius: 2,
+                        // py: 1,
+                        // px: 2,
+                        // width: "100%",
+                        // boxShadow: 2,
+                        display: "flex",
+                        flex: 1,
+                        flexDirection: "column",
+                      }}
                     >
-                      <Grid container spacing={2} direction={"column"}>
-                        {itineraryDay.itineraryItems.length === 0 ? (
-                          <Box
-                            sx={{
-                              border: `2px dashed ${theme.palette.text.secondary}`,
-                              borderRadius: 2,
-                              height: "120px",
-                              backgroundColor: "background.paper",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              flexDirection: "column"
-                            }}
-                          >
-                            <Typography>
-                              No itinerary items added yet!
-                            </Typography>
-                            <AddItemButton handleClickAddItemToDay={() => handleClickAddItemToDay(itineraryDay.dayNumber)} itineraryDay={itineraryDay} />
-                          </Box>
-                        ) : (
-                          itineraryDayWithTimes.itineraryItems.map(
-                            (itineraryItem) => (
-                              <SortableItineraryItem
-                                key={itineraryItem.id}
-                                itineraryItem={itineraryItem}
-                                dayNumber={itineraryDay.dayNumber}
-                              />
-                            )
-                          )
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Typography>{`Day ${itineraryDay.dayNumber}`}</Typography>
+                        <FiberManualRecordIcon
+                          sx={{ fontSize: "0.375rem", mx: 1 }}
+                        />
+                        <Typography>{`${
+                          tripDetails.startDate
+                            ? dayjs(tripDetails.startDate)
+                                .add(index, "day")
+                                .format("ddd D MMM")
+                            : "Mon 22 Dec" // CHANGE THIS
+                        }`}</Typography>
+                      </Box>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Typography>{`Start at ${itineraryDay.dayStartTime}`}</Typography>
+                        <FiberManualRecordIcon
+                          sx={{ fontSize: "0.375rem", mx: 1 }}
+                        />
+                        <Typography>{`${itineraryDay.itineraryItems.length} ${
+                          itineraryDay.itineraryItems.length > 1
+                            ? "Items"
+                            : "Item"
+                        }`}</Typography>
+                      </Box>
+                    </Box>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <DayMenu
+                        itineraryDay={itineraryDay}
+                        handleClickRemoveDay={handleClickRemoveDay}
+                        handleClickChangeDayTime={handleClickChangeDayTime}
+                      />
+                    </Box>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={(event) =>
+                        handleDragEnd(event, itineraryDay.dayNumber)
+                      }
+                      // onDragOver={handleDragOver}
+                    >
+                      <SortableContext
+                        items={itineraryDay.itineraryItems.map(
+                          (item) => item.id
                         )}
-                      </Grid>
-                    </SortableContext>
-                  </DndContext>
-                  {itineraryDay.itineraryItems.length === 0 ? (
-                    ""
-                  ) : (
-                    <AddItemButton handleClickAddItemToDay={() => handleClickAddItemToDay(itineraryDay.dayNumber)} itineraryDay={itineraryDay} />
-                  )}
-                </AccordionDetails>
-                {/* <AccordionActions>
+                        strategy={verticalListSortingStrategy}
+                      >
+                        <Grid container spacing={2} direction={"column"}>
+                          {itineraryDay.itineraryItems.length === 0 ? (
+                            <Box
+                              sx={{
+                                border: `2px dashed ${theme.palette.text.secondary}`,
+                                borderRadius: 2,
+                                height: "120px",
+                                backgroundColor: "background.paper",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <Typography>
+                                No itinerary items added yet!
+                              </Typography>
+                              <AddItemButton
+                                handleClickAddItemToDay={() =>
+                                  handleClickAddItemToDay(
+                                    itineraryDay.dayNumber
+                                  )
+                                }
+                                itineraryDay={itineraryDay}
+                              />
+                            </Box>
+                          ) : (
+                            itineraryDayWithTimes.itineraryItems.map(
+                              (itineraryItem) => (
+                                <SortableItineraryItem
+                                  key={itineraryItem.id}
+                                  itineraryItem={itineraryItem}
+                                  dayNumber={itineraryDay.dayNumber}
+                                />
+                              )
+                            )
+                          )}
+                        </Grid>
+                      </SortableContext>
+                    </DndContext>
+                    {itineraryDay.itineraryItems.length === 0 ? (
+                      ""
+                    ) : (
+                      <AddItemButton
+                        handleClickAddItemToDay={() =>
+                          handleClickAddItemToDay(itineraryDay.dayNumber)
+                        }
+                        itineraryDay={itineraryDay}
+                      />
+                    )}
+                  </AccordionDetails>
+                  {/* <AccordionActions>
                   {editMode ? (
                     <Button
                       variant="outlined"
@@ -476,14 +508,15 @@ function ItineraryPage() {
                     ""
                   )}
                 </AccordionActions> */}
-              </Accordion>
-            );
-          })}
-        </Box>
-        <Box>
-          <Button variant="outlined" fullWidth onClick={handleClickAddDay}>
-            Add day
-          </Button>
+                </Accordion>
+              );
+            })}
+          </Box>
+          <Box>
+            <Button variant="outlined" fullWidth onClick={handleClickAddDay}>
+              Add day
+            </Button>
+          </Box>
         </Box>
         <DaySelectDrawer
           open={daySelectOpen}
@@ -514,6 +547,12 @@ function ItineraryPage() {
               ? handleClickDayStartTimeSelect
               : handleClickTimeSelect
           }
+        />
+        <DeleteDayDialog
+          open={deleteDayDialogOpen}
+          onClose={() => setDeleteDayDialogOpen(false)}
+          dayNumber={dayNumberToRemove}
+          handleRemoveDay={handleRemoveDay}
         />
         <BottomNav />
       </Box>
