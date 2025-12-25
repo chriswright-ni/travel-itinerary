@@ -52,6 +52,8 @@ function BottomNav() {
           label="Map"
           value="map"
           icon={<LocationOnIcon />}
+          component={Link}
+          to='/map'
         />
       </BottomNavigation>
     </Paper>
