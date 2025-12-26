@@ -20,28 +20,28 @@ function App() {
     <div>
       <NotificationProvider>
         <ThemeProvider theme={theme}>
-          <MapProvider>
-            {/* MapPage info: To avoid unmounting the map container due to route changes,
+          <SearchProvider>
+            <ItineraryProvider>
+              <MapProvider>
+                {/* MapPage info: To avoid unmounting the map container due to route changes,
             the map is being mounted once on app load, and shall remain mounted at all times.
             It is not tied to a route.  The MapPage is displayed based on the pathname of the route. */}
-            <Box
-              sx={{
-                display: showMap ? "block" : "none",
-              }}
-            >
-              <MapPage />
-            </Box>
-            <SearchProvider>
-              <ItineraryProvider>
+                <Box
+                  sx={{
+                    display: showMap ? "block" : "none",
+                  }}
+                >
+                  <MapPage showMap={showMap} />
+                </Box>
                 <Routes>
                   <Route path="/" element={<TripSetupPage />} />
                   <Route path="/search" element={<SearchPage />} />
                   <Route path="/itinerary" element={<ItineraryPage />} />
                   <Route path="/map" element={<Box />} />
                 </Routes>
-              </ItineraryProvider>
-            </SearchProvider>
-          </MapProvider>
+              </MapProvider>
+            </ItineraryProvider>
+          </SearchProvider>
         </ThemeProvider>
         <NotificationSnackbar />
       </NotificationProvider>

@@ -55,6 +55,8 @@ function SearchPage() {
       distance: 400,
       rating: 4.8,
       imageUrl: eiffelTowerImg,
+      latitude: 48.8584,
+      longitude: 2.2945
     },
     {
       id: 2,
@@ -63,17 +65,23 @@ function SearchPage() {
       distance: 680,
       rating: 4.9,
       imageUrl: louisVuittonImg,
+      latitude: 48.8700,
+      longitude: 2.3100
     },
-    { id: 3, name: "Le Louvre", category: "Art", distance: 1045, rating: 4.5, imageUrl: leLouvreImg },
+    { id: 3, name: "Le Louvre", category: "Art", distance: 1045, rating: 4.5, imageUrl: leLouvreImg, latitude: 48.8606,
+      longitude: 2.3376 },
     {
       id: 4,
       name: "Notre Dame",
       category: "History",
       distance: 300,
       rating: 4.5,
-      imageUrl: notreDameImg
+      imageUrl: notreDameImg,
+      latitude: 48.8530,
+      longitude: 2.3499
     },
-    { id: 5, name: "Chanel", category: "Shopping", distance: 378, rating: 4.6, imageUrl: chanelImg },
+    { id: 5, name: "Chanel", category: "Shopping", distance: 378, rating: 4.6, imageUrl: chanelImg, latitude: 48.8690,
+      longitude: 2.323 },
   ];
 
   // Temp useEffect to store temp places data for the purpose of development without making API calls

@@ -87,6 +87,8 @@ export const ItineraryProvider = ({ children }) => {
       placeId: placeId,
       startTime: "09:05",
       endTime: "11:00",
+      latitude: place.latitude,
+      longitude: place.longitude
     };
 
     setNextItineraryItemId((prev) => prev + 1);
