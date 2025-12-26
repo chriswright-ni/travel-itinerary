@@ -31,7 +31,7 @@ function TimeSelectDrawer({
     dayjs().hour(0).minute(0).second(0)
   );
 
-  console.log("current start time: ", currentStartTime);
+  // console.log("current start time: ", currentStartTime);
   // This useEffect updates the startTime whenever the drawer is opened
   // This prevents errors on the 1st render of the drawer
   // It occurs only when the currentStartTime is defined

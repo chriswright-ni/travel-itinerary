@@ -7,12 +7,11 @@ import { useMapContext } from "../contexts/MapContext";
 
 function MapPage() {
 
-
   const mapRef = useRef();
   const mapContainerRef = useRef();
 
   useEffect(() => {
-
+    if (!mapRef.current) {
     mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN;
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
@@ -20,11 +19,9 @@ function MapPage() {
       zoom: 11,
     });
     console.log("NEW MAP LOAD!!!")
+  }
 
-    return () => {
-      mapRef.current.remove();
-    };
-  });
+  }, []);
 
   return (
     <>
