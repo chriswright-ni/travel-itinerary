@@ -8,6 +8,8 @@ import { useItineraryContext } from "../contexts/ItineraryContext";
 import ItemMarker from "../components/ItemMarker";
 import "mapbox-gl/dist/mapbox-gl.css";
 import DaySelector from "../components/DaySelector";
+import Fab from "@mui/material/Fab";
+import CenterFocusStrongIcon from "@mui/icons-material/CenterFocusStrong";
 
 function MapPage({ showMap }) {
   const { itinerary } = useItineraryContext();
@@ -17,10 +19,26 @@ function MapPage({ showMap }) {
   const mapRef = useRef();
   const mapContainerRef = useRef();
 
+  // Sets the selectedDayNumber state when the day chip is selected
   const handleDaySelect = (day) => {
     if (day.dayNumber === selectedDayNumber) return;
     setSelectedDayNumber(day.dayNumber);
   };
+
+  // Fits all markers within the map viewport
+  const handleClickFitMarkers = (itineraryItems, map) => {
+    const bounds = new mapboxgl.LngLatBounds();
+
+    itineraryItems.forEach((item) => {
+      bounds.extend([item.longitude, item.latitude])
+    })
+
+    if (itineraryItems.length === 1) {
+      map.fitBounds(bounds, {padding: 50, zoom: 13})
+    } else {
+      map.fitBounds(bounds, {padding: 50})
+    }
+  }
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -68,15 +86,23 @@ function MapPage({ showMap }) {
           }}
         ></Box>
         {mapRef.current &&
-          itinerary[selectedDayNumber - 1].itineraryItems.map((place, index) => (
-            <ItemMarker
-              key={place.id}
-              map={mapRef.current}
-              latitude={place.latitude}
-              longitude={place.longitude}
-              itemNumber={index + 1}
-            />
-          ))}
+          itinerary[selectedDayNumber - 1].itineraryItems.map(
+            (place, index) => (
+              <ItemMarker
+                key={place.id}
+                map={mapRef.current}
+                latitude={place.latitude}
+                longitude={place.longitude}
+                itemNumber={index + 1}
+              />
+            )
+          )}
+          <Box sx={{position: "absolute", bottom: 110, right: 20}}>
+
+        <Fab aria-label="add" sx={{backgroundColor: "background.paper"}} onClick={() => handleClickFitMarkers(itinerary[selectedDayNumber - 1].itineraryItems, mapRef.current)}>
+          <CenterFocusStrongIcon />
+        </Fab>
+          </Box>
         <BottomNav />
       </Box>
     </>
