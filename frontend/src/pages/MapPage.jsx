@@ -7,12 +7,20 @@ import { useMapContext } from "../contexts/MapContext";
 import { useItineraryContext } from "../contexts/ItineraryContext";
 import ItemMarker from "../components/ItemMarker";
 import "mapbox-gl/dist/mapbox-gl.css";
+import DaySelector from "../components/DaySelector";
 
 function MapPage({ showMap }) {
   const { itinerary } = useItineraryContext();
 
+  const [selectedDayNumber, setSelectedDayNumber] = useState(1);
+
   const mapRef = useRef();
   const mapContainerRef = useRef();
+
+  const handleDaySelect = (day) => {
+    if (day.dayNumber === selectedDayNumber) return;
+    setSelectedDayNumber(day.dayNumber);
+  };
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -46,9 +54,21 @@ function MapPage({ showMap }) {
         <Box>
           <Typography>Header</Typography>
         </Box>
-        <Box id="map-container" ref={mapContainerRef} sx={{ flex: 1 }}></Box>
+        <DaySelector
+          onDaySelect={handleDaySelect}
+          selected={selectedDayNumber}
+        />
+        <Box
+          id="map-container"
+          ref={mapContainerRef}
+          sx={{
+            flex: 1,
+            "& .mapboxgl-ctrl-bottom-left": { mb: "60px", ml: "5px" },
+            "& .mapboxgl-ctrl-bottom-right": { mb: "55px", mr: "5px" },
+          }}
+        ></Box>
         {mapRef.current &&
-          itinerary[0].itineraryItems.map((place) => (
+          itinerary[selectedDayNumber - 1].itineraryItems.map((place) => (
             <ItemMarker
               key={place.id}
               map={mapRef.current}

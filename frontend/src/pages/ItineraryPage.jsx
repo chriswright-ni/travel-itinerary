@@ -134,7 +134,7 @@ function ItineraryPage() {
     showNotification(`Item moved to Day ${newDayNumber}`);
   };
 
-  // When the user selects the add to a new day optiob in the bottom day select drawer,
+  // When the user selects the add to a new day option in the bottom day select drawer,
   // this function adds a new day, and calls the moveItem function with the newly
   // created day number
   const handleClickMoveItemNewDay = () => {

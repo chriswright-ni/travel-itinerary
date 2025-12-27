@@ -1,9 +1,11 @@
 import Box from '@mui/joy/Box';
 import OptionChip from './OptionChip';
+import { useItineraryContext } from "../contexts/ItineraryContext";
 
-const interests = ["Museums", "Food & Drink", "History", "Shopping", "Iconic Sights", "Nature & Scenery"];
 
-function InterestSelector({onInterestSelect, selected}) {
+function DaySelector({onDaySelect, selected}) {
+
+  const { itinerary } = useItineraryContext();
 
   return (
     <Box
@@ -23,11 +25,11 @@ function InterestSelector({onInterestSelect, selected}) {
         borderRadius: 3
       }}
     >
-      {interests.map((interest) => (
-        <OptionChip label={interest} key={interest} onClick={() => onInterestSelect(interest)} selected={selected===interest}/>
+      {itinerary.map((itineraryDay) => (
+        <OptionChip label={`Day ${itineraryDay.dayNumber}`} key={itineraryDay.dayNumber} onClick={() => onDaySelect(itineraryDay)} selected={selected===itineraryDay.dayNumber}/>
       ))}
     </Box>
   );
 }
 
-export default InterestSelector;
+export default DaySelector;
