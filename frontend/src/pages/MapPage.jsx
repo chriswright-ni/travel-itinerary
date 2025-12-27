@@ -68,12 +68,13 @@ function MapPage({ showMap }) {
           }}
         ></Box>
         {mapRef.current &&
-          itinerary[selectedDayNumber - 1].itineraryItems.map((place) => (
+          itinerary[selectedDayNumber - 1].itineraryItems.map((place, index) => (
             <ItemMarker
               key={place.id}
               map={mapRef.current}
               latitude={place.latitude}
               longitude={place.longitude}
+              itemNumber={index + 1}
             />
           ))}
         <BottomNav />
