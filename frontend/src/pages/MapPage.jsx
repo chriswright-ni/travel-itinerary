@@ -11,12 +11,15 @@ import DaySelector from "../components/DaySelector";
 import Fab from "@mui/material/Fab";
 import CenterFocusStrongIcon from "@mui/icons-material/CenterFocusStrong";
 import RouteIcon from '@mui/icons-material/Route';
+import { useNotificationContext } from "../contexts/NotificationContext";
+
 
 function MapPage({ showMap }) {
 
   const mapboxAccessToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN
 
   const { itinerary } = useItineraryContext();
+  const { showNotification } = useNotificationContext();
 
   const [selectedDayNumber, setSelectedDayNumber] = useState(1);
   const [showRoute, setShowRoute] = useState(false);
@@ -34,6 +37,7 @@ function MapPage({ showMap }) {
   const fitMarkersToViewport = (itineraryItems, map) => {
     
     if (!map) return;
+    if (itineraryItems.length === 0) return;
     
     const bounds = new mapboxgl.LngLatBounds();
 
@@ -53,9 +57,16 @@ function MapPage({ showMap }) {
   // Toggles the route view
   const handleClickShowRoute = (selectedDayNumber, map) => {
     // console.log(itinerary[selectedDayNumber - 1].itineraryItems)
+    const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
     if (!showRoute) {
-      getRoute(itinerary[selectedDayNumber - 1].itineraryItems, map)
+      getRoute(itineraryItems, map)
       setShowRoute(true);
+      if (itineraryItems.length === 0) {
+        showNotification("Add 2 more items to see a route")
+      }
+      if (itineraryItems.length === 1) {
+        showNotification("Add 1 more item to see a route")
+      }
     } else {
       hideRoute(map);
       setShowRoute(false)
@@ -209,7 +220,7 @@ function MapPage({ showMap }) {
               />
             )
           )}
-        <Box sx={{ position: "absolute", bottom: 110, right: 20 }}>
+        <Box sx={{ position: "absolute", bottom: 130, right: 20 }}>
           <Fab
             aria-label="add"
             sx={{ backgroundColor: "background.paper" }}
@@ -223,12 +234,12 @@ function MapPage({ showMap }) {
             <CenterFocusStrongIcon />
           </Fab>
         </Box>
-        <Box sx={{ position: "absolute", bottom: 110, right: 100 }}>
+        <Box sx={{ position: "absolute", bottom: 130, right: 100 }}>
           <Fab
             aria-label="add"
-            sx={{ backgroundColor: "background.paper" }}
-            onClick={() =>
-              handleClickShowRoute(selectedDayNumber, mapRef.current)
+            sx={{ backgroundColor: showRoute ? "secondary.main" : "background.paper" }}
+            onClick={() => {
+              handleClickShowRoute(selectedDayNumber, mapRef.current)}
             }
           >
             <RouteIcon />
