@@ -31,7 +31,10 @@ function MapPage({ showMap }) {
   };
 
   // Fits all markers within the map viewport
-  const handleClickFitMarkers = (itineraryItems, map) => {
+  const fitMarkersToViewport = (itineraryItems, map) => {
+    
+    if (!map) return;
+    
     const bounds = new mapboxgl.LngLatBounds();
 
     itineraryItems.forEach((item) => {
@@ -39,13 +42,15 @@ function MapPage({ showMap }) {
     });
 
     if (itineraryItems.length === 1) {
-      map.fitBounds(bounds, { padding: 50, zoom: 13 });
+      // map.fitBounds(bounds, { padding: 50, zoom: 13.5 });
+      map.flyTo({center: [itineraryItems[0].longitude, itineraryItems[0].latitude], zoom: 13});
     } else {
       map.fitBounds(bounds, { padding: 50 });
     }
   };
 
  
+  // Toggles the route view
   const handleClickShowRoute = (selectedDayNumber, map) => {
     // console.log(itinerary[selectedDayNumber - 1].itineraryItems)
     if (!showRoute) {
@@ -69,6 +74,8 @@ function MapPage({ showMap }) {
   const getRoute = async (itineraryItems, map) => {
     console.log(itineraryItems)
     if (!map) return;
+
+    if (itineraryItems.length < 2) return;
 
     const coordinatesList = getItemCoordinateList(itineraryItems)
 
@@ -108,10 +115,40 @@ function MapPage({ showMap }) {
     }
   };
 
+  // Hides the route on the map, if the map contains a route
   const hideRoute = (map) => {
-    map.removeLayer("route");
-    map.removeSource("route");
+    if (map.getLayer("route")) {
+      map.removeLayer("route");
+    }
+    if (map.getSource("route")) {
+      map.removeSource("route");
+    }
   }
+
+  // Fits markers to viewport automatically when a different day has been selected on the map page
+  // or when the itinerary has been updated
+  useEffect(() => {
+    const day = itinerary[selectedDayNumber - 1];
+    if (!day) return;
+    const items = day.itineraryItems;
+    if (items.length === 0) return;
+
+    fitMarkersToViewport(itinerary[selectedDayNumber - 1].itineraryItems, mapRef.current)
+  }, [selectedDayNumber, itinerary])
+
+  // Updates routes when the itinerary is updated, or the day select has changed on map page
+  // If the itinerary item count for the day goes to 0 or 1, the route is removed but show route state remains active
+  useEffect(() => {
+
+    if (!mapRef.current) return;
+
+    const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
+    if (showRoute && itineraryItems.length > 1) {
+      getRoute(itineraryItems, mapRef.current)
+    } else {
+      hideRoute(mapRef.current)
+    }
+  }, [selectedDayNumber, itinerary])
 
   // Load the map as soon as the component is mounted
   useEffect(() => {
@@ -177,7 +214,7 @@ function MapPage({ showMap }) {
             aria-label="add"
             sx={{ backgroundColor: "background.paper" }}
             onClick={() =>
-              handleClickFitMarkers(
+              fitMarkersToViewport(
                 itinerary[selectedDayNumber - 1].itineraryItems,
                 mapRef.current
               )

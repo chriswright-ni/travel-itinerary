@@ -81,7 +81,7 @@ function SearchPage() {
       longitude: 2.3499
     },
     { id: 5, name: "Chanel", category: "Shopping", distance: 378, rating: 4.6, imageUrl: chanelImg, latitude: 48.8690,
-      longitude: 2.323 },
+      longitude: 2.3230 }
   ];
 
   // Temp useEffect to store temp places data for the purpose of development without making API calls
@@ -119,6 +119,7 @@ function SearchPage() {
   const handleClickAddDay = () => {
     const newDayNumber = addDay();
     addItemToItinerary(selectedPlaceId, newDayNumber);
+    showNotification(`Item added to Day ${newDayNumber}`)
     setDaySelectOpen(false);
   };
 
