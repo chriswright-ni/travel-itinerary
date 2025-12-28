@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import theme from "../themes/theme_five.js";
+import "../css/MarkerPopup.css"
 
-function ItemMarker({ map, latitude, longitude, itemNumber }) {
+function ItemMarker({ map, latitude, longitude, itemNumber, placeName }) {
   
   const el = document.createElement('div');
   el.className = "item-marker"
@@ -29,9 +30,9 @@ function ItemMarker({ map, latitude, longitude, itemNumber }) {
     markerRef.current = new mapboxgl.Marker(el)
       .setLngLat([longitude, latitude])
       .setPopup(
-        new mapboxgl.Popup({ offset: 25 })
+        new mapboxgl.Popup({ offset: 25, closeButton: false })
           .setHTML(
-            `<h3>Eiffel Tower</h3><p></p>`
+            `<h3>${placeName}</h3><p></p>`
           )
       )
       .addTo(map);
