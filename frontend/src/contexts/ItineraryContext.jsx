@@ -100,7 +100,7 @@ export const ItineraryProvider = ({ children }) => {
     setItinerary((prev) =>
       prev.map((day) =>
         day.dayNumber === dayNumber
-          ? { ...day, itineraryItems: [...day.itineraryItems, itineraryItem] }
+          ? { ...day, itineraryItems: [...day.itineraryItems, itineraryItem], route: null }
           : day
       )
     );
@@ -119,6 +119,8 @@ export const ItineraryProvider = ({ children }) => {
                   (item) => item.id !== itemIdToRemove
                 ),
               ],
+              route: null
+    
             }
           : day
       )
@@ -162,12 +164,15 @@ export const ItineraryProvider = ({ children }) => {
             itineraryItems: [
               ...day.itineraryItems.filter((item) => item.id !== itemIdToMove),
             ],
+            route: null
+        
           };
         }
         if (day.dayNumber === newDayNumber) {
           return {
             ...day,
             itineraryItems: [...day.itineraryItems, itemToMove],
+            route: null
           };
         }
         return day;
@@ -251,6 +256,49 @@ export const ItineraryProvider = ({ children }) => {
     });
   }
 
+
+  // Save the route in the itinerary day object
+  const updateSavedRoute = (dayNumber, route) => {
+    setItinerary((prev) => {
+    
+      if (!dayNumber) {
+        return prev;
+      }
+      if (!route) {
+        return prev;
+      }
+
+      return prev.map((day) => 
+        day.dayNumber === dayNumber
+          ? {
+              ...day,
+              route: route
+            }
+          : day
+      );
+    });
+  }
+
+  // Sets route object to null
+  const clearSavedRoute = (dayNumber) => {
+    setItinerary((prev) => {
+
+      if (!dayNumber) {
+        return prev;
+      }
+
+      return prev.map((day) => 
+        day.dayNumber === dayNumber
+          ? {
+            ...day,
+            route: null
+          }
+          : day
+
+      )
+    })
+  }
+
   const value = {
     itinerary,
     setItinerary,
@@ -274,7 +322,9 @@ export const ItineraryProvider = ({ children }) => {
     calculateItineraryTimes,
     updateDayStartTime,
     expanded,
-    setExpanded
+    setExpanded,
+    updateSavedRoute,
+    clearSavedRoute
   };
 
   return (

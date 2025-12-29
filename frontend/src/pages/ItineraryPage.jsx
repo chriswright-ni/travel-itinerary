@@ -141,6 +141,7 @@ function ItineraryPage() {
     const newDayNumber = addDay();
     moveItem(selectedItemId, currentDayNumber, newDayNumber);
     setDaySelectOpen(false);
+    showNotification(`Item moved to Day ${newDayNumber}`)
   };
 
   // When the item change time button is clicked, this function sets item to change and the day number
@@ -206,7 +207,7 @@ function ItineraryPage() {
               oldIndex,
               newIndex
             );
-            return { ...day, itineraryItems: itineraryReordered };
+            return { ...day, itineraryItems: itineraryReordered, route: null };
           } else {
             return day;
           }

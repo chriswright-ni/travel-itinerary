@@ -18,7 +18,7 @@ function MapPage({ showMap }) {
 
   const mapboxAccessToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN
 
-  const { itinerary } = useItineraryContext();
+  const { itinerary, updateSavedRoute, clearSavedRoute } = useItineraryContext();
   const { showNotification } = useNotificationContext();
 
   const [selectedDayNumber, setSelectedDayNumber] = useState(1);
@@ -59,7 +59,7 @@ function MapPage({ showMap }) {
     // console.log(itinerary[selectedDayNumber - 1].itineraryItems)
     const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
     if (!showRoute) {
-      getRoute(itineraryItems, map)
+      getRoute(selectedDayNumber, itineraryItems, map)
       setShowRoute(true);
       if (itineraryItems.length === 0) {
         showNotification("Add 2 more items to see a route")
@@ -82,25 +82,51 @@ function MapPage({ showMap }) {
   }
 
   // Creates a route on the map between each item in the the itinerary items list for 1 day
-  const getRoute = async (itineraryItems, map) => {
-    console.log(itineraryItems)
+  const getRoute = async (dayNumber, itineraryItems, map) => {
     if (!map) return;
-
+    
     if (itineraryItems.length < 2) return;
+    
+    let geometry = null;
+    
+    // Check if route already exists in day object
+    if (itinerary[dayNumber - 1].route) {
+      console.log("TEST POINT - IF")
+      geometry = itinerary[dayNumber - 1].route.geometry
+      addRoute(mapRef.current, geometry)
+      
+    // If route is null, call the API
+    } else {
+      
+      console.log("TEST POINT - ELSE")
+      const coordinatesList = getItemCoordinateList(itineraryItems)
+      
+      console.log("Directions API called")
+      const query = await fetch(
+        `https://api.mapbox.com/directions/v5/mapbox/cycling/${coordinatesList}?steps=true&geometries=geojson&access_token=${mapboxAccessToken}`
+      );
+      const json = await query.json();
+      const data = json.routes[0];
+      
+      geometry = data.geometry
+      const route = {
+        geometry: geometry
+      }
+      // Store the new route in the day object
+      updateSavedRoute(dayNumber, route)
+    }
+    
+    addRoute(mapRef.current, geometry)
+  };
 
-    const coordinatesList = getItemCoordinateList(itineraryItems)
+  // Add route to the map using route geometry
+  const addRoute = (map, geometry) => {
 
-    const query = await fetch(
-      `https://api.mapbox.com/directions/v5/mapbox/cycling/${coordinatesList}?steps=true&geometries=geojson&access_token=${mapboxAccessToken}`
-    );
-    const json = await query.json();
-    const data = json.routes[0];
     const geojson = {
       type: "Feature",
       properties: {},
-      geometry: data.geometry,
+      geometry: geometry,
     };
-
     // Replace route if a route already exists on the map
     if (map.getSource("route")) {
       map.getSource("route").setData(geojson);
@@ -124,7 +150,7 @@ function MapPage({ showMap }) {
         },
       });
     }
-  };
+  }
 
   // Hides the route on the map, if the map contains a route
   const hideRoute = (map) => {
@@ -150,16 +176,17 @@ function MapPage({ showMap }) {
   // Updates routes when the itinerary is updated, or the day select has changed on map page
   // If the itinerary item count for the day goes to 0 or 1, the route is removed but show route state remains active
   useEffect(() => {
-
+    
     if (!mapRef.current) return;
-
     const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
+    if (itineraryItems.length === 0) return;
+
     if (showRoute && itineraryItems.length > 1) {
-      getRoute(itineraryItems, mapRef.current)
+      getRoute(selectedDayNumber, itineraryItems, mapRef.current)
     } else {
       hideRoute(mapRef.current)
     }
-  }, [selectedDayNumber, itinerary])
+  }, [selectedDayNumber, itinerary[selectedDayNumber - 1].itineraryItems])
 
   // Load the map as soon as the component is mounted
   useEffect(() => {
@@ -180,6 +207,7 @@ function MapPage({ showMap }) {
       mapRef.current.resize();
     }
   }, [showMap]);
+
 
   return (
     <>
