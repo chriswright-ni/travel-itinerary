@@ -103,14 +103,16 @@ function MapPage({ showMap }) {
       
       console.log("Directions API called")
       const query = await fetch(
-        `https://api.mapbox.com/directions/v5/mapbox/cycling/${coordinatesList}?steps=true&geometries=geojson&access_token=${mapboxAccessToken}`
+        `https://api.mapbox.com/directions/v5/mapbox/walking/${coordinatesList}?steps=true&geometries=geojson&access_token=${mapboxAccessToken}`
       );
       const json = await query.json();
       const data = json.routes[0];
       
       geometry = data.geometry
       const route = {
-        geometry: geometry
+        geometry: geometry,
+        distance: (data.distance / 1000).toFixed(1), // convert distance to km
+        duration: data.duration
       }
       // Store the new route in the day object
       updateSavedRoute(dayNumber, route)

@@ -179,6 +179,18 @@ function ItineraryPage() {
     showNotification(`Day ${currentDayNumber} start time updated`);
   };
 
+  // Generates a duration string with hours and minutes, based on the number of seconds input
+  const createDurationString = (seconds) => {
+    const hours = Math.floor(seconds / 3600)
+    const secondsRemaining =  seconds - (hours * 3600)
+    const mins = Math.round(secondsRemaining / 60)
+
+    const durationString = `${hours > 0 ? hours : ""}${hours > 0 ? "h" : ""}${hours > 0 ? ", " : ""}${mins} ${mins > 1 ? "mins" : "min"}`
+   
+    return durationString
+
+  }
+
   const findDayId = (itemId) => {
     if (itinerary.some((day) => day.dayNumber === itemId)) {
       return itemId;
@@ -407,17 +419,26 @@ function ItineraryPage() {
                                 .format("ddd D MMM")
                             : "Mon 22 Dec" // CHANGE THIS
                         }`}</Typography>
-                      </Box>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Typography>{`Start at ${itineraryDay.dayStartTime}`}</Typography>
                         <FiberManualRecordIcon
                           sx={{ fontSize: "0.375rem", mx: 1 }}
                         />
+                        <Typography>{`${itineraryDay.dayStartTime} Start`}</Typography>
+                      </Box>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        
                         <Typography>{`${itineraryDay.itineraryItems.length} ${
                           itineraryDay.itineraryItems.length > 1
-                            ? "Items"
-                            : "Item"
+                          ? "Items"
+                          : "Item"
                         }`}</Typography>
+                        <FiberManualRecordIcon
+                          sx={{ fontSize: "0.375rem", mx: 1, display: itineraryDay.route ? "block" : "none" }}
+                        />
+                        <Typography>{`${itineraryDay.route ? itineraryDay.route.distance : ""} ${itineraryDay.route ? "km" : ""}`}</Typography>
+                        <FiberManualRecordIcon
+                          sx={{ fontSize: "0.375rem", mx: 1, display: itineraryDay.route ? "block" : "none" }}
+                        />
+                        <Typography>{itineraryDay.route ? createDurationString(itineraryDay.route.duration) : ""}</Typography>
                       </Box>
                     </Box>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
