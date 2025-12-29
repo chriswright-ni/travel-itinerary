@@ -109,11 +109,27 @@ function MapPage({ showMap }) {
       const data = json.routes[0];
       
       geometry = data.geometry
+      console.log("LEGS: ", data.legs)
+
+      const legs = data.legs;
+
+      const legsData = legs.map(leg => {
+
+        return {
+          distance: (leg.distance / 1000).toFixed(1),
+          duration: leg.duration
+        }
+      })
+
+      
+      
       const route = {
         geometry: geometry,
         distance: (data.distance / 1000).toFixed(1), // convert distance to km
-        duration: data.duration
+        duration: data.duration,
+        legs: legsData
       }
+      console.log(route)
       // Store the new route in the day object
       updateSavedRoute(dayNumber, route)
     }
@@ -180,6 +196,7 @@ function MapPage({ showMap }) {
   useEffect(() => {
     
     if (!mapRef.current) return;
+    if (itinerary.length === 0) return;
     const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
     if (itineraryItems.length === 0) return;
 
@@ -188,7 +205,7 @@ function MapPage({ showMap }) {
     } else {
       hideRoute(mapRef.current)
     }
-  }, [selectedDayNumber, itinerary[selectedDayNumber - 1].itineraryItems])
+  }, [selectedDayNumber, itinerary[selectedDayNumber - 1]?.itineraryItems])
 
   // Load the map as soon as the component is mounted
   useEffect(() => {
@@ -238,7 +255,7 @@ function MapPage({ showMap }) {
           }}
         ></Box>
         {mapRef.current &&
-          itinerary[selectedDayNumber - 1].itineraryItems.map(
+          itinerary[selectedDayNumber - 1]?.itineraryItems.map(
             (place, index) => (
               <ItemMarker
                 key={place.id}

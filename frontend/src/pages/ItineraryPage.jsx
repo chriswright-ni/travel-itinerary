@@ -41,6 +41,7 @@ import DayMenu from "../components/DayMenu";
 import theme from "../themes/theme_five.js";
 import AddItemButton from "../components/AddItemButton";
 import DeleteDayDialog from "../components/DeleteDayDialog";
+import DistanceDurationConnector from "../components/DistanceDurationConnector";
 import { useNotificationContext } from "../contexts/NotificationContext";
 
 function ItineraryPage() {
@@ -92,7 +93,7 @@ function ItineraryPage() {
   // If the day has items, a confirmation dialog opens
   const handleClickRemoveDay = (dayToRemove) => {
     if (dayToRemove.itineraryItems.length > 0) {
-      console.log("Test 17:10: ", dayToRemove)
+      console.log("Test 17:10: ", dayToRemove);
       setDayNumberToRemove(dayToRemove.dayNumber);
       setDeleteDayDialogOpen(true);
     } else {
@@ -141,7 +142,7 @@ function ItineraryPage() {
     const newDayNumber = addDay();
     moveItem(selectedItemId, currentDayNumber, newDayNumber);
     setDaySelectOpen(false);
-    showNotification(`Item moved to Day ${newDayNumber}`)
+    showNotification(`Item moved to Day ${newDayNumber}`);
   };
 
   // When the item change time button is clicked, this function sets item to change and the day number
@@ -181,15 +182,16 @@ function ItineraryPage() {
 
   // Generates a duration string with hours and minutes, based on the number of seconds input
   const createDurationString = (seconds) => {
-    const hours = Math.floor(seconds / 3600)
-    const secondsRemaining =  seconds - (hours * 3600)
-    const mins = Math.round(secondsRemaining / 60)
+    const hours = Math.floor(seconds / 3600);
+    const secondsRemaining = seconds - hours * 3600;
+    const mins = Math.round(secondsRemaining / 60);
 
-    const durationString = `${hours > 0 ? hours : ""}${hours > 0 ? "h" : ""}${hours > 0 ? ", " : ""}${mins} ${mins > 1 ? "mins" : "min"}`
-   
-    return durationString
+    const durationString = `${hours > 0 ? hours : ""}${hours > 0 ? "h" : ""}${
+      hours > 0 ? ", " : ""
+    }${mins} ${mins > 1 ? "mins" : "min"}`;
 
-  }
+    return durationString;
+  };
 
   const findDayId = (itemId) => {
     if (itinerary.some((day) => day.dayNumber === itemId)) {
@@ -425,20 +427,33 @@ function ItineraryPage() {
                         <Typography>{`${itineraryDay.dayStartTime} Start`}</Typography>
                       </Box>
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        
                         <Typography>{`${itineraryDay.itineraryItems.length} ${
                           itineraryDay.itineraryItems.length > 1
-                          ? "Items"
-                          : "Item"
+                            ? "Items"
+                            : "Item"
                         }`}</Typography>
                         <FiberManualRecordIcon
-                          sx={{ fontSize: "0.375rem", mx: 1, display: itineraryDay.route ? "block" : "none" }}
+                          sx={{
+                            fontSize: "0.375rem",
+                            mx: 1,
+                            display: itineraryDay.route ? "block" : "none",
+                          }}
                         />
-                        <Typography>{`${itineraryDay.route ? itineraryDay.route.distance : ""} ${itineraryDay.route ? "km" : ""}`}</Typography>
+                        <Typography>{`${
+                          itineraryDay.route ? itineraryDay.route.distance : ""
+                        } ${itineraryDay.route ? "km" : ""}`}</Typography>
                         <FiberManualRecordIcon
-                          sx={{ fontSize: "0.375rem", mx: 1, display: itineraryDay.route ? "block" : "none" }}
+                          sx={{
+                            fontSize: "0.375rem",
+                            mx: 1,
+                            display: itineraryDay.route ? "block" : "none",
+                          }}
                         />
-                        <Typography>{itineraryDay.route ? createDurationString(itineraryDay.route.duration) : ""}</Typography>
+                        <Typography>
+                          {itineraryDay.route
+                            ? createDurationString(itineraryDay.route.duration)
+                            : ""}
+                        </Typography>
                       </Box>
                     </Box>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -492,13 +507,25 @@ function ItineraryPage() {
                             </Box>
                           ) : (
                             itineraryDayWithTimes.itineraryItems.map(
-                              (itineraryItem) => (
-                                <SortableItineraryItem
-                                  key={itineraryItem.id}
-                                  itineraryItem={itineraryItem}
-                                  dayNumber={itineraryDay.dayNumber}
-                                />
-                              )
+                              (itineraryItem, index) => {
+                                return (
+                                  <Box key={itineraryItem.id}>
+                                    <SortableItineraryItem
+                                      itineraryItem={itineraryItem}
+                                      dayNumber={itineraryDay.dayNumber}
+                                    />
+                                    {index ===
+                                    itineraryDayWithTimes.itineraryItems
+                                      .length -
+                                      1 ? (
+                                      ""
+                                    ) : (
+                                      itineraryDayWithTimes.route ? 
+                                      <DistanceDurationConnector distance={itineraryDayWithTimes.route?.legs[index].distance} duration={createDurationString(itineraryDayWithTimes.route?.legs[index].duration)} /> : ""
+                                    )}
+                                  </Box>
+                                );
+                              }
                             )
                           )}
                         </Grid>

@@ -22,7 +22,6 @@ export const ItineraryProvider = ({ children }) => {
   });
   const [expanded, setExpanded] = useState(1); // Management of accordion day expanded status - default to day 1 expanded on 1st render
 
-
   // Creates a set of all placeIds that have been added to the itinerary
   const getAddedPlaceIds = () =>
     new Set(
@@ -88,7 +87,7 @@ export const ItineraryProvider = ({ children }) => {
       startTime: "09:05",
       endTime: "11:00",
       latitude: place.latitude,
-      longitude: place.longitude
+      longitude: place.longitude,
     };
 
     setNextItineraryItemId((prev) => prev + 1);
@@ -100,7 +99,11 @@ export const ItineraryProvider = ({ children }) => {
     setItinerary((prev) =>
       prev.map((day) =>
         day.dayNumber === dayNumber
-          ? { ...day, itineraryItems: [...day.itineraryItems, itineraryItem], route: null }
+          ? {
+              ...day,
+              itineraryItems: [...day.itineraryItems, itineraryItem],
+              route: null,
+            }
           : day
       )
     );
@@ -119,8 +122,7 @@ export const ItineraryProvider = ({ children }) => {
                   (item) => item.id !== itemIdToRemove
                 ),
               ],
-              route: null
-    
+              route: null,
             }
           : day
       )
@@ -164,15 +166,14 @@ export const ItineraryProvider = ({ children }) => {
             itineraryItems: [
               ...day.itineraryItems.filter((item) => item.id !== itemIdToMove),
             ],
-            route: null
-        
+            route: null,
           };
         }
         if (day.dayNumber === newDayNumber) {
           return {
             ...day,
             itineraryItems: [...day.itineraryItems, itemToMove],
-            route: null
+            route: null,
           };
         }
         return day;
@@ -213,18 +214,20 @@ export const ItineraryProvider = ({ children }) => {
   // This is iniitiated using the day starting time
   // Buffer is the time between items - this will later be updated using travel times and optional pacing buffers
   const calculateItineraryTimes = (day, buffer) => {
+    const startHour = Number(day.dayStartTime.split(":")[0]);
+    const startMin = Number(day.dayStartTime.split(":")[1]);
 
-    const startHour = Number(day.dayStartTime.split(":")[0])
-    const startMin = Number(day.dayStartTime.split(":")[1])
-    
-    let currentTime = dayjs().hour(startHour).minute(startMin).second(0)
+    let currentTime = dayjs().hour(startHour).minute(startMin).second(0);
     // console.log("current time: ", currentTime.format("HH:mm"))
     const updatedDay = {
       ...day,
       itineraryItems: day.itineraryItems.map((item) => {
-        const startTimeDynamic = currentTime
-        const endTimeDynamic = startTimeDynamic.add(item.recommendedDuration, "minute")
-        currentTime = endTimeDynamic.add(buffer, "minute")
+        const startTimeDynamic = currentTime;
+        const endTimeDynamic = startTimeDynamic.add(
+          item.recommendedDuration,
+          "minute"
+        );
+        currentTime = endTimeDynamic.add(buffer, "minute");
         // console.log("new start time: ", startTimeDynamic)
         // console.log("new end time: ", endTimeDynamic)
 
@@ -232,35 +235,32 @@ export const ItineraryProvider = ({ children }) => {
           ...item,
           startTime: startTimeDynamic.format("HH:mm"),
           endTime: endTimeDynamic.format("HH:mm"),
-        }
-      })
-    }
-    return updatedDay
-  }
+        };
+      }),
+    };
+    return updatedDay;
+  };
 
   const updateDayStartTime = (dayNumber, dayStartTime) => {
     setItinerary((prev) => {
-    
       if (!dayStartTime) {
         return prev;
       }
 
-      return prev.map((day) => 
+      return prev.map((day) =>
         day.dayNumber === dayNumber
           ? {
               ...day,
-              dayStartTime: dayStartTime.format("HH:mm")
+              dayStartTime: dayStartTime.format("HH:mm"),
             }
           : day
       );
     });
-  }
-
+  };
 
   // Save the route in the itinerary day object
   const updateSavedRoute = (dayNumber, route) => {
     setItinerary((prev) => {
-    
       if (!dayNumber) {
         return prev;
       }
@@ -268,36 +268,34 @@ export const ItineraryProvider = ({ children }) => {
         return prev;
       }
 
-      return prev.map((day) => 
+      return prev.map((day) =>
         day.dayNumber === dayNumber
           ? {
               ...day,
-              route: route
+              route: route,
             }
           : day
       );
     });
-  }
+  };
 
   // Sets route object to null
   const clearSavedRoute = (dayNumber) => {
     setItinerary((prev) => {
-
       if (!dayNumber) {
         return prev;
       }
 
-      return prev.map((day) => 
+      return prev.map((day) =>
         day.dayNumber === dayNumber
           ? {
-            ...day,
-            route: null
-          }
+              ...day,
+              route: null,
+            }
           : day
-
-      )
-    })
-  }
+      );
+    });
+  };
 
   const value = {
     itinerary,
@@ -324,7 +322,7 @@ export const ItineraryProvider = ({ children }) => {
     expanded,
     setExpanded,
     updateSavedRoute,
-    clearSavedRoute
+    clearSavedRoute,
   };
 
   return (
