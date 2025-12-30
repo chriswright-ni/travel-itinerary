@@ -75,23 +75,10 @@ function MapPage({ showMap }) {
   };
 
   const handleClickOptimiseRoute = (selectedDayNumber, map) => {
-    // console.log(itinerary[selectedDayNumber - 1].itineraryItems)
+  
     const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
-
     optimiseRoute(selectedDayNumber, itineraryItems, map)
-    // if (!showRoute) {
-    //   getRoute(selectedDayNumber, itineraryItems, map);
-    //   setShowRoute(true);
-    //   if (itineraryItems.length === 0) {
-    //     showNotification("Add 2 more items to see a route");
-    //   }
-    //   if (itineraryItems.length === 1) {
-    //     showNotification("Add 1 more item to see a route");
-    //   }
-    // } else {
-    //   hideRoute(map);
-    //   setShowRoute(false);
-    // }
+  
   };
 
   // Creates a list of coordinates of each item in the itineraryItems array
@@ -130,7 +117,7 @@ function MapPage({ showMap }) {
       );
       const json = await query.json();
       const data = json.routes[0];
-
+      console.log(json)
       geometry = data.geometry;
       console.log("normal route geo: ", geometry)
       // console.log("LEGS: ", data.legs);
@@ -204,48 +191,58 @@ function MapPage({ showMap }) {
 
     if (itineraryItems.length < 2) return;
 
-    let geometry = null;
-
     const coordinatesList = getItemCoordinateList(itineraryItems);
-
-    const coords = encodeURIComponent(coordinatesList)
 
     console.log("Optimisation API called");
     const query = await fetch(
       `https://api.mapbox.com/optimized-trips/v1/mapbox/walking/${coordinatesList}?geometries=geojson&roundtrip=false&source=first&destination=last&access_token=${mapboxAccessToken}`
-      // `http://127.0.0.1:5000/api/routing/optimise?profile=walking&coordinates=${coords}`
-      // `http://127.0.0.1:5000/api/routing/optimise`
-      // `http://127.0.0.1:5000/hello`
-
     );
     const json = await query.json();
-    const data = json.trips;
-    console.log(data)
+    console.log(json)
+    const tripsData = json.trips;
+    const geometry = tripsData[0].geometry;
+    const waypointsData = json.waypoints
+
+    // Create array of the waypoint_index values returned from the optimisation API response
+    // Note: The order of these waypoint_index values are the same order as the coordinates used for the API call
+    // These values and order are used to reorder the itinerary
+    const waypointIndexValues = []
+    for (let waypoint of waypointsData) {
+      waypointIndexValues.push(waypoint.waypoint_index);
+    }
     
-    geometry = data[0].geometry;
-    
-    console.log("optimise route geo: ", geometry)
+    // console.log("optimise route geo: ", geometry)
 
-    // const legs = data.legs;
+    const legs = tripsData[0].legs;
+    const legsData = legs.map((leg) => {
+      return {
+        distance: (leg.distance / 1000).toFixed(1),
+        duration: leg.duration,
+      };
+    });
 
-    // const legsData = legs.map((leg) => {
-    //   return {
-    //     distance: (leg.distance / 1000).toFixed(1),
-    //     duration: leg.duration,
-    //   };
-    // });
+    const route = {
+      geometry: geometry,
+      distance: (tripsData.distance / 1000).toFixed(1), // convert distance to km
+      duration: tripsData.duration,
+      legs: legsData,
+      waypointIndexValues: waypointIndexValues
+    };
 
-    // const route = {
-    //   geometry: geometry,
-    //   distance: (data.distance / 1000).toFixed(1), // convert distance to km
-    //   duration: data.duration,
-    //   legs: legsData,
-    // };
-    // console.log(route);
+    console.log("Waypoint index values: ", route.waypointIndexValues)
+
     // Store the new route in the day object
-    // updateSavedRoute(dayNumber, route);
+    updateSavedRoute(dayNumber, route);
 
     addRoute(mapRef.current, geometry);
+
+    // 1 Eiffel, 2 Chanel, 3 Louvre, 4 Notre, 5 LV
+    // 1 Eiffel, 2 Notre, 3 Louvre, 4 Chanel, 5 LV
+    // Waypoint index: [0, 3, 2, 1, 4]
+    // Get item 0 and put it 1st
+    // Get item 3 and put it 2nd
+    // Get item 2 and put it 3rd
+    // etc
   };
 
   // Fits markers to viewport automatically when a different day has been selected on the map page
