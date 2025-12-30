@@ -10,6 +10,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import theme from "../themes/theme_five.js";
 
 function DayMenu({
   handleClickRemoveDay,
@@ -58,13 +60,23 @@ function DayMenu({
         }}
       >
         <MenuItem
-          onClick={() => {
-            handleClickMoveItem(itineraryItemId, dayNumber);
-            handleClose();
+          onClick={(e) => {
+            handleClose(e);
+          }}
+          sx={{color: "secondary.main", border: `1px solid ${theme.palette.secondary.main}`, borderRadius: "15px"}}
+        >
+          <ListItemIcon sx={{color: "secondary.main"}}>
+            <AutoAwesomeIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Optimise Route</ListItemText>
+        </MenuItem>
+        <MenuItem
+          onClick={(e) => {
+            handleClose(e);
           }}
         >
           <ListItemIcon>
-            <EditCalendarIcon  fontSize="small" />
+            <EditCalendarIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Change date</ListItemText>
         </MenuItem>

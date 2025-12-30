@@ -347,8 +347,6 @@ function ItineraryPage() {
               New Trip
             </Button>
           </Box>
-
-          <Button variant="outlined">Optimise Route</Button>
         </Box>
         <Box sx={{ pb: 15 }}>
           <Box>
