@@ -193,6 +193,24 @@ function ItineraryPage() {
     return durationString;
   };
 
+  // Gets the total itinerary time in seconds
+  // This includes the recommended duration of each itinerary item
+  const getTotalItineraryTime = (itineraryItems, routeDuration) => {
+
+    if (itineraryItems?.length === 0) return;
+    if (routeDuration === null) return;
+    
+    let itemDurationTotalMinutes = 0;
+
+    for (let item of itineraryItems) {
+      itemDurationTotalMinutes += item.recommendedDuration;
+    }
+
+    const totalItineraryDurationSeconds = (itemDurationTotalMinutes * 60) + routeDuration;
+    
+    return totalItineraryDurationSeconds;
+  }
+
   const findDayId = (itemId) => {
     if (itinerary.some((day) => day.dayNumber === itemId)) {
       return itemId;
@@ -451,7 +469,7 @@ function ItineraryPage() {
                         />
                         <Typography>
                           {itineraryDay.route
-                            ? createDurationString(itineraryDay.route.duration)
+                            ? createDurationString(getTotalItineraryTime(itineraryDay.itineraryItems, itineraryDay.route.duration))
                             : ""}
                         </Typography>
                       </Box>
