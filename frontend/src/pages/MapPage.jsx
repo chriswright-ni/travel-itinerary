@@ -17,7 +17,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 function MapPage({ showMap }) {
   const mapboxAccessToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN;
 
-  const { itinerary, updateSavedRoute, clearSavedRoute } =
+  const { itinerary, setItinerary, updateSavedRoute, clearSavedRoute } =
     useItineraryContext();
   const { showNotification } = useNotificationContext();
 
@@ -102,24 +102,24 @@ function MapPage({ showMap }) {
 
     // Check if route already exists in day object
     if (itinerary[dayNumber - 1].route) {
-      console.log("TEST POINT - IF");
+      // console.log("TEST POINT - IF");
       geometry = itinerary[dayNumber - 1].route.geometry;
       addRoute(mapRef.current, geometry);
 
       // If route is null, call the API
     } else {
-      console.log("TEST POINT - ELSE");
+      // console.log("TEST POINT - ELSE");
       const coordinatesList = getItemCoordinateList(itineraryItems);
 
-      console.log("Directions API called");
+      // console.log("Directions API called");
       const query = await fetch(
         `https://api.mapbox.com/directions/v5/mapbox/walking/${coordinatesList}?geometries=geojson&access_token=${mapboxAccessToken}`
       );
       const json = await query.json();
       const data = json.routes[0];
-      console.log(json)
+      // console.log(json)
       geometry = data.geometry;
-      console.log("normal route geo: ", geometry)
+      // console.log("normal route geo: ", geometry)
       // console.log("LEGS: ", data.legs);
 
       const legs = data.legs;
@@ -195,10 +195,10 @@ function MapPage({ showMap }) {
 
     console.log("Optimisation API called");
     const query = await fetch(
-      `https://api.mapbox.com/optimized-trips/v1/mapbox/walking/${coordinatesList}?geometries=geojson&roundtrip=false&source=first&destination=last&access_token=${mapboxAccessToken}`
+      `https://api.mapbox.com/optimized-trips/v1/mapbox/walking/${coordinatesList}?geometries=geojson&roundtrip=true&source=first&destination=any&access_token=${mapboxAccessToken}`
     );
     const json = await query.json();
-    console.log(json)
+    // console.log(json)
     const tripsData = json.trips;
     const geometry = tripsData[0].geometry;
     const waypointsData = json.waypoints
@@ -213,28 +213,28 @@ function MapPage({ showMap }) {
     
     // console.log("optimise route geo: ", geometry)
 
-    const legs = tripsData[0].legs;
-    const legsData = legs.map((leg) => {
-      return {
-        distance: (leg.distance / 1000).toFixed(1),
-        duration: leg.duration,
-      };
-    });
+    // const legs = tripsData[0].legs;
+    // const legsData = legs.map((leg) => {
+    //   return {
+    //     distance: (leg.distance / 1000).toFixed(1),
+    //     duration: leg.duration,
+    //   };
+    // });
 
-    const route = {
-      geometry: geometry,
-      distance: (tripsData.distance / 1000).toFixed(1), // convert distance to km
-      duration: tripsData.duration,
-      legs: legsData,
-      waypointIndexValues: waypointIndexValues
-    };
+    // const route = {
+    //   geometry: geometry,
+    //   distance: (tripsData.distance / 1000).toFixed(1), // convert distance to km
+    //   duration: tripsData.duration,
+    //   legs: legsData,
+    //   waypointIndexValues: waypointIndexValues
+    // };
 
-    console.log("Waypoint index values: ", route.waypointIndexValues)
+    console.log("Waypoint index values: ", waypointIndexValues)
 
     // Store the new route in the day object
-    updateSavedRoute(dayNumber, route);
+    // updateSavedRoute(dayNumber, route);
 
-    addRoute(mapRef.current, geometry);
+    // addRoute(mapRef.current, geometry);
 
     // 1 Eiffel, 2 Chanel, 3 Louvre, 4 Notre, 5 LV
     // 1 Eiffel, 2 Notre, 3 Louvre, 4 Chanel, 5 LV
@@ -243,7 +243,74 @@ function MapPage({ showMap }) {
     // Get item 3 and put it 2nd
     // Get item 2 and put it 3rd
     // etc
+
+    reorderItineraryItems(dayNumber, itineraryItems, waypointIndexValues)
   };
+
+  const reorderItineraryItems = (dayNumber, itineraryItems, waypointIndexValues) => {
+    
+    console.log("In reorderItineraryItems")
+    const itineraryItemsReordered = []
+
+    // console.log("itineraryItems")
+    // console.log(itineraryItems)
+
+    // console.log("loop")
+
+    for (let i = 0; i < waypointIndexValues.length; i++) {
+      const index = waypointIndexValues[i];
+      // console.log(index);
+      const item = itineraryItems[index];
+      // console.log(item)
+      // itineraryItemsReordered.push(itineraryItems[index]);
+      itineraryItemsReordered.push(item);
+      // console.log(itineraryItemsReordered)
+    }
+    console.log("before setItinerary")
+
+    setItinerary((prev) => 
+      prev.map((day) => 
+        day.dayNumber === dayNumber ? {
+          ...day,
+          itineraryItems: [...itineraryItemsReordered],
+          route: null
+        } : day
+      )
+    )
+
+    console.log("after setItinerary")
+
+    console.log(itinerary)
+
+    // console.log("itineraryItems")
+    // console.log(itineraryItems)
+    // console.log("itineraryItemsReordered")
+    // console.log(itineraryItemsReordered)
+
+    // Original
+    // LV, Chanel, Notre, Eiffel, Louvre
+
+    // Optimised
+    // Waypoint index: [0, 2, 3, 1, 4]
+    // Expected new order: LV, Notre, Effil, Chanel, Louvre
+    // Actual new order: LV, Eiffel, Chanel, Notre, Louvre
+    
+  }
+
+  // const reorderItinerary = (dayNumber, waypointIndexValues) => {
+
+  //   setItinerary((prev) => {
+  //     prev.map((day) => {
+  //       day.dayNumber === dayNumber ? {
+
+         
+
+          
+  //       } : day
+  //     })
+  //   })
+
+  // }
 
   // Fits markers to viewport automatically when a different day has been selected on the map page
   // or when the itinerary has been updated

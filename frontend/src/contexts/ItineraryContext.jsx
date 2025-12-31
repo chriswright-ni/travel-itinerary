@@ -23,10 +23,11 @@ export const ItineraryProvider = ({ children }) => {
   const [expanded, setExpanded] = useState(1); // Management of accordion day expanded status - default to day 1 expanded on 1st render
 
   // Creates a set of all placeIds that have been added to the itinerary
-  const getAddedPlaceIds = () =>
-    new Set(
+  const getAddedPlaceIds = () => {
+    console.log("In getAddedPlaceIds")
+    return new Set(
       itinerary.flatMap((day) => day.itineraryItems.map((item) => item.placeId))
-    );
+    )};
   // Updates the set of addedPlaceIds when the itinerary state changes
   const addedPlaceIds = useMemo(() => getAddedPlaceIds(), [itinerary]);
 
