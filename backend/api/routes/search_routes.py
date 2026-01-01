@@ -21,7 +21,7 @@ def suggest():
     "q": search_text,
     "session_token": session_token,
     "access_token": MAPBOX_ACCESS_TOKEN,
-    "types": "city,region,place,district",
+    "types": "city,region,place,district,address",
     "limit": 10,
     "language": "en"
   }

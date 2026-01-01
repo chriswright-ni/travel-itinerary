@@ -24,24 +24,24 @@ function LocationSearch({ onLocationSelect }) {
 
       // API disabled for the purpose of reducing API calls during development of other functionality
       console.log("Reenable API call for search results");
-      // const fetchData = async () => {
+      const fetchData = async () => {
 
-      //   const response = await fetch(
-      //     `http://127.0.0.1:5000/api/location/suggest?q=${encodeURIComponent(debouncedQuery)}`
-      //   );
-      //   const data = await response.json(); // Array of objects
-      //   console.log("Inside suggest API call");
-      //   console.log(data);
-      //   setOptions(data);
-      // }
-      // fetchData();
+        const response = await fetch(
+          `http://127.0.0.1:5000/api/location/suggest?q=${encodeURIComponent(debouncedQuery)}`
+        );
+        const data = await response.json(); // Array of objects
+        console.log("Inside suggest API call");
+        console.log(data);
+        setOptions(data);
+      }
+      fetchData();
     }
   }, [debouncedQuery]);
 
   return (
     <Autocomplete
       filterOptions={(options) => options} // This line disables MUI's built in filter.  Without this line, multi word searches will return valid API data but won't render to the UI.
-      id="auto-complete"
+      // id="auto-complete1"
       value={userSelection} // The value selected by the user from the search results
       inputValue={searchText} // The value currently in the search box, not the selected value
       onInputChange={(e, newSearchText, reason) => {
@@ -54,6 +54,7 @@ function LocationSearch({ onLocationSelect }) {
       onChange={(e, userSelection) => {
         // Triggers when the user selects an option from the search results
         if (userSelection) {
+          console.log("user selection: ", userSelection)
           setUserSelection(userSelection);
           onLocationSelect(userSelection); // Calls handleLocationSelect in Landing Page
           // FIX: The below code is causing the API to call twice (once for the initial search results, and again when the user selects an option)

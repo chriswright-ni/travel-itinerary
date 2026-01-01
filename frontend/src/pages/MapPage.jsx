@@ -13,6 +13,8 @@ import CenterFocusStrongIcon from "@mui/icons-material/CenterFocusStrong";
 import RouteIcon from "@mui/icons-material/Route";
 import { useNotificationContext } from "../contexts/NotificationContext";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import LocationSearch from "../components/LocationSearch";
+import { useSearchContext } from "../contexts/SearchContext";
 
 function MapPage({ showMap }) {
   // const mapboxAccessToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN;
@@ -37,6 +39,8 @@ function MapPage({ showMap }) {
     mapContainerRef
   } = useMapContext();
 
+  const { locationData, setLocationData, handleLocationSelect } = useSearchContext();
+
   const [selectedDayNumber, setSelectedDayNumber] = useState(1);
   // const [showRoute, setShowRoute] = useState(false);
 
@@ -49,6 +53,20 @@ function MapPage({ showMap }) {
     setSelectedDayNumber(day.dayNumber);
     hideRoute(mapRef.current)
   };
+
+  const markerRef = useRef();
+  const addStartingPin = () => {
+    if (!locationData) return;
+    markerRef.current = new mapboxgl.Marker()
+      .setLngLat([locationData.longitude, locationData.latitude])
+      .setPopup(
+        new mapboxgl.Popup({ offset: 25, closeButton: false })
+          .setHTML(
+            `<h3>${locationData.name}</h3><p></p>`
+          )
+      )
+      .addTo(mapRef.current);
+  }
 
   // // Fits all markers within the map viewport
   // const fitMarkersToViewport = (itineraryItems, map) => {
@@ -346,6 +364,10 @@ function MapPage({ showMap }) {
 
   // }
 
+  useEffect(() => {
+    addStartingPin();
+  }, [locationData])
+
   // Fits markers to viewport automatically when a different day has been selected on the map page
   // or when the itinerary has been updated
   useEffect(() => {
@@ -408,6 +430,7 @@ function MapPage({ showMap }) {
         <Box>
           <Typography>Header</Typography>
         </Box>
+        <LocationSearch onLocationSelect={handleLocationSelect} />
         <DaySelector
           onDaySelect={handleDaySelect}
           selected={selectedDayNumber}

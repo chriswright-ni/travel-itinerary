@@ -25,6 +25,19 @@ export const MapProvider = ({children}) => {
 
   const mapRef = useRef();
   const mapContainerRef = useRef();
+ 
+
+  // const addStartingPin = () => {
+  //   markerRef.current = new mapboxgl.Marker()
+  //     .setLngLat([locationData.longitude, locationData.latitude])
+  //     .setPopup(
+  //       new mapboxgl.Popup({ offset: 25, closeButton: false })
+  //         .setHTML(
+  //           `<h3>${locationData.name}</h3><p></p>`
+  //         )
+  //     )
+  //     .addTo(map);
+  // }
 
   // Fits all markers within the map viewport
   const fitMarkersToViewport = (itineraryItems, map) => {

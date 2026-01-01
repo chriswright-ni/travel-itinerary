@@ -44,6 +44,7 @@ import DeleteDayDialog from "../components/DeleteDayDialog";
 import DistanceDurationConnector from "../components/DistanceDurationConnector";
 import { useNotificationContext } from "../contexts/NotificationContext";
 import { useMapContext } from "../contexts/MapContext";
+import Divider from "@mui/material/Divider";
 
 function ItineraryPage() {
   const {
@@ -583,6 +584,7 @@ function ItineraryPage() {
               );
             })}
           </Box>
+          <Divider sx={{mb: 2}}/>
           <Box>
             <Button variant="outlined" fullWidth onClick={handleClickAddDay}>
               Add day
