@@ -76,9 +76,15 @@ function MapPage({ showMap }) {
 
   const handleClickOptimiseRoute = (selectedDayNumber, map) => {
   
-    const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
-    optimiseRoute(selectedDayNumber, itineraryItems, map)
-  
+    if (itinerary[selectedDayNumber - 1].optimised) {
+      showNotification("Route already optimised")
+      console.log("route already optimised")
+      return;
+    } else {  
+      const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
+      optimiseRoute(selectedDayNumber, itineraryItems, map)
+    } 
+      
   };
 
   // Creates a list of coordinates of each item in the itineraryItems array
@@ -111,7 +117,8 @@ function MapPage({ showMap }) {
       // console.log("TEST POINT - ELSE");
       const coordinatesList = getItemCoordinateList(itineraryItems);
 
-      // console.log("Directions API called");
+      console.log("Directions API called");
+      console.log(itineraryItems);
       const query = await fetch(
         `https://api.mapbox.com/directions/v5/mapbox/walking/${coordinatesList}?geometries=geojson&access_token=${mapboxAccessToken}`
       );
@@ -194,6 +201,7 @@ function MapPage({ showMap }) {
     const coordinatesList = getItemCoordinateList(itineraryItems);
 
     console.log("Optimisation API called");
+    console.log(itineraryItems)
     const query = await fetch(
       `https://api.mapbox.com/optimized-trips/v1/mapbox/walking/${coordinatesList}?geometries=geojson&roundtrip=true&source=first&destination=any&access_token=${mapboxAccessToken}`
     );
@@ -229,7 +237,7 @@ function MapPage({ showMap }) {
     //   waypointIndexValues: waypointIndexValues
     // };
 
-    console.log("Waypoint index values: ", waypointIndexValues)
+    // console.log("Waypoint index values: ", waypointIndexValues)
 
     // Store the new route in the day object
     // updateSavedRoute(dayNumber, route);
@@ -249,7 +257,7 @@ function MapPage({ showMap }) {
 
   const reorderItineraryItems = (dayNumber, itineraryItems, waypointIndexValues) => {
     
-    console.log("In reorderItineraryItems")
+    // console.log("In reorderItineraryItems")
     const itineraryItemsReordered = []
 
     // console.log("itineraryItems")
@@ -266,21 +274,22 @@ function MapPage({ showMap }) {
       itineraryItemsReordered.push(item);
       // console.log(itineraryItemsReordered)
     }
-    console.log("before setItinerary")
+    // console.log("before setItinerary")
 
     setItinerary((prev) => 
       prev.map((day) => 
         day.dayNumber === dayNumber ? {
           ...day,
           itineraryItems: [...itineraryItemsReordered],
-          route: null
+          route: null,
+          optimised: true
         } : day
       )
     )
 
-    console.log("after setItinerary")
+    // console.log("after setItinerary")
 
-    console.log(itinerary)
+    // console.log(itinerary)
 
     // console.log("itineraryItems")
     // console.log(itineraryItems)

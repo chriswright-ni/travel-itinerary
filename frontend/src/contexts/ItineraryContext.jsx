@@ -24,7 +24,7 @@ export const ItineraryProvider = ({ children }) => {
 
   // Creates a set of all placeIds that have been added to the itinerary
   const getAddedPlaceIds = () => {
-    console.log("In getAddedPlaceIds")
+    // console.log("In getAddedPlaceIds")
     return new Set(
       itinerary.flatMap((day) => day.itineraryItems.map((item) => item.placeId))
     )};
@@ -104,6 +104,7 @@ export const ItineraryProvider = ({ children }) => {
               ...day,
               itineraryItems: [...day.itineraryItems, itineraryItem],
               route: null,
+              optimised: false,
             }
           : day
       )
@@ -124,6 +125,7 @@ export const ItineraryProvider = ({ children }) => {
                 ),
               ],
               route: null,
+              optimised: false,
             }
           : day
       )
@@ -168,6 +170,7 @@ export const ItineraryProvider = ({ children }) => {
               ...day.itineraryItems.filter((item) => item.id !== itemIdToMove),
             ],
             route: null,
+            optimised: false,
           };
         }
         if (day.dayNumber === newDayNumber) {
@@ -175,6 +178,7 @@ export const ItineraryProvider = ({ children }) => {
             ...day,
             itineraryItems: [...day.itineraryItems, itemToMove],
             route: null,
+            optimised: false,
           };
         }
         return day;

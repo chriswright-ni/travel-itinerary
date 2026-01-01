@@ -239,7 +239,7 @@ function ItineraryPage() {
               oldIndex,
               newIndex
             );
-            return { ...day, itineraryItems: itineraryReordered, route: null };
+            return { ...day, itineraryItems: itineraryReordered, route: null, optimised: false };
           } else {
             return day;
           }
