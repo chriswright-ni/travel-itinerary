@@ -303,6 +303,27 @@ export const ItineraryProvider = ({ children }) => {
     });
   };
 
+  const updateDayStartLocation = (dayNumber, locationData) => {
+    
+    if (!dayNumber) return;
+    if (!locationData) return;
+    
+    setItinerary((prev) =>
+      prev.map((day) =>
+        day.dayNumber === dayNumber
+          ? {
+              ...day,
+              dayStartLocation: {
+                name: locationData.name,
+                longitude: locationData.longitude,
+                latitude: locationData.latitude,
+              },
+            }
+          : day
+      )
+    );
+  }
+
   const value = {
     itinerary,
     setItinerary,
@@ -329,6 +350,7 @@ export const ItineraryProvider = ({ children }) => {
     setExpanded,
     updateSavedRoute,
     clearSavedRoute,
+    updateDayStartLocation
   };
 
   return (

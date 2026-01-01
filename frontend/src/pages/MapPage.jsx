@@ -19,7 +19,7 @@ import { useSearchContext } from "../contexts/SearchContext";
 function MapPage({ showMap }) {
   // const mapboxAccessToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN;
 
-  const { itinerary, setItinerary, updateSavedRoute, clearSavedRoute } =
+  const { itinerary, setItinerary, updateSavedRoute, clearSavedRoute, updateDayStartLocation} =
     useItineraryContext();
   const { showNotification } = useNotificationContext();
   const {
@@ -36,11 +36,10 @@ function MapPage({ showMap }) {
     handleClickShowRoute,
     fitMarkersToViewport,
     mapRef,
-    mapContainerRef
+    mapContainerRef,
   } = useMapContext();
 
   const [selectedDayNumber, setSelectedDayNumber] = useState(1);
-  // const [startingPoint, setStartingPoint] = useState(null); // Stores the starting point data - long, lat and name
   // const [showRoute, setShowRoute] = useState(false);
 
   // const mapRef = useRef();
@@ -50,36 +49,47 @@ function MapPage({ showMap }) {
   const handleDaySelect = (day) => {
     if (day.dayNumber === selectedDayNumber) return;
     setSelectedDayNumber(day.dayNumber);
-    hideRoute(mapRef.current)
+    hideRoute(mapRef.current);
   };
 
   const markerRef = useRef();
 
   const addStartingPin = () => {
-
     if (!itinerary) return;
-    
+
     if (markerRef.current) {
-      markerRef.current.remove()
+      markerRef.current.remove();
     }
-    const dayStartLocation = itinerary[selectedDayNumber - 1].dayStartLocation
+    const dayStartLocation = itinerary[selectedDayNumber - 1].dayStartLocation;
 
     if (!dayStartLocation) return;
 
-
-    markerRef.current = new mapboxgl.Marker()
+    markerRef.current = new mapboxgl.Marker({draggable: true})
       .setLngLat([dayStartLocation.longitude, dayStartLocation.latitude])
       .setPopup(
-        new mapboxgl.Popup({ offset: 25, closeButton: false })
-          .setHTML(
-            `<h3>${dayStartLocation.name}</h3><p></p>`
-          )
+        new mapboxgl.Popup({ offset: 25, closeButton: false }).setHTML(
+          `<h3>${dayStartLocation.name}</h3><p></p>`
+        )
       )
       .addTo(mapRef.current);
-  }
 
-   // // This function retrives the coordinates from the user's location search selection
-   async function handleLocationSelect(userSelection) {
+    const onDragEnd = () => {
+      const lngLat = markerRef.current.getLngLat();
+
+      const startLocationData = {
+        name: "Custom",
+        longitude: lngLat.lng,
+        latitude: lngLat.lat,
+      }
+
+      updateDayStartLocation(selectedDayNumber, startLocationData)
+    }
+
+    markerRef.current.on("dragend", onDragEnd);
+  };
+
+  // // This function retrives the coordinates from the user's location search selection
+  async function handleLocationSelect(userSelection) {
     if (!userSelection) {
       return;
     }
@@ -92,24 +102,26 @@ function MapPage({ showMap }) {
     console.log("Inside retrieve API call - map page");
     // setStartingPoint(data);
 
-    setItinerary((prev) => 
-    prev.map((day) => 
-      day.dayNumber === selectedDayNumber ?
-    {
-      ...day,
-      dayStartLocation: {
-        name: data.name,
-        longitude: data.longitude,
-        latitude: data.latitude,
-      }
-    } : day
-    ))
+    updateDayStartLocation(selectedDayNumber, data)
+    // setItinerary((prev) =>
+    //   prev.map((day) =>
+    //     day.dayNumber === selectedDayNumber
+    //       ? {
+    //           ...day,
+    //           dayStartLocation: {
+    //             name: data.name,
+    //             longitude: data.longitude,
+    //             latitude: data.latitude,
+    //           },
+    //         }
+    //       : day
+    //   )
+    // );
   }
-
 
   useEffect(() => {
     addStartingPin();
-  }, [itinerary, selectedDayNumber])
+  }, [itinerary, selectedDayNumber]);
 
   // Fits markers to viewport automatically when a different day has been selected on the map page
   // or when the itinerary has been updated
