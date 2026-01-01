@@ -21,7 +21,7 @@ import notreDameImg from "../images/notredame.jpg";
 import { useNotificationContext } from "../contexts/NotificationContext";
 
 function SearchPage() {
-  const { locationData, setLocationData, handleLocationSelect } = useSearchContext();
+  const { locationData, setLocationData } = useSearchContext();
 
   const {
     addItemToItinerary,
@@ -149,19 +149,19 @@ function SearchPage() {
   }
 
   // // This function retrives the coordinates from the user's location search selection
-  // async function handleLocationSelect(userSelection) {
-  //   if (!userSelection) {
-  //     return;
-  //   }
+  async function handleLocationSelect(userSelection) {
+    if (!userSelection) {
+      return;
+    }
 
-  //   const mapbox_id = userSelection.mapbox_id;
-  //   const response = await fetch(
-  //     `http://127.0.0.1:5000/api/location/retrieve?id=${mapbox_id}`
-  //   );
-  //   const data = await response.json(); // Array of objects
-  //   console.log("Inside retrieve API call");
-  //   setLocationData(data);
-  // }
+    const mapbox_id = userSelection.mapbox_id;
+    const response = await fetch(
+      `http://127.0.0.1:5000/api/location/retrieve?id=${mapbox_id}`
+    );
+    const data = await response.json(); // Array of objects
+    console.log("Inside retrieve API call");
+    setLocationData(data);
+  }
 
   return (
     <>

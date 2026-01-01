@@ -52,6 +52,7 @@ export const ItineraryProvider = ({ children }) => {
     const newDay = {
       dayNumber: newDayNumber,
       dayStartTime: "09:00",
+      dayStartLocation: null,
       itineraryItems: [],
     };
     // prev is current value of the state
