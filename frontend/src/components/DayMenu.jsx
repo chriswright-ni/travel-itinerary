@@ -17,6 +17,7 @@ function DayMenu({
   handleClickRemoveDay,
   itineraryDay,
   handleClickChangeDayTime,
+  handleClickOptimiseRoute
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -61,6 +62,8 @@ function DayMenu({
       >
         <MenuItem
           onClick={(e) => {
+            console.log("optimise route button called")
+            handleClickOptimiseRoute(itineraryDay.dayNumber);
             handleClose(e);
           }}
           sx={{color: "secondary.main", border: `1px solid ${theme.palette.secondary.main}`, borderRadius: "15px"}}
@@ -72,6 +75,7 @@ function DayMenu({
         </MenuItem>
         <MenuItem
           onClick={(e) => {
+            
             handleClose(e);
           }}
         >

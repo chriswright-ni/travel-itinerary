@@ -43,6 +43,7 @@ import AddItemButton from "../components/AddItemButton";
 import DeleteDayDialog from "../components/DeleteDayDialog";
 import DistanceDurationConnector from "../components/DistanceDurationConnector";
 import { useNotificationContext } from "../contexts/NotificationContext";
+import { useMapContext } from "../contexts/MapContext";
 
 function ItineraryPage() {
   const {
@@ -65,6 +66,10 @@ function ItineraryPage() {
   } = useItineraryContext();
 
   const { showNotification } = useNotificationContext();
+
+  const {
+    handleClickOptimiseRoute,
+  } = useMapContext();
 
   const navigate = useNavigate();
 
@@ -477,6 +482,7 @@ function ItineraryPage() {
                         itineraryDay={itineraryDay}
                         handleClickRemoveDay={handleClickRemoveDay}
                         handleClickChangeDayTime={handleClickChangeDayTime}
+                        handleClickOptimiseRoute={handleClickOptimiseRoute}
                       />
                     </Box>
                   </AccordionSummary>
