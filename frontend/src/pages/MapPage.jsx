@@ -20,9 +20,10 @@ function MapPage({ showMap }) {
   const { itinerary, setItinerary, updateSavedRoute, clearSavedRoute } =
     useItineraryContext();
   const { showNotification } = useNotificationContext();
+  const { showRoute, setShowRoute, handleClickOptimiseRoute} = useMapContext();
 
   const [selectedDayNumber, setSelectedDayNumber] = useState(1);
-  const [showRoute, setShowRoute] = useState(false);
+  // const [showRoute, setShowRoute] = useState(false);
 
   const mapRef = useRef();
   const mapContainerRef = useRef();
@@ -74,18 +75,29 @@ function MapPage({ showMap }) {
     }
   };
 
-  const handleClickOptimiseRoute = (selectedDayNumber, map) => {
+  // const handleClickOptimiseRoute = (selectedDayNumber, map) => {
   
-    if (itinerary[selectedDayNumber - 1].optimised) {
-      showNotification("Route already optimised")
-      console.log("route already optimised")
-      return;
-    } else {  
-      const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
-      optimiseRoute(selectedDayNumber, itineraryItems, map)
-    } 
+  //   if (itinerary[selectedDayNumber - 1].optimised) {
+  //     showNotification("Route already optimised")
+  //     console.log("route already optimised")
+  //   } else {  
+  //     const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
+  //     if (itineraryItems.length === 0) {
+  //       showNotification("Add 2 more items to see a route");
+  //       return;
+  //     }
+  //     if (itineraryItems.length === 1) {
+  //       showNotification("Add 1 more item to see a route");
+  //       return;
+  //     }
+  //     optimiseRoute(selectedDayNumber, itineraryItems, map)
       
-  };
+  //   } 
+  //   if (!showRoute) {
+  //     setShowRoute(true)
+  //   }
+      
+  // };
 
   // Creates a list of coordinates of each item in the itineraryItems array
   // This is generated in the format of longitude,latitude;longitude,latitude
@@ -203,7 +215,7 @@ function MapPage({ showMap }) {
     console.log("Optimisation API called");
     console.log(itineraryItems)
     const query = await fetch(
-      `https://api.mapbox.com/optimized-trips/v1/mapbox/walking/${coordinatesList}?geometries=geojson&roundtrip=true&source=first&destination=any&access_token=${mapboxAccessToken}`
+      `https://api.mapbox.com/optimized-trips/v1/mapbox/walking/${coordinatesList}?geometries=geojson&roundtrip=false&source=first&destination=last&access_token=${mapboxAccessToken}`
     );
     const json = await query.json();
     // console.log(json)
@@ -442,9 +454,7 @@ function MapPage({ showMap }) {
           <Fab
             aria-label="add"
             sx={{
-              backgroundColor: showRoute
-                ? "secondary.main"
-                : "background.paper",
+              backgroundColor: "background.paper",
             }}
             onClick={() => {
               handleClickOptimiseRoute(selectedDayNumber, mapRef.current);
