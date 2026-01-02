@@ -110,15 +110,15 @@ export const MapProvider = ({children}) => {
 
     if (itineraryItems.length < 2) return;
 
-    const coordinatesList = getItemCoordinateList(itineraryItems);
+    const coordinatesList = getItemCoordinateList(dayNumber, itineraryItems);
 
     console.log("Optimisation API called");
-    console.log(itineraryItems)
+    // console.log(itineraryItems)
     const query = await fetch(
       `https://api.mapbox.com/optimized-trips/v1/mapbox/walking/${coordinatesList}?geometries=geojson&roundtrip=false&source=first&destination=last&access_token=${mapboxAccessToken}`
     );
     const json = await query.json();
-    // console.log(json)
+    // console.log("response: ", json)
     const tripsData = json.trips;
     const geometry = tripsData[0].geometry;
     const waypointsData = json.waypoints
@@ -130,39 +130,7 @@ export const MapProvider = ({children}) => {
     for (let waypoint of waypointsData) {
       waypointIndexValues.push(waypoint.waypoint_index);
     }
-    
-    // console.log("optimise route geo: ", geometry)
 
-    // const legs = tripsData[0].legs;
-    // const legsData = legs.map((leg) => {
-    //   return {
-    //     distance: (leg.distance / 1000).toFixed(1),
-    //     duration: leg.duration,
-    //   };
-    // });
-
-    // const route = {
-    //   geometry: geometry,
-    //   distance: (tripsData.distance / 1000).toFixed(1), // convert distance to km
-    //   duration: tripsData.duration,
-    //   legs: legsData,
-    //   waypointIndexValues: waypointIndexValues
-    // };
-
-    // console.log("Waypoint index values: ", waypointIndexValues)
-
-    // Store the new route in the day object
-    // updateSavedRoute(dayNumber, route);
-
-    // addRoute(mapRef.current, geometry);
-
-    // 1 Eiffel, 2 Chanel, 3 Louvre, 4 Notre, 5 LV
-    // 1 Eiffel, 2 Notre, 3 Louvre, 4 Chanel, 5 LV
-    // Waypoint index: [0, 3, 2, 1, 4]
-    // Get item 0 and put it 1st
-    // Get item 3 and put it 2nd
-    // Get item 2 and put it 3rd
-    // etc
 
     reorderItineraryItems(dayNumber, itineraryItems, waypointIndexValues)
   };
@@ -177,16 +145,19 @@ export const MapProvider = ({children}) => {
 
     // console.log("loop")
 
-    for (let i = 0; i < waypointIndexValues.length; i++) {
-      const index = waypointIndexValues[i];
-      // console.log(index);
-      const item = itineraryItems[index];
-      // console.log(item)
+    // Loop over the waypoint index array one time less than the length as we don't need the starting point
+    // This loop reorders the itinerary items array
+    for (let i = 0; i < waypointIndexValues.length - 1; i++) {
+      const index = waypointIndexValues[i + 1]; // Skip the starting coordinates at the start of the array
+      console.log(index);
+      const item = itineraryItems[index - 1]; // Remove the additional increment from above to access the correct itinerary item
+      console.log(item)
       // itineraryItemsReordered.push(itineraryItems[index]);
       itineraryItemsReordered.push(item);
       // console.log(itineraryItemsReordered)
     }
     // console.log("before setItinerary")
+    console.log("Test point 1")
 
     setItinerary((prev) => 
       prev.map((day) => 
@@ -198,35 +169,24 @@ export const MapProvider = ({children}) => {
         } : day
       )
     )
-
-    // console.log("after setItinerary")
-
-    // console.log(itinerary)
-
-    // console.log("itineraryItems")
-    // console.log(itineraryItems)
-    // console.log("itineraryItemsReordered")
-    // console.log(itineraryItemsReordered)
-
-    // Original
-    // LV, Chanel, Notre, Eiffel, Louvre
-
-    // Optimised
-    // Waypoint index: [0, 2, 3, 1, 4]
-    // Expected new order: LV, Notre, Effil, Chanel, Louvre
-    // Actual new order: LV, Eiffel, Chanel, Notre, Louvre
-    
+    console.log("Test point 2")
   }
 
 
   // Creates a list of coordinates of each item in the itineraryItems array
   // This is generated in the format of longitude,latitude;longitude,latitude
-  const getItemCoordinateList = (itineraryItems) => {
+  const getItemCoordinateList = (dayNumber, itineraryItems) => {
     // console.log(itineraryItems)
     const itemCoordinates = itineraryItems.map((item) => [
       item.longitude,
       item.latitude,
     ]);
+
+    const dayStartLocationData = itinerary[dayNumber - 1].dayStartLocation
+    if (dayStartLocationData) {
+      const startingCoordinates = [dayStartLocationData.longitude, dayStartLocationData.latitude]
+      itemCoordinates.unshift(startingCoordinates)
+    }
     return itemCoordinates.join(";");
   };
 
@@ -247,7 +207,7 @@ export const MapProvider = ({children}) => {
       // If route is null, call the API
     } else {
       // console.log("TEST POINT - ELSE");
-      const coordinatesList = getItemCoordinateList(itineraryItems);
+      const coordinatesList = getItemCoordinateList(dayNumber, itineraryItems);
 
       console.log("Directions API called");
       console.log(itineraryItems);

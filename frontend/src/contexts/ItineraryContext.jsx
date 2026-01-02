@@ -6,8 +6,9 @@ const ItineraryContext = createContext();
 export const useItineraryContext = () => useContext(ItineraryContext);
 
 export const ItineraryProvider = ({ children }) => {
+  // DAY START LOCATION ADDED BELOW FOR THE PURPOSE OF DEVELOPMENT WITHOUT CALLING API
   const [itinerary, setItinerary] = useState([
-    { dayNumber: 1, dayStartTime: "09:00", itineraryItems: [] },
+    { dayNumber: 1, dayStartTime: "09:00", dayStartLocation: {name: "Rue De Lille, 75007 Paris, France", longitude: 2.325855, latitude: 48.859656}, itineraryItems: [] },
   ]);
 
   const [nextItineraryItemId, setNextItineraryItemId] = useState(1); // Counter to assign itinerary ids
@@ -142,6 +143,7 @@ export const ItineraryProvider = ({ children }) => {
       newItinerary.push({
         dayNumber: i + 1,
         dayStartTime: "09:00",
+        dayStartLocation: null,
         itineraryItems: [],
       });
     }
@@ -304,7 +306,7 @@ export const ItineraryProvider = ({ children }) => {
   };
 
   const updateDayStartLocation = (dayNumber, locationData) => {
-    
+    console.log("in update day start location")
     if (!dayNumber) return;
     if (!locationData) return;
     

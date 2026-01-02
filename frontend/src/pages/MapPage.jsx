@@ -19,8 +19,13 @@ import { useSearchContext } from "../contexts/SearchContext";
 function MapPage({ showMap }) {
   // const mapboxAccessToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN;
 
-  const { itinerary, setItinerary, updateSavedRoute, clearSavedRoute, updateDayStartLocation} =
-    useItineraryContext();
+  const {
+    itinerary,
+    setItinerary,
+    updateSavedRoute,
+    clearSavedRoute,
+    updateDayStartLocation,
+  } = useItineraryContext();
   const { showNotification } = useNotificationContext();
   const {
     showRoute,
@@ -64,7 +69,7 @@ function MapPage({ showMap }) {
 
     if (!dayStartLocation) return;
 
-    markerRef.current = new mapboxgl.Marker({draggable: true})
+    markerRef.current = new mapboxgl.Marker({ draggable: true })
       .setLngLat([dayStartLocation.longitude, dayStartLocation.latitude])
       .setPopup(
         new mapboxgl.Popup({ offset: 25, closeButton: false }).setHTML(
@@ -80,10 +85,10 @@ function MapPage({ showMap }) {
         name: "Custom",
         longitude: lngLat.lng,
         latitude: lngLat.lat,
-      }
+      };
 
-      updateDayStartLocation(selectedDayNumber, startLocationData)
-    }
+      updateDayStartLocation(selectedDayNumber, startLocationData);
+    };
 
     markerRef.current.on("dragend", onDragEnd);
   };
@@ -100,9 +105,9 @@ function MapPage({ showMap }) {
     );
     const data = await response.json(); // Array of objects
     console.log("Inside retrieve API call - map page");
-    // setStartingPoint(data);
-
-    updateDayStartLocation(selectedDayNumber, data)
+    console.log(data)
+    
+    updateDayStartLocation(selectedDayNumber, data);
     // setItinerary((prev) =>
     //   prev.map((day) =>
     //     day.dayNumber === selectedDayNumber
@@ -154,16 +159,37 @@ function MapPage({ showMap }) {
 
   // Load the map as soon as the component is mounted
   useEffect(() => {
+    let map = mapRef.current;
     if (!mapRef.current) {
       mapboxgl.accessToken = mapboxAccessToken;
-      mapRef.current = new mapboxgl.Map({
+      map = (mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current,
         center: [2.3514, 48.8575],
         zoom: 11,
-      });
+      }));
       console.log("NEW MAP LOAD!!!");
     }
   }, []);
+
+  // const handleClickSelectStartLocation = (e) => {
+  //   const startLocationData = {
+  //     name: "Custom",
+  //     longitude: e.lngLat.lng,
+  //     latitude: e.lngLat.lat,
+  //   };
+  //   console.log("selected day: ", selectedDayNumber)
+
+  //   updateDayStartLocation(selectedDayNumber, startLocationData);
+  //   console.log(itinerary[selectedDayNumber - 1])
+  // }
+
+  // useEffect(() => {
+
+  //   mapRef.current.on("click", (e) => {
+  //     handleClickSelectStartLocation(e) 
+  //   });
+  // }, [itinerary, selectedDayNumber])
+
 
   // When navigating to the map page, the following code resizes the map to the container after it was hidden
   useEffect(() => {
