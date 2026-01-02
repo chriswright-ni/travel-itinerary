@@ -21,20 +21,8 @@ export const MapProvider = ({children}) => {
   const mapContainerRef = useRef();
  
 
-  // const addStartingPin = () => {
-  //   markerRef.current = new mapboxgl.Marker()
-  //     .setLngLat([locationData.longitude, locationData.latitude])
-  //     .setPopup(
-  //       new mapboxgl.Popup({ offset: 25, closeButton: false })
-  //         .setHTML(
-  //           `<h3>${locationData.name}</h3><p></p>`
-  //         )
-  //     )
-  //     .addTo(map);
-  // }
-
   // Fits all markers within the map viewport
-  const fitMarkersToViewport = (itineraryItems, map) => {
+  const fitMarkersToViewport = (dayNumber, itineraryItems, map) => {
     if (!map) return;
     if (itineraryItems.length === 0) return;
 
@@ -43,10 +31,13 @@ export const MapProvider = ({children}) => {
     itineraryItems.forEach((item) => {
       bounds.extend([item.longitude, item.latitude]);
     });
-
     
+    const dayStartLocationData = itinerary[dayNumber - 1].dayStartLocation
+    if (dayStartLocationData) {
+      bounds.extend([dayStartLocationData.longitude, dayStartLocationData.latitude])
+    }
 
-    if (itineraryItems.length === 1) {
+    if (itineraryItems.length === 1 && !dayStartLocationData) {
       // map.fitBounds(bounds, { padding: 50, zoom: 13.5 });
       map.flyTo({
         center: [itineraryItems[0].longitude, itineraryItems[0].latitude],
@@ -59,17 +50,23 @@ export const MapProvider = ({children}) => {
 
   // Toggles the route view
   const handleClickShowRoute = (selectedDayNumber, map) => {
-    // console.log(itinerary[selectedDayNumber - 1].itineraryItems)
     const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
+    const dayStartLocationData = itinerary[selectedDayNumber - 1].dayStartLocation
     if (!showRoute) {
+      if (itineraryItems.length === 0 && !dayStartLocationData) {
+        showNotification("Add 2 more location to see a route");
+        return;
+      }
+      if (itineraryItems.length === 1 && !dayStartLocationData) {
+        showNotification("Add 1 more location to see a route");
+        return;
+      }
+      if (itineraryItems.length === 0 && dayStartLocationData) {
+        showNotification("Add 1 more location to see a route");
+        return;
+      }
       getRoute(selectedDayNumber, itineraryItems, map);
       setShowRoute(true);
-      if (itineraryItems.length === 0) {
-        showNotification("Add 2 more items to see a route");
-      }
-      if (itineraryItems.length === 1) {
-        showNotification("Add 1 more item to see a route");
-      }
     } else {
       hideRoute(map);
       setShowRoute(false);
@@ -80,6 +77,8 @@ export const MapProvider = ({children}) => {
     console.log("INSIDE OPTIMISE ROUTE")
     const map = mapRef.current
     const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
+    const dayStartLocationData = itinerary[selectedDayNumber - 1].dayStartLocation
+   
   
     if (itinerary[selectedDayNumber - 1].optimised) {
       showNotification("Route already optimised")
@@ -89,12 +88,12 @@ export const MapProvider = ({children}) => {
         getRoute(selectedDayNumber, itineraryItems, map)
       }
     } else {  
-      if (itineraryItems.length === 0) {
-        showNotification("Add 2 more items to see a route");
+      if (itineraryItems.length < 3 && !dayStartLocationData) {
+        showNotification("Add at least 3 locations to optimise route");
         return;
       }
-      if (itineraryItems.length === 1) {
-        showNotification("Add 1 more item to see a route");
+      if (itineraryItems.length < 2 && dayStartLocationData) {
+        showNotification("Add at least 3 locations to optimise route");
         return;
       }
       optimiseRoute(selectedDayNumber, itineraryItems, map)
@@ -204,7 +203,7 @@ export const MapProvider = ({children}) => {
   const getRoute = async (dayNumber, itineraryItems, map) => {
     if (!map) return;
 
-    if (itineraryItems.length < 2) return;
+    if (itineraryItems.length < 1) return;
 
     let geometry = null;
 

@@ -137,7 +137,7 @@ function MapPage({ showMap }) {
     if (items.length === 0) return;
 
     fitMarkersToViewport(
-      itinerary[selectedDayNumber - 1].itineraryItems,
+      selectedDayNumber, itinerary[selectedDayNumber - 1].itineraryItems,
       mapRef.current
     );
   }, [selectedDayNumber, itinerary]);
@@ -244,7 +244,7 @@ function MapPage({ showMap }) {
             sx={{ backgroundColor: "background.paper" }}
             onClick={() =>
               fitMarkersToViewport(
-                itinerary[selectedDayNumber - 1].itineraryItems,
+                selectedDayNumber, itinerary[selectedDayNumber - 1].itineraryItems,
                 mapRef.current
               )
             }
