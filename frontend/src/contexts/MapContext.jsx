@@ -44,6 +44,8 @@ export const MapProvider = ({children}) => {
       bounds.extend([item.longitude, item.latitude]);
     });
 
+    
+
     if (itineraryItems.length === 1) {
       // map.fitBounds(bounds, { padding: 50, zoom: 13.5 });
       map.flyTo({
@@ -145,12 +147,20 @@ export const MapProvider = ({children}) => {
 
     // console.log("loop")
 
-    // Loop over the waypoint index array one time less than the length as we don't need the starting point
-    // This loop reorders the itinerary items array
-    for (let i = 0; i < waypointIndexValues.length - 1; i++) {
-      const index = waypointIndexValues[i + 1]; // Skip the starting coordinates at the start of the array
+    console.log(waypointIndexValues)
+    // If the day has a starting location, remove this from the waypoints index array
+    const dayStartLocationData = itinerary[dayNumber - 1].dayStartLocation
+    if (dayStartLocationData) {
+      waypointIndexValues.shift()
+      // Reduce all index values by 1 to align with itinerary item array indexes
+      waypointIndexValues = waypointIndexValues.map((index) => index - 1)
+    }
+    console.log(waypointIndexValues)
+
+    for (let i = 0; i < waypointIndexValues.length; i++) {
+      const index = waypointIndexValues[i];
       console.log(index);
-      const item = itineraryItems[index - 1]; // Remove the additional increment from above to access the correct itinerary item
+      const item = itineraryItems[index];
       console.log(item)
       // itineraryItemsReordered.push(itineraryItems[index]);
       itineraryItemsReordered.push(item);
