@@ -2,7 +2,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { useState, useEffect } from "react";
 
-function LocationSearch({ onLocationSelect }) {
+function LocationSearch({ onLocationSelect, placeholderText }) {
   const [searchText, setSearchText] = useState(""); // The text entered by the user
   const [debouncedQuery, setDebouncedQuery] = useState(""); // The text sent to the API after the user stops typing
   const [options, setOptions] = useState([]); // The user options returned from the API.  Note: MUI options require an array.
@@ -68,7 +68,7 @@ function LocationSearch({ onLocationSelect }) {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="Where would you like to go?"
+          placeholder={placeholderText}
           variant="outlined"
           sx={{
             borderRadius: 3,

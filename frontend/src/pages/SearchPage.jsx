@@ -186,7 +186,7 @@ function SearchPage() {
             boxShadow: 2,
           }}
         >
-          <LocationSearch onLocationSelect={handleLocationSelect} />
+          <LocationSearch onLocationSelect={handleLocationSelect} placeholderText={"Where would you like to go?"}/>
           <Box sx={{ mt: 1 }}>
             <InterestSelector
               onInterestSelect={handleInterestSelect}

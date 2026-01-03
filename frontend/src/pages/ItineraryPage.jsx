@@ -45,6 +45,10 @@ import DistanceDurationConnector from "../components/DistanceDurationConnector";
 import { useNotificationContext } from "../contexts/NotificationContext";
 import { useMapContext } from "../contexts/MapContext";
 import Divider from "@mui/material/Divider";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import LocationPinIcon from "@mui/icons-material/LocationPin";
 
 function ItineraryPage() {
   const {
@@ -68,9 +72,7 @@ function ItineraryPage() {
 
   const { showNotification } = useNotificationContext();
 
-  const {
-    handleClickOptimiseRoute,
-  } = useMapContext();
+  const { handleClickOptimiseRoute } = useMapContext();
 
   const navigate = useNavigate();
 
@@ -202,20 +204,20 @@ function ItineraryPage() {
   // Gets the total itinerary time in seconds
   // This includes the recommended duration of each itinerary item
   const getTotalItineraryTime = (itineraryItems, routeDuration) => {
-
     if (itineraryItems?.length === 0) return;
     if (routeDuration === null) return;
-    
+
     let itemDurationTotalMinutes = 0;
 
     for (let item of itineraryItems) {
       itemDurationTotalMinutes += item.recommendedDuration;
     }
 
-    const totalItineraryDurationSeconds = (itemDurationTotalMinutes * 60) + routeDuration;
-    
+    const totalItineraryDurationSeconds =
+      itemDurationTotalMinutes * 60 + routeDuration;
+
     return totalItineraryDurationSeconds;
-  }
+  };
 
   const findDayId = (itemId) => {
     if (itinerary.some((day) => day.dayNumber === itemId)) {
@@ -245,7 +247,12 @@ function ItineraryPage() {
               oldIndex,
               newIndex
             );
-            return { ...day, itineraryItems: itineraryReordered, route: null, optimised: false };
+            return {
+              ...day,
+              itineraryItems: itineraryReordered,
+              route: null,
+              optimised: false,
+            };
           } else {
             return day;
           }
@@ -322,15 +329,11 @@ function ItineraryPage() {
           minHeight: "100vh",
         }}
       >
-        <Box sx={{ mb: 2 }}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <TextField
+        <Card elevation={2} sx={{ borderRadius: "15px", px: 2, mt: 2 }}>
+          <CardContent>
+            <Typography>Paris Trip</Typography>
+
+            {/* <TextField
               id="trip-name"
               // label="What is your trip called?"
               value={tripDetails.tripName}
@@ -348,12 +351,13 @@ function ItineraryPage() {
                 },
               }}
               fullWidth
-            />
-            <Button variant="outlined" onClick={() => navigate("/")}>
-              New Trip
-            </Button>
-          </Box>
-        </Box>
+            /> */}
+          </CardContent>
+        </Card>
+
+        <Button variant="outlined" onClick={() => navigate("/")}>
+          New Trip
+        </Button>
         <Box sx={{ pb: 15 }}>
           <Box>
             {itinerary.map((itineraryDay, index) => {
@@ -413,6 +417,7 @@ function ItineraryPage() {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
+                      mb: 1
                     }}
                   >
                     <Box
@@ -473,7 +478,12 @@ function ItineraryPage() {
                         />
                         <Typography>
                           {itineraryDay.route
-                            ? createDurationString(getTotalItineraryTime(itineraryDay.itineraryItems, itineraryDay.route.duration))
+                            ? createDurationString(
+                                getTotalItineraryTime(
+                                  itineraryDay.itineraryItems,
+                                  itineraryDay.route.duration
+                                )
+                              )
                             : ""}
                         </Typography>
                       </Box>
@@ -488,6 +498,24 @@ function ItineraryPage() {
                     </Box>
                   </AccordionSummary>
                   <AccordionDetails>
+                    <Divider sx={{mb: 1}}/>
+                    <Box sx={{display: "flex", alignItems: "center", mb: 1}}>
+
+                    <Box sx={{display: "flex"}}>
+                      <LocationPinIcon sx={{ mr: 1 }} />
+                    </Box>
+                   
+
+                    <Box sx={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+
+                      <Typography>Starting location:</Typography>
+                    
+                      {itineraryDay.dayStartLocation ? <Typography>{itineraryDay.dayStartLocation.name}</Typography> : <Typography>Add a starting location</Typography>}
+                    </Box>
+                   
+                    </Box>
+                      
+                    <Divider sx={{mb: 4}}/>
                     <DndContext
                       sensors={sensors}
                       collisionDetection={closestCenter}
@@ -542,9 +570,21 @@ function ItineraryPage() {
                                       .length -
                                       1 ? (
                                       ""
+                                    ) : itineraryDayWithTimes.route ? (
+                                      <DistanceDurationConnector
+                                        distance={
+                                          itineraryDayWithTimes.route?.legs[
+                                            index
+                                          ].distance
+                                        }
+                                        duration={createDurationString(
+                                          itineraryDayWithTimes.route?.legs[
+                                            index
+                                          ].duration
+                                        )}
+                                      />
                                     ) : (
-                                      itineraryDayWithTimes.route ? 
-                                      <DistanceDurationConnector distance={itineraryDayWithTimes.route?.legs[index].distance} duration={createDurationString(itineraryDayWithTimes.route?.legs[index].duration)} /> : ""
+                                      ""
                                     )}
                                   </Box>
                                 );
@@ -584,7 +624,7 @@ function ItineraryPage() {
               );
             })}
           </Box>
-          <Divider sx={{mb: 2}}/>
+          <Divider sx={{ mb: 2 }} />
           <Box>
             <Button variant="outlined" fullWidth onClick={handleClickAddDay}>
               Add day
