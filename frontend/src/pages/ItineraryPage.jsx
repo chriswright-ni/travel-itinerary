@@ -38,6 +38,7 @@ import DaySelectDrawer from "../components/DaySelectDrawer";
 import TimeSelectDrawer from "../components/TimeSelectDrawer";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import DayMenu from "../components/DayMenu";
+import AppBar from "../components/MainAppBar.jsx";
 import theme from "../themes/theme_five.js";
 import AddItemButton from "../components/AddItemButton";
 import DeleteDayDialog from "../components/DeleteDayDialog";
@@ -49,6 +50,10 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import LocationPinIcon from "@mui/icons-material/LocationPin";
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import EditIcon from '@mui/icons-material/Edit';
 
 function ItineraryPage() {
   const {
@@ -187,6 +192,10 @@ function ItineraryPage() {
     setTimeSelectOpen(false);
     showNotification(`Day ${currentDayNumber} start time updated`);
   };
+
+  const handleClickStartingLocation = () => {
+    navigate("/map");
+  }
 
   // Generates a duration string with hours and minutes, based on the number of seconds input
   const createDurationString = (seconds) => {
@@ -327,11 +336,14 @@ function ItineraryPage() {
           flexDirection: "column",
           justifyContent: "flex-start",
           minHeight: "100vh",
+          bgcolor: "background.default"
         }}
       >
-        <Card elevation={2} sx={{ borderRadius: "15px", px: 2, mt: 2 }}>
+        <AppBar />
+        <Card elevation={2} sx={{ borderRadius: "15px", mx: 2, mt: 2, mb: 3, bgcolor: "background.paper" }}>
           <CardContent>
-            <Typography>Paris Trip</Typography>
+            <Typography variant="h6" sx={{fontWeight: 600}}>Paris Trip</Typography>
+            <Typography variant="body2" sx={{color: "text.secondary"}}>Mon 15 Jan - Fri 19 Jan</Typography>
 
             {/* <TextField
               id="trip-name"
@@ -355,9 +367,9 @@ function ItineraryPage() {
           </CardContent>
         </Card>
 
-        <Button variant="outlined" onClick={() => navigate("/")}>
+        {/* <Button variant="outlined" onClick={() => navigate("/")}>
           New Trip
-        </Button>
+        </Button> */}
         <Box sx={{ pb: 15 }}>
           <Box>
             {itinerary.map((itineraryDay, index) => {
@@ -396,52 +408,35 @@ function ItineraryPage() {
                     sx={{
                       backgroundColor:
                         expanded === itineraryDay.dayNumber
-                          ? "primary.selected"
+                          ? "primary.light"
                           : "transparent",
-                      border: "1px solid #E0E0E0",
-                      // border: "none",
-                      // overflow: "hidden",
-                      // padding: 0,
+                      // border: "1px solid #E0E0E0",
+                      border: "none",
                       borderRadius: 2,
-                      // "&:before": {
-                      //   display: "none"
-                      // }
-                      // "& .Mui-focusVisible": {
-                      //   outline: "none",
-                      //   bgcolor: "transparent"
-                      // },
                       "&:focus": {
                         outline: "none",
-                        // bgcolor: "transparent"
                       },
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      mb: 1
+                      mb: 1,
+                      px: 2,
+                      py: 1
                     }}
                   >
                     <Box
                       sx={{
-                        // backgroundColor: "primary.light",
-                        // border: "1px solid #E0E0E0",
-                        // // overflow: "hidden",
-                        // // bgcolor: "background.paper",
-                        // borderRadius: 2,
-                        // py: 1,
-                        // px: 2,
-                        // width: "100%",
-                        // boxShadow: 2,
                         display: "flex",
                         flex: 1,
                         flexDirection: "column",
                       }}
                     >
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Typography>{`Day ${itineraryDay.dayNumber}`}</Typography>
+                        <Typography variant="subtitle1">{`Day ${itineraryDay.dayNumber}`}</Typography>
                         <FiberManualRecordIcon
                           sx={{ fontSize: "0.375rem", mx: 1 }}
                         />
-                        <Typography>{`${
+                        <Typography variant="subtitle1">{`${
                           tripDetails.startDate
                             ? dayjs(tripDetails.startDate)
                                 .add(index, "day")
@@ -498,24 +493,17 @@ function ItineraryPage() {
                     </Box>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Divider sx={{mb: 1}}/>
-                    <Box sx={{display: "flex", alignItems: "center", mb: 1}}>
-
-                    <Box sx={{display: "flex"}}>
-                      <LocationPinIcon sx={{ mr: 1 }} />
-                    </Box>
-                   
-
-                    <Box sx={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-
-                      <Typography>Starting location:</Typography>
-                    
-                      {itineraryDay.dayStartLocation ? <Typography>{itineraryDay.dayStartLocation.name}</Typography> : <Typography>Add a starting location</Typography>}
-                    </Box>
-                   
-                    </Box>
+                    <Divider sx={{ mb: 0 }} />
+                    <ListItemButton onClick={handleClickStartingLocation}>
+                      <ListItemIcon>
+                      <LocationPinIcon color={"primary"} sx={{ mr: 1 }} />
+                      </ListItemIcon>
+                      <ListItemText primary={<Typography variant="caption">Starting location:</Typography>} secondary={itineraryDay.dayStartLocation ? itineraryDay.dayStartLocation.name : "Add a starting location"}/>
                       
-                    <Divider sx={{mb: 4}}/>
+                    
+                    </ListItemButton>
+
+                    <Divider sx={{ mb: 4 }} />
                     <DndContext
                       sensors={sensors}
                       collisionDetection={closestCenter}
@@ -534,7 +522,7 @@ function ItineraryPage() {
                           {itineraryDay.itineraryItems.length === 0 ? (
                             <Box
                               sx={{
-                                border: `2px dashed ${theme.palette.text.secondary}`,
+                                border: `2px dashed #D1D5DB`,
                                 borderRadius: 2,
                                 height: "120px",
                                 backgroundColor: "background.paper",

@@ -171,6 +171,7 @@ function SearchPage() {
           flexDirection: "column",
           justifyContent: "flex-start",
           minHeight: "100vh",
+          bgcolor: "background.default"
         }}
       >
         <Box
