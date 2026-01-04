@@ -50,10 +50,12 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import LocationPinIcon from "@mui/icons-material/LocationPin";
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import EditIcon from '@mui/icons-material/Edit';
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import EditIcon from "@mui/icons-material/Edit";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 
 function ItineraryPage() {
   const {
@@ -195,7 +197,7 @@ function ItineraryPage() {
 
   const handleClickStartingLocation = () => {
     navigate("/map");
-  }
+  };
 
   // Generates a duration string with hours and minutes, based on the number of seconds input
   const createDurationString = (seconds) => {
@@ -335,42 +337,35 @@ function ItineraryPage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
-          minHeight: "100vh",
-          bgcolor: "background.default"
+          height: "100dvh",
+          bgcolor: "background.default",
         }}
       >
-        <AppBar />
-        <Card elevation={2} sx={{ borderRadius: "15px", mx: 2, mt: 2, mb: 3, bgcolor: "background.paper" }}>
-          <CardContent>
-            <Typography variant="h6" sx={{fontWeight: 600}}>Paris Trip</Typography>
-            <Typography variant="body2" sx={{color: "text.secondary"}}>Mon 15 Jan - Fri 19 Jan</Typography>
+        {/* <AppBar /> */}
+        <Box sx={{ pb: 23, overflowY: "auto", flex: 1 }}>
+          <Card
+            elevation={0}
+            sx={{
+              borderRadius: 2,
+              mx: 2,
+              mt: 3,
+              mb: 3,
+              bgcolor: "background.paper",
+            }}
+          >
+            <CardContent>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                Paris Trip
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Mon 15 Jan - Fri 19 Jan
+              </Typography>
+            </CardContent>
+          </Card>
 
-            {/* <TextField
-              id="trip-name"
-              // label="What is your trip called?"
-              value={tripDetails.tripName}
-              variant="outlined"
-              onChange={(e) =>
-                setTripDetails((prev) => ({
-                  ...prev,
-                  tripName: e.target.value,
-                }))
-              }
-              // UPDATE EDIT MODE FOR LOCAL TEXT UPDATE ONLY
-              slotProps={{
-                input: {
-                  // readOnly: editMode ? false : true,
-                },
-              }}
-              fullWidth
-            /> */}
-          </CardContent>
-        </Card>
-
-        {/* <Button variant="outlined" onClick={() => navigate("/")}>
+          {/* <Button variant="outlined" onClick={() => navigate("/")}>
           New Trip
         </Button> */}
-        <Box sx={{ pb: 15 }}>
           <Box>
             {itinerary.map((itineraryDay, index) => {
               // Generate itinerary day with dynamically generated start and end times
@@ -391,13 +386,18 @@ function ItineraryPage() {
                     );
                   }}
                   sx={{
-                    // borderRadius: 2,
+                    borderRadius: 2,
+                    boxShadow: "0px 3px 6px rgba(0,0,0, 0.1)",
                     mx: 2,
                     mb: 1,
                     "&:before": {
                       display: "none",
                     },
                     // overflow: "hidden",
+                    backgroundColor:
+                      expanded === itineraryDay.dayNumber
+                        ? "primary.light"
+                        : "background.paper",
                   }}
                   elevation={0}
                 >
@@ -406,10 +406,10 @@ function ItineraryPage() {
                     aria-controls="panel2-content"
                     id="panel2-header"
                     sx={{
-                      backgroundColor:
-                        expanded === itineraryDay.dayNumber
-                          ? "primary.light"
-                          : "transparent",
+                      // backgroundColor:
+                      //   expanded === itineraryDay.dayNumber
+                      //     ? "primary.light"
+                      //     : "transparent",
                       // border: "1px solid #E0E0E0",
                       border: "none",
                       borderRadius: 2,
@@ -421,7 +421,7 @@ function ItineraryPage() {
                       alignItems: "center",
                       mb: 1,
                       px: 2,
-                      py: 1
+                      py: 1,
                     }}
                   >
                     <Box
@@ -432,11 +432,18 @@ function ItineraryPage() {
                       }}
                     >
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Typography variant="subtitle1">{`Day ${itineraryDay.dayNumber}`}</Typography>
+                        <Typography
+                          variant="subtitle1"
+                          sx={{ fontWeight: 600 }}
+                        >{`Day ${itineraryDay.dayNumber}`}</Typography>
                         <FiberManualRecordIcon
-                          sx={{ fontSize: "0.375rem", mx: 1 }}
+                          sx={{
+                            fontSize: "0.375rem",
+                            mx: 1,
+                            color: "text.secondary",
+                          }}
                         />
-                        <Typography variant="subtitle1">{`${
+                        <Typography variant="body2" color="text.secondary">{`${
                           tripDetails.startDate
                             ? dayjs(tripDetails.startDate)
                                 .add(index, "day")
@@ -444,24 +451,37 @@ function ItineraryPage() {
                             : "Mon 22 Dec" // CHANGE THIS
                         }`}</Typography>
                         <FiberManualRecordIcon
-                          sx={{ fontSize: "0.375rem", mx: 1 }}
+                          sx={{
+                            fontSize: "0.375rem",
+                            mx: 1,
+                            color: "text.secondary",
+                          }}
                         />
-                        <Typography>{`${itineraryDay.dayStartTime} Start`}</Typography>
-                      </Box>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Typography>{`${itineraryDay.itineraryItems.length} ${
-                          itineraryDay.itineraryItems.length > 1
-                            ? "Items"
-                            : "Item"
-                        }`}</Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                        >{`${itineraryDay.dayStartTime} Start`}</Typography>
                         <FiberManualRecordIcon
                           sx={{
                             fontSize: "0.375rem",
                             mx: 1,
-                            display: itineraryDay.route ? "block" : "none",
+                            color: "text.secondary",
                           }}
                         />
-                        <Typography>{`${
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                        >{`${itineraryDay.itineraryItems.length} ${
+                          itineraryDay.itineraryItems.length > 1
+                            ? "Items"
+                            : "Item"
+                        }`}</Typography>
+                      </Box>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                        >{`${
                           itineraryDay.route ? itineraryDay.route.distance : ""
                         } ${itineraryDay.route ? "km" : ""}`}</Typography>
                         <FiberManualRecordIcon
@@ -469,9 +489,10 @@ function ItineraryPage() {
                             fontSize: "0.375rem",
                             mx: 1,
                             display: itineraryDay.route ? "block" : "none",
+                            color: "text.secondary",
                           }}
                         />
-                        <Typography>
+                        <Typography variant="caption" color="text.secondary">
                           {itineraryDay.route
                             ? createDurationString(
                                 getTotalItineraryTime(
@@ -492,18 +513,29 @@ function ItineraryPage() {
                       />
                     </Box>
                   </AccordionSummary>
-                  <AccordionDetails>
-                    <Divider sx={{ mb: 0 }} />
-                    <ListItemButton onClick={handleClickStartingLocation}>
-                      <ListItemIcon>
-                      <LocationPinIcon color={"primary"} sx={{ mr: 1 }} />
-                      </ListItemIcon>
-                      <ListItemText primary={<Typography variant="caption">Starting location:</Typography>} secondary={itineraryDay.dayStartLocation ? itineraryDay.dayStartLocation.name : "Add a starting location"}/>
-                      
-                    
+                  <AccordionDetails sx={{ pt: 0, mt: 0 }}>
+                    <ListItemButton
+                      onClick={handleClickStartingLocation}
+                      sx={{ mb: 2, borderRadius: 2, py: 2 }}
+                    >
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <LocationPinIcon color={"primary"} sx={{ mr: 1 }} />
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          <Typography variant="caption" color="text.secondary">
+                            Starting location:
+                          </Typography>
+                          {itineraryDay.dayStartLocation ? (
+                            <Typography variant="caption">
+                              {itineraryDay.dayStartLocation.name}
+                            </Typography>
+                          ) : (
+                            <Typography variant="body2">
+                              Add a starting location
+                            </Typography>
+                          )}
+                        </Box>
+                      </Box>
                     </ListItemButton>
-
-                    <Divider sx={{ mb: 4 }} />
                     <DndContext
                       sensors={sensors}
                       collisionDetection={closestCenter}
@@ -593,32 +625,23 @@ function ItineraryPage() {
                       />
                     )}
                   </AccordionDetails>
-                  {/* <AccordionActions>
-                  {editMode ? (
-                    <Button
-                      variant="outlined"
-                      fullWidth
-                      onClick={() =>
-                        handleClickRemoveDay(itineraryDay.dayNumber)
-                      }
-                    >
-                      Remove Day
-                    </Button>
-                  ) : (
-                    ""
-                  )}
-                </AccordionActions> */}
                 </Accordion>
               );
             })}
           </Box>
-          <Divider sx={{ mb: 2 }} />
-          <Box>
-            <Button variant="outlined" fullWidth onClick={handleClickAddDay}>
-              Add day
-            </Button>
-          </Box>
         </Box>
+        <Box>
+          <Fab
+            variant="extended"
+            color="primary"
+            sx={{ position: "fixed", bottom: "120px", right: "20px" }}
+            onClick={handleClickAddDay}
+          >
+            <AddIcon sx={{ mr: 1 }} />
+            Add Day
+          </Fab>
+        </Box>
+
         <DaySelectDrawer
           open={daySelectOpen}
           onClose={() => {

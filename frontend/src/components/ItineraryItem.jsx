@@ -28,13 +28,15 @@ function ItineraryItem({
   // console.log("item: ", itineraryItem)
   return (
     <Card
+      elevation={0}
       sx={{
         maxWidth: "100%",
         display: "flex",
         mb: 2,
         position: "relative",
         borderRadius: 2,
-        borderLeft: isSelected ? `4px solid ${theme.palette.primary.main}` : "none"
+        borderLeft: isSelected ? `4px solid ${theme.palette.primary.main}` : "none",
+        bgcolor: "background.paper"
       }}
       ref={ref}
       style={style}
