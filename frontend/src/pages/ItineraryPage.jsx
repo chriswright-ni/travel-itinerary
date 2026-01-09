@@ -363,9 +363,7 @@ function ItineraryPage() {
             </CardContent>
           </Card>
 
-          {/* <Button variant="outlined" onClick={() => navigate("/")}>
-          New Trip
-        </Button> */}
+        
           <Box>
             {itinerary.map((itineraryDay, index) => {
               // Generate itinerary day with dynamically generated start and end times
@@ -389,7 +387,7 @@ function ItineraryPage() {
                     borderRadius: 2,
                     boxShadow: "0px 3px 6px rgba(0,0,0, 0.1)",
                     mx: 2,
-                    mb: 1,
+                    mb: 2,
                     "&:before": {
                       display: "none",
                     },

@@ -32,7 +32,7 @@ function TripSetupPage() {
   const minDays = 1;
   const maxDays = 21;
 
-  const { setLocationData } = useSearchContext();
+  const { locationData, setLocationData } = useSearchContext();
 
   const { setTripDetails, initialiseItinerary, itinerary } = useItineraryContext();
 
@@ -64,7 +64,10 @@ function TripSetupPage() {
   const handleClickTripSetup = () => {
     
     // ADD VALIDATION IF REQUIRED - i.e. if the user hasn't made any selections
-    
+    if (locationData) {
+      headerImageUrl = getHeaderImageUrl(locationData);
+    }
+
     setTripDetails({
       days: days,
       startDate: date,
@@ -75,7 +78,7 @@ function TripSetupPage() {
     const newItem = initialiseItinerary(days)
     console.log("test ", newItem)
 
-    navigate("/search")
+    navigate("/itinerary")
 
   };
 

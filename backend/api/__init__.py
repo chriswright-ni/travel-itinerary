@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 import requests
 from api.routes.search_routes import search_bp
+from api.routes.image_routes import image_bp
 # from api.routes.mapbox_routes import mapbox_bp
 
 load_dotenv()
@@ -22,6 +23,7 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     
     app.register_blueprint(search_bp)
+    app.register_blueprint(image_bp)
     # app.register_blueprint(mapbox_bp)
 
     return app

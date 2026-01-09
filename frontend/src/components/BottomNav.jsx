@@ -4,6 +4,7 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import SearchIcon from "@mui/icons-material/Search";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import AddIcon from "@mui/icons-material/Add";
 import Paper from '@mui/material/Paper';
 import {Link, useLocation} from "react-router-dom"
 
@@ -15,7 +16,8 @@ function BottomNav() {
   const pathToValue = {
     "/search": "search",
     "/itinerary": "itinerary",
-    "/map": "map"
+    "/map": "map",
+    "/": "newtrip"
   }
 
   const value = pathToValue[location.pathname] || "search";
@@ -54,6 +56,13 @@ function BottomNav() {
           icon={<LocationOnIcon />}
           component={Link}
           to='/map'
+        />
+        <BottomNavigationAction
+          label="New Trip"
+          value="newtrip"
+          icon={<AddIcon />}
+          component={Link}
+          to='/'
         />
       </BottomNavigation>
     </Paper>
