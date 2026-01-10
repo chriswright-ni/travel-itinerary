@@ -51,7 +51,7 @@ def suggest():
 # The location name and coordinates are returned
 @search_bp.route("/api/location/retrieve", methods=["GET"])
 def retrieve():
-  print("inside retrieve route")
+  print("inside retrieve route")c
   id = request.args.get("id")
   session_token = "test_session"
 
