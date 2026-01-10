@@ -16,8 +16,10 @@ def create_app():
     
     app = Flask(__name__)
     CORS(app,
-        resources={r"/api/*": {"origins": "http://localhost:5173"}})
-
+        resources={r"/api/*": {"origins": "*"}})
+    # CORS(app,
+    #     resources={r"/api/*": {"origins": "http://localhost:5173/"}})
+    # CORS(app, origins = "http://localhost:5173")
    
     # SQL Alchemy configuration per documentation
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///travel_itinerary.db"

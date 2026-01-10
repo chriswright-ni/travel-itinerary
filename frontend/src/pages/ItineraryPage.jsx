@@ -58,6 +58,12 @@ import ListItemText from "@mui/material/ListItemText";
 import EditIcon from "@mui/icons-material/Edit";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import headerPlaceholder from "../images/unsplash-travel-placeholder.jpg";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import ScheduleIcon from "@mui/icons-material/Schedule";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import Chip from "@mui/material/Chip";
+import Flag from 'react-world-flags'
 
 function ItineraryPage() {
   const {
@@ -354,25 +360,45 @@ function ItineraryPage() {
               mt: 3,
               mb: 3,
               bgcolor: "background.paper",
-              position: "relative"
+              position: "relative",
             }}
           >
             <CardMedia
-              sx={{ height: 200, backgroundSize: "cover", backgroundPosition: "center", position: "relative"}}
-              image={tripDetails.headerImageUrl?.image_url}
+              sx={{
+                height: 200,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                position: "relative",
+                zIndex: 1
+              }}
+              image={tripDetails.headerImageUrl?.image_url || headerPlaceholder}
               title={locationData?.place}
             />
-            <CardContent sx={{position: "absolute", bottom: 0, left: 0, zIndex: 10}}>
-              
-
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "#ffffff", textAlign: "left", fontSize: "1.75rem"}}>
-                {tripDetails.tripName || locationData?.place}
+            <CardContent
+              sx={{ position: "absolute", bottom: 10, left: 10, zIndex: 10, bgcolor: "rgba(0, 0, 0, 0.5)", borderRadius: 2 , py: 0.5}}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 600,
+                  color: "#ffffff",
+                  textAlign: "left",
+                  fontSize: "1.75rem"
+                }}
+              >
+                {tripDetails.tripName || locationData?.place || "My Trip"}
               </Typography>
-              <Typography variant="body2" sx={{color: "#ffffff", textAlign: "left", fontSize: "1rem"}}>
+              <Typography
+                variant="body2"
+                sx={{ color: "#ffffff", textAlign: "left", fontSize: "1rem"}}
+              >
                 Mon 15 Jan - Fri 19 Jan
               </Typography>
-            
+              
             </CardContent>
+            <Box sx={{ position: "absolute", zIndex: 11, top: 15, right: 15}}>
+              <Chip label={locationData?.place || locationData?.country } icon={<Flag code={locationData?.country_code || "GB"} height={14}/>} sx={{color: "#ffffff", bgcolor: "rgba(0, 0, 0, 0.5)", fontSize: "1rem", px: 1}}/>
+            </Box>
           </Card>
 
           <Box>
@@ -441,6 +467,8 @@ function ItineraryPage() {
                       }}
                     >
                       <Box sx={{ display: "flex", alignItems: "center" }}>
+                        {/* <CalendarTodayIcon sx={{ fontSize: "1rem", mx: 1 }} /> */}
+
                         <Typography
                           variant="subtitle1"
                           sx={{ fontWeight: 600 }}
@@ -452,41 +480,45 @@ function ItineraryPage() {
                             color: "text.secondary",
                           }}
                         />
-                        <Typography variant="body2" color="text.secondary">{`${
+                        <Typography
+                          variant="subtitle1"
+                          sx={{ fontWeight: 600 }}
+                        >{`${
                           tripDetails.startDate
                             ? dayjs(tripDetails.startDate)
                                 .add(index, "day")
                                 .format("ddd D MMM")
                             : "Mon 22 Dec" // CHANGE THIS
                         }`}</Typography>
-                        <FiberManualRecordIcon
-                          sx={{
-                            fontSize: "0.375rem",
-                            mx: 1,
-                            color: "text.secondary",
-                          }}
-                        />
+                      </Box>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <ScheduleIcon sx={{ fontSize: "1rem", mr: 1 }} />
+
                         <Typography
                           variant="body2"
                           color="text.secondary"
-                        >{`${itineraryDay.dayStartTime} Start`}</Typography>
-                        <FiberManualRecordIcon
+                          sx={{ mr: 1 }}
+                        >
+                          {itineraryDay.dayStartTime}
+                        </Typography>
+                        {/* <FiberManualRecordIcon
                           sx={{
                             fontSize: "0.375rem",
                             mx: 1,
                             color: "text.secondary",
                           }}
-                        />
-                        <Typography
-                          variant="caption"
-                          color="text.secondary"
-                        >{`${itineraryDay.itineraryItems.length} ${
-                          itineraryDay.itineraryItems.length > 1
+                        /> */}
+                        <ListAltIcon sx={{ fontSize: "1rem", mx: 1 }} />
+                        <Typography variant="body2" color="text.secondary">{`${
+                          itineraryDay.itineraryItems.length
+                        } ${
+                          itineraryDay.itineraryItems.length > 1 ||
+                          itineraryDay.itineraryItems.length === 0
                             ? "Items"
                             : "Item"
                         }`}</Typography>
                       </Box>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                      {/* <Box sx={{ display: "flex", alignItems: "center" }}>
                         <Typography
                           variant="caption"
                           color="text.secondary"
@@ -511,7 +543,7 @@ function ItineraryPage() {
                               )
                             : ""}
                         </Typography>
-                      </Box>
+                      </Box> */}
                     </Box>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       <DayMenu
@@ -574,7 +606,7 @@ function ItineraryPage() {
                               }}
                             >
                               <Typography>
-                                No itinerary items added yet!
+                                Tap below to add your first activity
                               </Typography>
                               <AddItemButton
                                 handleClickAddItemToDay={() =>
@@ -643,7 +675,12 @@ function ItineraryPage() {
           <Fab
             variant="extended"
             color="primary"
-            sx={{ position: "fixed", bottom: "120px", right: "20px" }}
+            sx={{
+              position: "fixed",
+              bottom: "120px",
+              right: "20px",
+              fontWeight: 700,
+            }}
             onClick={handleClickAddDay}
           >
             <AddIcon sx={{ mr: 1 }} />

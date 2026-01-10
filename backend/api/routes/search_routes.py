@@ -73,10 +73,13 @@ def retrieve():
   longitude = features[0].get("properties").get("coordinates").get("longitude") 
   country = features[0].get("properties").get("context").get("country").get("name")
   place = features[0].get("properties").get("context").get("place").get("name")
+  country_code =  features[0].get("properties").get("context").get("country").get("country_code")
+  
   
   location_data = {
     "name": name,
     "country": country,
+    "country_code": country_code,
     "place": place,
     "latitude": latitude,
     "longitude": longitude,

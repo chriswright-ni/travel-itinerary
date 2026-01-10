@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "react-map-gl": "^8.1.0"
+    "react-map-gl": "^8.1.0",
+    "react-world-flags": "^1.6.0"
   }
 }

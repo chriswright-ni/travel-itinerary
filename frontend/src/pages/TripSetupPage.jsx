@@ -116,7 +116,7 @@ function TripSetupPage() {
       >
         <Typography>Let's set your trip up!</Typography>
 
-        <LocationSearch onLocationSelect={handleLocationSelect} />
+        <LocationSearch onLocationSelect={handleLocationSelect} placeholderText={"Where would you like to go?"} />
         <UseMyLocation />
 
         <Typography>How many days?</Typography>
@@ -176,6 +176,7 @@ function TripSetupPage() {
             }}
             onChange={(newValue) => setDate(newValue)}
             value={date}
+            format="DD-MMM-YYYY"
           />
         </LocalizationProvider>
 

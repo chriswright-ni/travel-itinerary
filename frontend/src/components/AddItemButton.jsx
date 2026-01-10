@@ -8,7 +8,7 @@ function AddItemButton({handleClickAddItemToDay, itineraryDay}) {
       onClick={() => {
         handleClickAddItemToDay(itineraryDay.dayNumber);
       }}
-      sx={{ textTransform: "none", mt: 2, fontWeight: 700, fontSize: "1rem" }}
+      sx={{ mt: 2, fontWeight: 700, fontSize: "0.85rem", borderRadius: "20px", py: 1 }}
     >
       + Add item
     </Button>
