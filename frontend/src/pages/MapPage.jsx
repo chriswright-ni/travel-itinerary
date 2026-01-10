@@ -158,18 +158,18 @@ function MapPage({ showMap }) {
   }, [selectedDayNumber, itinerary[selectedDayNumber - 1]?.itineraryItems]);
 
   // Load the map as soon as the component is mounted
-  useEffect(() => {
-    let map = mapRef.current;
-    if (!mapRef.current) {
-      mapboxgl.accessToken = mapboxAccessToken;
-      map = (mapRef.current = new mapboxgl.Map({
-        container: mapContainerRef.current,
-        center: [2.3514, 48.8575],
-        zoom: 11,
-      }));
-      console.log("NEW MAP LOAD!!!");
-    }
-  }, []);
+  // useEffect(() => {
+  //   let map = mapRef.current;
+  //   if (!mapRef.current) {
+  //     mapboxgl.accessToken = mapboxAccessToken;
+  //     map = (mapRef.current = new mapboxgl.Map({
+  //       container: mapContainerRef.current,
+  //       center: [2.3514, 48.8575],
+  //       zoom: 11,
+  //     }));
+  //     console.log("NEW MAP LOAD!!!");
+  //   }
+  // }, []);
 
   // const handleClickSelectStartLocation = (e) => {
   //   const startLocationData = {

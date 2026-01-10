@@ -39,7 +39,7 @@ function TripSetupPage() {
   const navigate = useNavigate()
 
   // This function retrives the coordinates from the user's location search selection
-  async function handleLocationSelect(userSelection) {
+  const handleLocationSelect = async (userSelection) => {
     if (!userSelection) {
       return;
     }
@@ -50,6 +50,7 @@ function TripSetupPage() {
     );
     const data = await response.json(); // Array of objects
     console.log("Inside retrieve API call");
+    console.log(data)
     setLocationData(data);
   }
 
@@ -61,17 +62,35 @@ function TripSetupPage() {
     setDays((prev) => prev - 1);
   };
 
-  const handleClickTripSetup = () => {
+  const getHeaderImageUrl = async (country, place) => {
+
+    const query = encodeURIComponent(place ? place : country)
+
+    const response = await fetch(
+      `http://127.0.0.1:5000/api/images/search?query=${query}`
+    );
+    const imageUrl = await response.json();
+    console.log(imageUrl)
+    return imageUrl
+  }
+
+  const handleClickTripSetup = async () => {
     
+    let headerImageUrl = null;
+
     // ADD VALIDATION IF REQUIRED - i.e. if the user hasn't made any selections
     if (locationData) {
-      headerImageUrl = getHeaderImageUrl(locationData);
+      headerImageUrl = await getHeaderImageUrl(locationData.country, locationData.place);
     }
+
+    console.log("header image:")
+    console.log(headerImageUrl)
 
     setTripDetails({
       days: days,
       startDate: date,
-      tripName: tripName
+      tripName: tripName,
+      headerImageUrl: headerImageUrl
     });
     console.log("days ", days)
 

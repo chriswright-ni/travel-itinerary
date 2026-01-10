@@ -15,7 +15,8 @@ PLACES_API_KEY = os.getenv("PLACES_API_KEY")
 def create_app():
     
     app = Flask(__name__)
-    CORS(app)
+    CORS(app,
+        resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
    
     # SQL Alchemy configuration per documentation

@@ -45,10 +45,12 @@ import DeleteDayDialog from "../components/DeleteDayDialog";
 import DistanceDurationConnector from "../components/DistanceDurationConnector";
 import { useNotificationContext } from "../contexts/NotificationContext";
 import { useMapContext } from "../contexts/MapContext";
+import { useSearchContext } from "../contexts/SearchContext";
 import Divider from "@mui/material/Divider";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
 import LocationPinIcon from "@mui/icons-material/LocationPin";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -78,6 +80,7 @@ function ItineraryPage() {
   } = useItineraryContext();
 
   const { showNotification } = useNotificationContext();
+  const { locationData } = useSearchContext();
 
   const { handleClickOptimiseRoute } = useMapContext();
 
@@ -351,19 +354,27 @@ function ItineraryPage() {
               mt: 3,
               mb: 3,
               bgcolor: "background.paper",
+              position: "relative"
             }}
           >
-            <CardContent>
-              <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                Paris Trip
+            <CardMedia
+              sx={{ height: 200, backgroundSize: "cover", backgroundPosition: "center", position: "relative"}}
+              image={tripDetails.headerImageUrl?.image_url}
+              title={locationData?.place}
+            />
+            <CardContent sx={{position: "absolute", bottom: 0, left: 0, zIndex: 10}}>
+              
+
+              <Typography variant="h6" sx={{ fontWeight: 600, color: "#ffffff", textAlign: "left", fontSize: "1.75rem"}}>
+                {tripDetails.tripName || locationData?.place}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" sx={{color: "#ffffff", textAlign: "left", fontSize: "1rem"}}>
                 Mon 15 Jan - Fri 19 Jan
               </Typography>
+            
             </CardContent>
           </Card>
 
-        
           <Box>
             {itinerary.map((itineraryDay, index) => {
               // Generate itinerary day with dynamically generated start and end times

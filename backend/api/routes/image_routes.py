@@ -33,8 +33,11 @@ def get_image():
   data = response.json()
   image_data = data.get("results")[0]
 
-  image_url = image_data.get("urls").get("regular")
+  image_url = {
+    "image_url": image_data.get("urls").get("regular")
+  }
 
+ 
   print(image_url)
 
-  return image_url
+  return jsonify(image_url)

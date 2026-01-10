@@ -71,9 +71,13 @@ def retrieve():
   name = features[0].get("properties").get("full_address") 
   latitude = features[0].get("properties").get("coordinates").get("latitude") 
   longitude = features[0].get("properties").get("coordinates").get("longitude") 
+  country = features[0].get("properties").get("context").get("country").get("name")
+  place = features[0].get("properties").get("context").get("place").get("name")
   
   location_data = {
     "name": name,
+    "country": country,
+    "place": place,
     "latitude": latitude,
     "longitude": longitude,
   }
