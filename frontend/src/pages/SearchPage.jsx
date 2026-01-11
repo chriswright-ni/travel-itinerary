@@ -19,6 +19,7 @@ import chanelImg from "../images/chanel.jpg";
 import leLouvreImg from "../images/lelouvre.jpg";
 import notreDameImg from "../images/notredame.jpg";
 import { useNotificationContext } from "../contexts/NotificationContext";
+import AppBar from "../components/MainAppBar.jsx";
 
 function SearchPage() {
   const { locationData, setLocationData } = useSearchContext();
@@ -174,10 +175,11 @@ function SearchPage() {
           bgcolor: "background.default"
         }}
       >
+        <AppBar page={"Search"}/>
         <Box
           sx={{
             position: "fixed",
-            top: 0,
+            top: 60,
             left: 0,
             right: 0,
             backgroundColor: "#fff",

@@ -9,23 +9,29 @@ import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import useSaveItinerary from "../hooks/useSaveItinerary"
 
-function MainAppBar() {
+function MainAppBar({page}) {
+
+  const {saveItinerary} = useSaveItinerary();
+  
   return (
-    // <Box sx={{ flexGrow: 1 }}>
-    <AppBar position="static" color="transparent">
+    
+    <AppBar position="static" color="transparent" elevation={0}>
       <Toolbar>
         <IconButton
           size="large"
           edge="start"
           color="inherit"
           aria-label="menu"
-          sx={{ mr: 2 }}
+          sx={{ mr: 4 }}
         >
           <ArrowBackIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Itinerary
+          {page}
         </Typography>
         {/* <Button color="inherit">Login</Button> */}
         <IconButton
@@ -34,21 +40,22 @@ function MainAppBar() {
           color="inherit"
           aria-label="menu"
           sx={{ mr: 2 }}
+          onClick={saveItinerary}
         >
-          <SaveIcon />
+          <BookmarkBorderIcon />
         </IconButton>
         <IconButton
           size="large"
           edge="start"
           color="inherit"
           aria-label="menu"
-          sx={{ mr: 2 }}
+          sx={{ mr: 0 }}
         >
-          <AccountBoxIcon />
+          <AccountCircleIcon />
         </IconButton>
       </Toolbar>
     </AppBar>
-    // </Box>
+    
   );
 }
 

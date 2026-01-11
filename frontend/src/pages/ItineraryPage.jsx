@@ -350,7 +350,7 @@ function ItineraryPage() {
           bgcolor: "background.default",
         }}
       >
-        <AppBar />
+        <AppBar page={"Itinerary"}/>
         <Box sx={{ pb: 23, overflowY: "auto", flex: 1 }}>
           <Card
             elevation={0}
