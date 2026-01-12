@@ -3,14 +3,14 @@ import { useAuthenticationContext } from "../contexts/AuthenticationContext";
 
 function useSaveItinerary() {
 
-  const { loginDialogOpen, setLoginDialogOpen } = useAuthenticationContext();
+  const { authenticationDialogOpen, setAuthenticationDialogOpen } = useAuthenticationContext();
 
   const saveItinerary = () => {
 
     console.log("Save itinerary pressed")
 
-    if (!loginDialogOpen) {
-      setLoginDialogOpen(true)
+    if (!authenticationDialogOpen) {
+      setAuthenticationDialogOpen(true)
     }
 
   }

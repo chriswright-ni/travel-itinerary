@@ -13,7 +13,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import NotificationSnackbar from "./components/NotificationSnackbar.jsx";
 import Box from "@mui/material/Box";
-import LoginDialog from "./components/LoginDialog.jsx";
+import AuthenticationDialog from "./components/AuthenticationDialog.jsx";
 
 function App() {
   const location = useLocation();
@@ -36,7 +36,7 @@ function App() {
                   >
                     <MapPage showMap={showMap} />
                   </Box>
-                  <LoginDialog />
+                  <AuthenticationDialog />
                   <Routes>
                     <Route path="/" element={<TripSetupPage />} />
                     <Route path="/search" element={<SearchPage />} />
