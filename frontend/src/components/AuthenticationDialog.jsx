@@ -21,6 +21,20 @@ function AuthenticationDialog() {
     setAuthenticationDialogOpen(false);
   };
 
+  const handleLogin = () => {};
+
+  const handleCreateAccount = () => {};
+
+  const handleSubmit = () => {
+    if (authenticationDialogMode === "login") {
+      handleLogin();
+    } else if (authenticationDialogMode === "create") {
+      handleCreateAccount();
+    } else {
+      return;
+    }
+  };
+
   return (
     <Box>
       <Dialog
@@ -44,7 +58,11 @@ function AuthenticationDialog() {
               {"Log in to save your itinerary"}
             </DialogContentText>
           ) : null}
-          <Box sx={{ display: "flex", flexDirection: "column", mb: 2, mt: 1 }}>
+          <Box
+            sx={{ display: "flex", flexDirection: "column", mb: 2, mt: 1 }}
+            component="form"
+            onSubmit={handleSubmit}
+          >
             <TextField
               id="email"
               label="Email"
@@ -67,15 +85,12 @@ function AuthenticationDialog() {
                 sx={{ mb: 1 }}
               />
             ) : null}
-            {authenticationDialogMode === "login" ? (
-              <Button variant="contained" sx={{ mt: 2 }}>
-                Log In
-              </Button>
-            ) : (
-              <Button variant="contained" sx={{ mt: 2 }}>
-                Create Account
-              </Button>
-            )}
+
+            <Button variant="contained" sx={{ mt: 2 }} type="submit">
+              {authenticationDialogMode === "login"
+                ? "Log In"
+                : "Create Account"}
+            </Button>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {authenticationDialogMode === "login" ? (

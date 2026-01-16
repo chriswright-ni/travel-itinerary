@@ -6,10 +6,13 @@ from dotenv import load_dotenv
 import requests
 from api.routes.search_routes import search_bp
 from api.routes.image_routes import image_bp
+from api.routes.auth_routes import auth_bp
 # from api.routes.mapbox_routes import mapbox_bp
 
 load_dotenv()
 PLACES_API_KEY = os.getenv("PLACES_API_KEY")
+
+db = SQLAlchemy()
 
 # Application factory - contains app configuration and blueprint registers
 def create_app():
@@ -24,9 +27,16 @@ def create_app():
     # SQL Alchemy configuration per documentation
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///travel_itinerary.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    db.init_app(app)
+
+    from .models.models import User
+
+    with app.app_context():
+        db.create_all()
     
     app.register_blueprint(search_bp)
     app.register_blueprint(image_bp)
+    app.register_blueprint(auth_bp)
     # app.register_blueprint(mapbox_bp)
 
     return app
