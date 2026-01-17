@@ -10,12 +10,20 @@ export const AuthenticationProvider = ({children}) => {
   const [authenticationDialogOpen, setAuthenticationDialogOpen] = useState(false);
   const [authenticationDialogMode, setAuthenticationDialogMode] = useState("login"); // Login or create (create account) mode
 
+  const [token, setToken] = useState(null);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   const value = {
     authenticationDialogOpen,
     setAuthenticationDialogOpen,
     authenticationDialogMode,
-    setAuthenticationDialogMode
+    setAuthenticationDialogMode,
+    token,
+    setToken,
+    isLoggedIn,
+    setIsLoggedIn
   }
 
   return <AuthenticationContext.Provider value = {value}>

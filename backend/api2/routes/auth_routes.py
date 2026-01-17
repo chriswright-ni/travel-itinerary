@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from dotenv import load_dotenv
-# from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import requests
 import os
 from ..models.user_models import User
@@ -9,20 +9,20 @@ from api2.models.user_models import db
 auth_bp = Blueprint("auth_routes", __name__)
 
 
-# @auth_bp.route("/api/auth/login", methods=["POST"])
-# def login():
-#   print("login route")
-#   email = request.json.get("email")
-#   password = request.json.get("password")
-#   user = User.query.filter_by(email=email).first()
-#   if user:
-#     if password == user.password:
-#       access_token = create_access_token(identity=user.user_id)
-#     else:
-#       return jsonify({"msg": "Password incorrect"}), 401
-#   else:
-#     return jsonify({"msg": "User does not exist"}), 401
-#   return jsonify(access_token=access_token)
+@auth_bp.route("/api/auth/login", methods=["POST"])
+def login():
+  print("login route")
+  email = request.json.get("email")
+  password = request.json.get("password")
+  user = User.query.filter_by(email=email).first()
+  if user:
+    if password == user.password:
+      access_token = create_access_token(identity=user.user_id)
+    else:
+      return jsonify({"msg": "Password incorrect"}), 401
+  else:
+    return jsonify({"msg": "User does not exist"}), 401
+  return jsonify({"msg": "Login successful", "access_token": access_token})
 
 
 @auth_bp.route("/api/auth/logout", methods=["GET"])
@@ -55,5 +55,7 @@ def createaccount():
     db.session.commit()
     print("User created")
 
+    access_token = create_access_token(identity=new_user.user_id)
 
-  return jsonify({"msg": "User created"}), 201
+
+  return jsonify({"msg": "User created", "access_token": access_token}), 201

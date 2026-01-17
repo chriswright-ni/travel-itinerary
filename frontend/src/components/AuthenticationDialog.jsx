@@ -25,6 +25,9 @@ function AuthenticationDialog() {
     setAuthenticationDialogOpen,
     authenticationDialogMode,
     setAuthenticationDialogMode,
+    token,
+    setToken,
+    setIsLoggedIn
   } = useAuthenticationContext();
 
   const { showNotification } = useNotificationContext();
@@ -33,7 +36,40 @@ function AuthenticationDialog() {
     setAuthenticationDialogOpen(false);
   };
 
-  const handleLogin = () => {};
+  const handleLogin = async () => {
+
+    try {
+
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({email, password})
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        console.log(`Error logging in: ${response.status}`)
+        console.log(data.msg)
+        setErrorMsgEmail(data.msg)
+      } else {
+        console.log("Log in successful")
+        console.log(data)
+        setErrorMsgEmail("")
+        setErrorMsgPassword("")
+        setAuthenticationDialogOpen(false)
+        setToken(data.access_token)
+        setIsLoggedIn(true)
+        
+        showNotification("Login successful")
+      }
+
+    } catch (error) {
+      console.log(error.message)
+    }
+  };
 
   const handleCreateAccount = async () => {
 
@@ -41,9 +77,6 @@ function AuthenticationDialog() {
     console.log(`email: ${email}`)
     console.log(`password: ${password}`)
     console.log(`passwordConfirm: ${passwordConfirm}`)
-
-   
-
     try {
 
       const response = await fetch(
@@ -66,6 +99,8 @@ function AuthenticationDialog() {
         setErrorMsgEmail("")
         setErrorMsgPassword("")
         setAuthenticationDialogOpen(false)
+        setToken(data.access_token)
+        setIsLoggedIn(true)
         showNotification("Account created successfully")
       }
 
