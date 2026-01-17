@@ -1,4 +1,4 @@
-from api import create_app
+from api2 import create_app
 
 # Creates instance of app
 app = create_app()
