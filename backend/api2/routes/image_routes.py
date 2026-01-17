@@ -8,6 +8,9 @@ image_bp = Blueprint("image_routes", __name__)
 load_dotenv()
 UNSPLASH_ACCESS_KEY = os.getenv("UNSPLASH_ACCESS_KEY")
 
+@image_bp.route("/api/images/hello", methods=["GET"])
+def hello():
+  return jsonify({"msg": "hello"})
 
 @image_bp.route("/api/images/search", methods=["GET"])
 def get_image():

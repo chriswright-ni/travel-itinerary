@@ -8,8 +8,18 @@ import Box from "@mui/material/Box";
 import { useAuthenticationContext } from "../contexts/AuthenticationContext";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import {useState} from "react"
+import { useNotificationContext } from "../contexts/NotificationContext";
 
 function AuthenticationDialog() {
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [passwordConfirm, setPasswordConfirm] = useState("")
+  const [errorMsgEmail, setErrorMsgEmail] = useState("")
+  const [errorMsgPassword, setErrorMsgPassword] = useState("")
+  const [errorMsgPasswordConfirm, setErrorMsgPasswordConfirm] = useState("")
+
   const {
     authenticationDialogOpen,
     setAuthenticationDialogOpen,
@@ -17,18 +27,81 @@ function AuthenticationDialog() {
     setAuthenticationDialogMode,
   } = useAuthenticationContext();
 
+  const { showNotification } = useNotificationContext();
+
   const handleClose = () => {
     setAuthenticationDialogOpen(false);
   };
 
   const handleLogin = () => {};
 
-  const handleCreateAccount = () => {};
+  const handleCreateAccount = async () => {
 
-  const handleSubmit = () => {
+    console.log("In create account")
+    console.log(`email: ${email}`)
+    console.log(`password: ${password}`)
+    console.log(`passwordConfirm: ${passwordConfirm}`)
+
+   
+
+    try {
+
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/auth/createaccount`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({email, password, passwordConfirm})
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        console.log(`Error creating account: ${response.status}`)
+        console.log(data.msg)
+        setErrorMsgEmail(data.msg)
+      } else {
+        console.log("Account created")
+        console.log(data)
+        setErrorMsgEmail("")
+        setErrorMsgPassword("")
+        setAuthenticationDialogOpen(false)
+        showNotification("Account created successfully")
+      }
+
+    } catch (error) {
+      console.log(error.message)
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log("In handleSubmit")
+
+    setErrorMsgEmail("")
+    setErrorMsgPassword("")
+    setErrorMsgPasswordConfirm("")
+    
+    if (!email) {
+      setErrorMsgEmail("Email is required")
+      return;
+    }
+    
+    if (password.length < 8) {
+      setErrorMsgPassword("Password must be at least 8 characters")
+      return;
+    }
+
     if (authenticationDialogMode === "login") {
       handleLogin();
     } else if (authenticationDialogMode === "create") {
+
+      if (password !== passwordConfirm) {
+        setErrorMsgPasswordConfirm("Passwords do not match")
+        return;
+      } else {
+        setErrorMsgPasswordConfirm("")
+      }
       handleCreateAccount();
     } else {
       return;
@@ -67,6 +140,10 @@ function AuthenticationDialog() {
               id="email"
               label="Email"
               variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              error={errorMsgEmail ? true : false}
+              helperText={errorMsgEmail}
               sx={{ mb: 1 }}
             />
             <TextField
@@ -74,14 +151,22 @@ function AuthenticationDialog() {
               label="Password"
               type="password"
               variant="outlined"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={errorMsgPassword ? true : false}
+              helperText={errorMsgPassword}
               sx={{ mb: 1 }}
             />
             {authenticationDialogMode === "create" ? (
               <TextField
-                id="confirmPassword"
+                id="passwordConfirm"
                 label="Confirm Password"
                 type="password"
                 variant="outlined"
+                value={passwordConfirm}
+                onChange={(e) => setPasswordConfirm(e.target.value)}
+                error={errorMsgPasswordConfirm ? true : false}
+                helperText={errorMsgPasswordConfirm}
                 sx={{ mb: 1 }}
               />
             ) : null}

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from dotenv import load_dotenv
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+# from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import requests
 import os
 from ..models.user_models import User
@@ -11,6 +11,7 @@ auth_bp = Blueprint("auth_routes", __name__)
 
 # @auth_bp.route("/api/auth/login", methods=["POST"])
 # def login():
+#   print("login route")
 #   email = request.json.get("email")
 #   password = request.json.get("password")
 #   user = User.query.filter_by(email=email).first()
@@ -39,12 +40,15 @@ def createaccount():
   email = request.json.get("email")
   password = request.json.get("password")
   password_confirm = request.json.get("passwordConfirm")
+  print(f"email: {email}")
+  print(f"password: {password}")
+  print(f"passwordConfirm: {password_confirm}")
 
   email_exists = User.query.filter_by(email=email).first()
   if email_exists:
-    return jsonify({"msg": "User already exists with that email"})
+    return jsonify({"msg": "User already exists with that email"}), 400
   elif password != password_confirm:
-    return jsonify({"msg": "Passwords do not match"})
+    return jsonify({"msg": "Passwords do not match"}), 400
   else:
     new_user = User(email=email, password=password)
     db.session.add(new_user)
@@ -52,4 +56,4 @@ def createaccount():
     print("User created")
 
 
-  return ""
+  return jsonify({"msg": "User created"}), 201
