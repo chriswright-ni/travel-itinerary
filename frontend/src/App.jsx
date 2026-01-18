@@ -3,6 +3,7 @@ import SearchPage from "./pages/SearchPage.jsx";
 import ItineraryPage from "./pages/ItineraryPage";
 import MapPage from "./pages/MapPage";
 import TripSetupPage from "./pages/TripSetupPage";
+import MyTripsPage from "./pages/MyTripsPage";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { SearchProvider } from "./contexts/SearchContext";
 import { ItineraryProvider } from "./contexts/ItineraryContext";
@@ -14,6 +15,7 @@ import { NotificationProvider } from "./contexts/NotificationContext";
 import NotificationSnackbar from "./components/NotificationSnackbar.jsx";
 import Box from "@mui/material/Box";
 import AuthenticationDialog from "./components/AuthenticationDialog.jsx";
+import ProtectedRoutes from "./utils/ProtectedRoutes.jsx";
 
 function App() {
   const location = useLocation();
@@ -42,6 +44,9 @@ function App() {
                     <Route path="/search" element={<SearchPage />} />
                     <Route path="/itinerary" element={<ItineraryPage />} />
                     <Route path="/map" element={<Box />} />
+                    <Route element={<ProtectedRoutes />}>
+                      <Route path="/mytrips" element={<MyTripsPage />} />
+                    </Route>
                   </Routes>
                 </MapProvider>
               </ItineraryProvider>

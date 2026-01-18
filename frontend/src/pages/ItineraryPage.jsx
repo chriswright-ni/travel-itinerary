@@ -346,7 +346,7 @@ function ItineraryPage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
-          height: "100dvh",
+          height: "100vh",
           bgcolor: "background.default",
         }}
       >

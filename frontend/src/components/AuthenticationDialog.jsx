@@ -34,6 +34,9 @@ function AuthenticationDialog() {
 
   const handleClose = () => {
     setAuthenticationDialogOpen(false);
+    setEmail("")
+    setPassword("")
+    setPasswordConfirm("")
   };
 
   const handleLogin = async () => {
@@ -59,7 +62,7 @@ function AuthenticationDialog() {
         console.log(data)
         setErrorMsgEmail("")
         setErrorMsgPassword("")
-        setAuthenticationDialogOpen(false)
+        handleClose()
         setToken(data.access_token)
         setIsLoggedIn(true)
         

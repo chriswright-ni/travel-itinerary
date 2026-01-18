@@ -9,23 +9,24 @@ import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import useSaveItinerary from "../hooks/useSaveItinerary"
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import { useState } from "react"
-import LoginIcon from '@mui/icons-material/Login';
-import LogoutIcon from '@mui/icons-material/Logout';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import TravelExploreIcon from '@mui/icons-material/TravelExplore';
-import Divider from '@mui/material/Divider';
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import useSaveItinerary from "../hooks/useSaveItinerary";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import { useState } from "react";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import Divider from "@mui/material/Divider";
 import { useAuthenticationContext } from "../contexts/AuthenticationContext";
+import { useNavigate } from "react-router-dom";
+import { useNotificationContext } from "../contexts/NotificationContext";
 
-function MainAppBar({page}) {
-
-  const {saveItinerary} = useSaveItinerary();
+function MainAppBar({ page }) {
+  const { saveItinerary } = useSaveItinerary();
 
   const {
     authenticationDialogOpen,
@@ -33,8 +34,14 @@ function MainAppBar({page}) {
     authenticationDialogMode,
     setAuthenticationDialogMode,
     token,
-    isLoggedIn
+    setToken,
+    isLoggedIn,
+    setIsLoggedIn,
   } = useAuthenticationContext();
+
+  const { showNotification } = useNotificationContext();
+
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -44,9 +51,24 @@ function MainAppBar({page}) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
+  const handleLogOut = () => {
+    setToken(null);
+    setIsLoggedIn(false);
+    showNotification("You've been logged out");
+  };
+
+  const handleLogin = () => {
+    setAuthenticationDialogMode("login")
+    setAuthenticationDialogOpen(true)
+  }
+
+  const handleCreateAccount = () => {
+    setAuthenticationDialogMode("create")
+    setAuthenticationDialogOpen(true)
+  }
+
   return (
-    
     <AppBar position="static" color="transparent" elevation={0}>
       <Toolbar>
         <IconButton
@@ -93,67 +115,82 @@ function MainAppBar({page}) {
           paper: {
             elevation: 0,
             sx: {
-              overflow: 'visible',
-              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              overflow: "visible",
+              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
               mt: 1.5,
-              '& .MuiAvatar-root': {
+              "& .MuiAvatar-root": {
                 width: 32,
                 height: 32,
                 ml: -0.5,
                 mr: 1,
               },
-              '&::before': {
+              "&::before": {
                 content: '""',
-                display: 'block',
-                position: 'absolute',
+                display: "block",
+                position: "absolute",
                 top: 0,
                 right: 14,
                 width: 10,
                 height: 10,
-                bgcolor: 'background.paper',
-                transform: 'translateY(-50%) rotate(45deg)',
+                bgcolor: "background.paper",
+                transform: "translateY(-50%) rotate(45deg)",
                 zIndex: 0,
               },
             },
           },
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-       
-       { isLoggedIn ? (
-         
-         <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <TravelExploreIcon fontSize="small" />
-          </ListItemIcon>
-          My Trips
-        </MenuItem>
-      ) : (<MenuItem onClick={handleClose}>
-        <ListItemIcon>
-          <PersonAddIcon fontSize="small" />
-        </ListItemIcon>
-        Create Account
-      </MenuItem>)}
+        {isLoggedIn ? (
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              navigate("/mytrips");
+            }}
+          >
+            <ListItemIcon>
+              <TravelExploreIcon fontSize="small" />
+            </ListItemIcon>
+            My Trips
+          </MenuItem>
+        ) : (
+          <MenuItem onClick={() => {
+            handleClose();
+            handleCreateAccount();
+          }}>
+            <ListItemIcon>
+              <PersonAddIcon fontSize="small" />
+            </ListItemIcon>
+            Create Account
+          </MenuItem>
+        )}
         <Divider />
-       { isLoggedIn ? (
-         
-         <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <LogoutIcon fontSize="small" />
-          </ListItemIcon>
-          Log Out
-        </MenuItem>
-      ) : (<MenuItem onClick={handleClose}>
-        <ListItemIcon>
-          <LoginIcon fontSize="small" />
-        </ListItemIcon>
-        Log In
-      </MenuItem>)}
-        
+        {isLoggedIn ? (
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              handleLogOut();
+            }}
+          >
+            <ListItemIcon>
+              <LogoutIcon fontSize="small" />
+            </ListItemIcon>
+            Log Out
+          </MenuItem>
+        ) : (
+          <MenuItem onClick={() => {
+            handleClose();
+            handleLogin();
+          }}>
+            <ListItemIcon>
+              <LoginIcon fontSize="small" />
+            </ListItemIcon>
+            Log In
+          </MenuItem>
+        )}
       </Menu>
     </AppBar>
-    
   );
 }
 
