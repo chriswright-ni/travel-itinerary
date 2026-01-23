@@ -5,7 +5,7 @@ import { useItineraryContext } from "../contexts/ItineraryContext";
 
 function DaySelector({onDaySelect, selected}) {
 
-  const { itinerary } = useItineraryContext();
+  const { itinerary, currentTrip } = useItineraryContext();
 
   return (
     <Box
@@ -25,7 +25,7 @@ function DaySelector({onDaySelect, selected}) {
         borderRadius: 3
       }}
     >
-      {itinerary.map((itineraryDay) => (
+      {currentTrip?.itinerary.map((itineraryDay) => (
         <OptionChip label={`Day ${itineraryDay.dayNumber}`} key={itineraryDay.dayNumber} onClick={() => onDaySelect(itineraryDay)} selected={selected===itineraryDay.dayNumber}/>
       ))}
     </Box>

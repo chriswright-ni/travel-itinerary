@@ -83,6 +83,7 @@ function ItineraryPage() {
     updateDayStartTime,
     expanded,
     setExpanded,
+    currentTrip,
   } = useItineraryContext();
 
   const { showNotification } = useNotificationContext();
@@ -402,7 +403,7 @@ function ItineraryPage() {
           </Card>
 
           <Box>
-            {itinerary.map((itineraryDay, index) => {
+            {currentTrip?.itinerary.map((itineraryDay, index) => {
               // Generate itinerary day with dynamically generated start and end times
               const itineraryDayWithTimes = calculateItineraryTimes(
                 itineraryDay,
@@ -694,7 +695,7 @@ function ItineraryPage() {
             setDaySelectOpen(false);
             setSelectedItemId(null);
           }}
-          itinerary={itinerary}
+          itinerary={currentTrip?.itinerary}
           handleDaySelect={handleClickMoveItemDaySelect}
           handleClickAddDay={handleClickMoveItemNewDay}
           itemId={selectedItemId}

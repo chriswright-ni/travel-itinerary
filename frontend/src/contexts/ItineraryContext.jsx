@@ -7,9 +7,9 @@ export const useItineraryContext = () => useContext(ItineraryContext);
 
 export const ItineraryProvider = ({ children }) => {
   // DAY START LOCATION ADDED BELOW FOR THE PURPOSE OF DEVELOPMENT WITHOUT CALLING API
-  const [itinerary, setItinerary] = useState([
-    { dayNumber: 1, dayStartTime: "09:00", dayStartLocation: {name: "Rue De Lille, 75007 Paris, France", longitude: 2.325855, latitude: 48.859656}, itineraryItems: [] },
-  ]);
+  // const [itinerary, setItinerary] = useState([
+  //   { dayNumber: 1, dayStartTime: "09:00", dayStartLocation: {name: "Rue De Lille, 75007 Paris, France", longitude: 2.325855, latitude: 48.859656}, itineraryItems: [] },
+  // ]); // This state is now obsolete - see setItinerary function below
 
   const [nextItineraryItemId, setNextItineraryItemId] = useState(1); // Counter to assign itinerary ids
   const [places, setPlaces] = useState([]);
@@ -20,17 +20,35 @@ export const ItineraryProvider = ({ children }) => {
     days: 3,
     startDate: null,
     tripName: "",
-  });
+  }); // This state is now obsolete
+  const [currentTrip, setCurrentTrip] = useState({
+    days: 3,
+    startDate: null,
+    tripName: "",
+    headerImageUrl: null,
+    itinerary: []
+  })
   const [expanded, setExpanded] = useState(1); // Management of accordion day expanded status - default to day 1 expanded on 1st render
+
+  // This function works the same way as the obsolete setItinerary state function
+  // The itinerary is updated within the currentTrip object
+  const setItinerary = (updaterFunction) => {
+    setCurrentTrip((prev) => (
+      {
+        ...prev,
+        itinerary: updaterFunction(prev.itinerary)
+      }
+    ))
+  }
 
   // Creates a set of all placeIds that have been added to the itinerary
   const getAddedPlaceIds = () => {
     // console.log("In getAddedPlaceIds")
     return new Set(
-      itinerary.flatMap((day) => day.itineraryItems.map((item) => item.placeId))
+      currentTrip?.itinerary.flatMap((day) => day.itineraryItems.map((item) => item.placeId))
     )};
   // Updates the set of addedPlaceIds when the itinerary state changes
-  const addedPlaceIds = useMemo(() => getAddedPlaceIds(), [itinerary]);
+  const addedPlaceIds = useMemo(() => getAddedPlaceIds(), [currentTrip?.itinerary]);
 
   // Creates an object to store places by their id
   const updatePlacesById = (places) => {
@@ -48,7 +66,7 @@ export const ItineraryProvider = ({ children }) => {
 
   // Adds an empty day to the itinerary array
   const addDay = () => {
-    const newDayNumber = itinerary.length + 1;
+    const newDayNumber = currentTrip.itinerary.length + 1;
     // TODO: THIS IS DUPLICATE CODE - THE INITIALISE ITINERARY FUNCTION ALSO SETS DAY START TIME AND ITEMS ARRAY
     const newDay = {
       dayNumber: newDayNumber,
@@ -147,9 +165,9 @@ export const ItineraryProvider = ({ children }) => {
         itineraryItems: [],
       });
     }
-    setItinerary(newItinerary);
-    setActiveDay(null);
-    setNextItineraryItemId(1);
+    // setItinerary(newItinerary);
+    // setActiveDay(null);
+    // setNextItineraryItemId(1);
     return newItinerary;
   };
 
@@ -327,7 +345,7 @@ export const ItineraryProvider = ({ children }) => {
   }
 
   const value = {
-    itinerary,
+    // itinerary,
     setItinerary,
     addDay,
     removeDay,
@@ -352,7 +370,9 @@ export const ItineraryProvider = ({ children }) => {
     setExpanded,
     updateSavedRoute,
     clearSavedRoute,
-    updateDayStartLocation
+    updateDayStartLocation,
+    currentTrip,
+    setCurrentTrip
   };
 
   return (

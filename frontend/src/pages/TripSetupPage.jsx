@@ -34,7 +34,7 @@ function TripSetupPage() {
 
   const { locationData, setLocationData } = useSearchContext();
 
-  const { setTripDetails, initialiseItinerary, itinerary } = useItineraryContext();
+  const { setTripDetails, initialiseItinerary, itinerary, setCurrentTrip } = useItineraryContext();
 
   const navigate = useNavigate()
 
@@ -86,17 +86,26 @@ function TripSetupPage() {
     console.log("header image:")
     console.log(headerImageUrl)
 
-    setTripDetails({
+    // setTripDetails({
+    //   days: days,
+    //   startDate: date,
+    //   tripName: tripName,
+    //   headerImageUrl: headerImageUrl
+    // });
+    // console.log("days ", days)
+
+    // const newItem = initialiseItinerary(days)
+    // console.log("test ", newItem)
+
+    const newTrip = {
       days: days,
       startDate: date,
       tripName: tripName,
-      headerImageUrl: headerImageUrl
-    });
-    console.log("days ", days)
+      headerImageUrl: headerImageUrl,
+      itinerary: initialiseItinerary(days)
+    }
 
-    const newItem = initialiseItinerary(days)
-    console.log("test ", newItem)
-
+    setCurrentTrip(newTrip)
     navigate("/itinerary")
 
   };

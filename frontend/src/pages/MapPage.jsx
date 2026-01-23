@@ -26,6 +26,7 @@ function MapPage({ showMap }) {
     updateSavedRoute,
     clearSavedRoute,
     updateDayStartLocation,
+    currentTrip
   } = useItineraryContext();
   const { showNotification } = useNotificationContext();
   const {
@@ -132,7 +133,7 @@ function MapPage({ showMap }) {
   // Fits markers to viewport automatically when a different day has been selected on the map page
   // or when the itinerary has been updated
   useEffect(() => {
-    const day = itinerary[selectedDayNumber - 1];
+    const day = currentTrip?.itinerary[selectedDayNumber - 1];
     if (!day) return;
     const items = day.itineraryItems;
     if (items.length === 0) return;
@@ -147,7 +148,7 @@ function MapPage({ showMap }) {
   // If the itinerary item count for the day goes to 0 or 1, the route is removed but show route state remains active
   useEffect(() => {
     if (!mapRef.current) return;
-    if (itinerary.length === 0) return;
+    if (currentTrip?.itinerary.length === 0) return;
     const itineraryItems = itinerary[selectedDayNumber - 1].itineraryItems;
     if (itineraryItems.length === 0) return;
 
@@ -156,7 +157,7 @@ function MapPage({ showMap }) {
     } else {
       hideRoute(mapRef.current);
     }
-  }, [selectedDayNumber, itinerary[selectedDayNumber - 1]?.itineraryItems]);
+  }, [selectedDayNumber, currentTrip?.itinerary[selectedDayNumber - 1]?.itineraryItems]);
 
   // Load the map as soon as the component is mounted
   // useEffect(() => {

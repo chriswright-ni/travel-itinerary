@@ -34,6 +34,7 @@ function SearchPage() {
     activeDay,
     setActiveDay,
     addedPlaceIds,
+    currentTrip
   } = useItineraryContext();
 
   const { showNotification } = useNotificationContext();
@@ -41,7 +42,7 @@ function SearchPage() {
   const [daySelectOpen, setDaySelectOpen] = useState(false); // Day select bottom drawer state on search page
   const [selectedPlaceId, setSelectedPlaceId] = useState(null); // Selected place for adding to itinerary
   const [selectedInterest, setSelectedInterest] = useState("");
-  const days = itinerary.map((day) => day.dayNumber);
+  const days = currentTrip?.itinerary.map((day) => day.dayNumber);
 
   const navigate = useNavigate();
 
@@ -234,7 +235,7 @@ function SearchPage() {
             setSelectedPlaceId(null);
             setDaySelectOpen(false);
           }}
-          itinerary={itinerary}
+          itinerary={currentTrip?.itinerary}
           handleDaySelect={handleAddItemToItinerary}
           handleClickAddDay={handleClickAddDay}
           // placeId={selectedPlaceId}
