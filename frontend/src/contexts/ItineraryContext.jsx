@@ -58,10 +58,10 @@ export const ItineraryProvider = ({ children }) => {
       // if yes, replace trip with current trip
   }
 
-  const loadTrip = (tripId) => {
-    const trip = trips.find((trip) => trip.tripId === tripId);
-    setCurrentTrip(trip)
-  }
+  // const loadTrip = (tripId) => {
+  //   const trip = trips.find((trip) => trip.tripId === tripId);
+  //   setCurrentTrip(trip)
+  // }
 
   // This function works the same way as the obsolete setItinerary state function
   // The itinerary is updated within the currentTrip object
@@ -407,7 +407,7 @@ export const ItineraryProvider = ({ children }) => {
     currentTrip,
     setCurrentTrip,
     saveCurrentTrip,
-    loadTrip,
+    // loadTrip,
     trips,
     setTrips
   };

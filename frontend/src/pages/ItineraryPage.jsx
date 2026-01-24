@@ -358,6 +358,7 @@ function ItineraryPage() {
             tripName={currentTrip.tripName}
             locationData={currentTrip.locationData}
             headerImageUrl={currentTrip.headerImageUrl?.image_url}
+            clickable={false}
           />
           {/* <Card
             elevation={0}

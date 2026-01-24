@@ -27,7 +27,16 @@ import AppBar from "../components/MainAppBar.jsx";
 import TripCard from "../components/TripCard.jsx";
 
 function MyTripsPage() {
-  const { trips } = useItineraryContext();
+  const { trips, setCurrentTrip } = useItineraryContext();
+
+  const navigate = useNavigate();
+
+  const handleSelectTrip = (trip) => {
+
+    setCurrentTrip(trip)
+    navigate("/itinerary")
+  }
+
   return (
     <>
       <Box
@@ -49,6 +58,8 @@ function MyTripsPage() {
               tripName={trip.tripName}
               locationData={trip.locationData}
               headerImageUrl={trip.headerImageUrl?.image_url}
+              clickable={true}
+              selectTrip={() => handleSelectTrip(trip)}
             />
           ))}
         </Box>
