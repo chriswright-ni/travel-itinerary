@@ -24,10 +24,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import AppBar from "../components/MainAppBar.jsx";
+import TripCard from "../components/TripCard.jsx";
 
 function MyTripsPage() {
-  
-
+  const { trips } = useItineraryContext();
   return (
     <>
       <Box
@@ -36,12 +36,22 @@ function MyTripsPage() {
           flexDirection: "column",
           justifyContent: "flex-start",
           minHeight: "100vh",
-          bgcolor: "background.default"
+          bgcolor: "background.default",
         }}
       >
-        <AppBar page={"My Trips"}/>
+        <AppBar page={"My Trips"} />
         <Typography>My Trips</Typography>
 
+        <Box>
+          {trips.map((trip) => (
+            <TripCard
+              key={trip.tripId}
+              tripName={trip.tripName}
+              locationData={trip.locationData}
+              headerImageUrl={trip.headerImageUrl?.image_url}
+            />
+          ))}
+        </Box>
         <BottomNav />
       </Box>
     </>

@@ -22,13 +22,46 @@ export const ItineraryProvider = ({ children }) => {
     tripName: "",
   }); // This state is now obsolete
   const [currentTrip, setCurrentTrip] = useState({
+    tripId: crypto.randomUUID(),
     days: 3,
     startDate: null,
     tripName: "",
     headerImageUrl: null,
     itinerary: []
   })
+  const [trips, setTrips] = useState([])
   const [expanded, setExpanded] = useState(1); // Management of accordion day expanded status - default to day 1 expanded on 1st render
+
+
+  const saveCurrentTrip = () => {
+
+    console.log("Saving current trip...")
+    setTrips((prev) => {
+
+      const tripExists = prev.some((trip) => trip.tripId === currentTrip.tripId)
+      
+      if (tripExists) {
+
+        return prev.map((trip) => trip.tripId === currentTrip.tripId ? currentTrip : trip)
+
+      } else {
+
+        return [...prev, currentTrip]
+      }
+      
+      
+    }
+    )
+
+    // does current trip already exist?
+      // if no, add full trip
+      // if yes, replace trip with current trip
+  }
+
+  const loadTrip = (tripId) => {
+    const trip = trips.find((trip) => trip.tripId === tripId);
+    setCurrentTrip(trip)
+  }
 
   // This function works the same way as the obsolete setItinerary state function
   // The itinerary is updated within the currentTrip object
@@ -372,7 +405,11 @@ export const ItineraryProvider = ({ children }) => {
     clearSavedRoute,
     updateDayStartLocation,
     currentTrip,
-    setCurrentTrip
+    setCurrentTrip,
+    saveCurrentTrip,
+    loadTrip,
+    trips,
+    setTrips
   };
 
   return (

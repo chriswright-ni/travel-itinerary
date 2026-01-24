@@ -39,6 +39,7 @@ import TimeSelectDrawer from "../components/TimeSelectDrawer";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import DayMenu from "../components/DayMenu";
 import AppBar from "../components/MainAppBar.jsx";
+import TripCard from "../components/TripCard.jsx";
 import theme from "../themes/theme_five.js";
 import AddItemButton from "../components/AddItemButton";
 import DeleteDayDialog from "../components/DeleteDayDialog";
@@ -63,7 +64,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import Chip from "@mui/material/Chip";
-import Flag from 'react-world-flags'
+import Flag from "react-world-flags";
 
 function ItineraryPage() {
   const {
@@ -87,7 +88,7 @@ function ItineraryPage() {
   } = useItineraryContext();
 
   const { showNotification } = useNotificationContext();
-  const { locationData } = useSearchContext();
+  // const { locationData } = useSearchContext();  This is Obsolete - now part of currentTrip
 
   const { handleClickOptimiseRoute } = useMapContext();
 
@@ -351,9 +352,14 @@ function ItineraryPage() {
           bgcolor: "background.default",
         }}
       >
-        <AppBar page={"Itinerary"}/>
+        <AppBar page={"Itinerary"} />
         <Box sx={{ pb: 23, overflowY: "auto", flex: 1 }}>
-          <Card
+          <TripCard
+            tripName={currentTrip.tripName}
+            locationData={currentTrip.locationData}
+            headerImageUrl={currentTrip.headerImageUrl?.image_url}
+          />
+          {/* <Card
             elevation={0}
             sx={{
               borderRadius: 2,
@@ -370,13 +376,21 @@ function ItineraryPage() {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 position: "relative",
-                zIndex: 1
+                zIndex: 1,
               }}
               image={tripDetails.headerImageUrl?.image_url || headerPlaceholder}
               title={locationData?.place}
             />
             <CardContent
-              sx={{ position: "absolute", bottom: 10, left: 10, zIndex: 10, bgcolor: "rgba(0, 0, 0, 0.5)", borderRadius: 2 , py: 0.5}}
+              sx={{
+                position: "absolute",
+                bottom: 10,
+                left: 10,
+                zIndex: 10,
+                bgcolor: "rgba(0, 0, 0, 0.5)",
+                borderRadius: 2,
+                py: 0.5,
+              }}
             >
               <Typography
                 variant="h6"
@@ -384,23 +398,33 @@ function ItineraryPage() {
                   fontWeight: 600,
                   color: "#ffffff",
                   textAlign: "left",
-                  fontSize: "1.75rem"
+                  fontSize: "1.75rem",
                 }}
               >
                 {tripDetails.tripName || locationData?.place || "My Trip"}
               </Typography>
               <Typography
                 variant="body2"
-                sx={{ color: "#ffffff", textAlign: "left", fontSize: "1rem"}}
+                sx={{ color: "#ffffff", textAlign: "left", fontSize: "1rem" }}
               >
                 Mon 15 Jan - Fri 19 Jan
               </Typography>
-              
             </CardContent>
-            <Box sx={{ position: "absolute", zIndex: 11, top: 15, right: 15}}>
-              <Chip label={locationData?.place || locationData?.country } icon={<Flag code={locationData?.country_code || "GB"} height={14}/>} sx={{color: "#ffffff", bgcolor: "rgba(0, 0, 0, 0.5)", fontSize: "1rem", px: 1}}/>
+            <Box sx={{ position: "absolute", zIndex: 11, top: 15, right: 15 }}>
+              <Chip
+                label={locationData?.place || locationData?.country}
+                icon={
+                  <Flag code={locationData?.country_code || "GB"} height={14} />
+                }
+                sx={{
+                  color: "#ffffff",
+                  bgcolor: "rgba(0, 0, 0, 0.5)",
+                  fontSize: "1rem",
+                  px: 1,
+                }}
+              />
             </Box>
-          </Card>
+          </Card> */}
 
           <Box>
             {currentTrip?.itinerary.map((itineraryDay, index) => {

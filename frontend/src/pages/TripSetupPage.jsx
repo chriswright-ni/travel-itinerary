@@ -98,11 +98,13 @@ function TripSetupPage() {
     // console.log("test ", newItem)
 
     const newTrip = {
+      tripId: crypto.randomUUID(),
       days: days,
       startDate: date,
       tripName: tripName,
       headerImageUrl: headerImageUrl,
-      itinerary: initialiseItinerary(days)
+      itinerary: initialiseItinerary(days),
+      locationData: locationData
     }
 
     setCurrentTrip(newTrip)

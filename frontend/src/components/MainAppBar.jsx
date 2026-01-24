@@ -24,6 +24,7 @@ import Divider from "@mui/material/Divider";
 import { useAuthenticationContext } from "../contexts/AuthenticationContext";
 import { useNavigate } from "react-router-dom";
 import { useNotificationContext } from "../contexts/NotificationContext";
+import Chip from '@mui/material/Chip';
 
 function MainAppBar({ page }) {
   const { saveItinerary } = useSaveItinerary();
@@ -84,16 +85,7 @@ function MainAppBar({ page }) {
           {page}
         </Typography>
         {/* <Button color="inherit">Login</Button> */}
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-          onClick={saveItinerary}
-        >
-          <BookmarkBorderIcon />
-        </IconButton>
+        <Chip icon={<BookmarkBorderIcon />} label="Save" onClick={saveItinerary} sx={{ mr: 2 }} />
         <IconButton
           size="large"
           edge="start"
