@@ -9,6 +9,7 @@ from api2.routes.search_routes import search_bp
 from api2.routes.image_routes import image_bp
 from api2.routes.auth_routes import auth_bp
 from api2.routes.itinerary_routes import itinerary_bp
+from api2.routes.trip_routes import trip_bp
 # from api2.routes.mapbox_routes import mapbox_bp
 from api2.models.user_models import db
 
@@ -47,6 +48,7 @@ def create_app():
     app.register_blueprint(image_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(itinerary_bp)
+    app.register_blueprint(trip_bp)
     # app.register_blueprint(mapbox_bp)
 
     return app
