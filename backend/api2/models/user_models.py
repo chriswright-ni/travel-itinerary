@@ -1,6 +1,6 @@
 from sqlalchemy.sql import func
-from . import db
-
+# from . import db
+from api2.extensions import db
 
 print("TEST2")
 print(db)

@@ -11,7 +11,9 @@ from api2.routes.auth_routes import auth_bp
 from api2.routes.itinerary_routes import itinerary_bp
 from api2.routes.trip_routes import trip_bp
 # from api2.routes.mapbox_routes import mapbox_bp
-from api2.models.user_models import db
+# from api2.models.user_models import db
+from api2.extensions import db
+
 
 
 load_dotenv()
@@ -39,6 +41,11 @@ def create_app():
     jwt.init_app(app)
 
     from .models.user_models import User
+    from .models.trip_models import Trip
+    from .models.itinerary_models import Day, Itinerary_Item
+    from .models.place_models import Place
+    from .models.location_models import City, Country
+    from .models.category_models import Category
 
     with app.app_context():
         db.create_all()
