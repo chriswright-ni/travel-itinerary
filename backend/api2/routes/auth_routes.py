@@ -19,7 +19,7 @@ def login():
   user = User.query.filter_by(email=email).first()
   if user:
     if password == user.password:
-      access_token = create_access_token(identity=user.user_id)
+      access_token = create_access_token(identity=str(user.user_id))
     else:
       return jsonify({"msg": "Password incorrect"}), 401
   else:

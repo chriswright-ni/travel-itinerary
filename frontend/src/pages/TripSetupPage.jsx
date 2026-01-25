@@ -71,7 +71,7 @@ function TripSetupPage() {
     );
     const imageUrl = await response.json();
     console.log(imageUrl)
-    return imageUrl
+    return imageUrl.image_url
   }
 
   const handleClickTripSetup = async () => {

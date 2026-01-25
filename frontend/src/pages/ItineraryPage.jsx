@@ -357,7 +357,7 @@ function ItineraryPage() {
           <TripCard
             tripName={currentTrip.tripName}
             locationData={currentTrip.locationData}
-            headerImageUrl={currentTrip.headerImageUrl?.image_url}
+            headerImageUrl={currentTrip.headerImageUrl}
             clickable={false}
           />
           {/* <Card

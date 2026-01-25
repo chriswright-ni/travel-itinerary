@@ -30,7 +30,9 @@ def create_app():
     CORS(app,
         resources={r"/api/*": {"origins": "*"}})
     # CORS(app,
-    #     resources={r"/api/*": {"origins": "http://localhost:5173/"}})
+    #     resources={r"/api/*": {"origins": "http://127.0.0.1:5173"}})
+    # CORS(app,
+    #     resources={r"/api/*": {"origins": "http://localhost:5173"}})
     # CORS(app, origins = "http://localhost:5173")
    
     # SQL Alchemy configuration per documentation
@@ -57,6 +59,11 @@ def create_app():
     app.register_blueprint(itinerary_bp)
     app.register_blueprint(trip_bp)
     # app.register_blueprint(mapbox_bp)
+
+    @app.route("/api/cors")
+    def cors_test():
+        return {"msg": "CORS working"}
+
 
     return app
 

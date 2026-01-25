@@ -29,6 +29,8 @@ import TripCard from "../components/TripCard.jsx";
 function MyTripsPage() {
   const { trips, setCurrentTrip } = useItineraryContext();
 
+  console.log("Trips")
+  console.log(trips)
   const navigate = useNavigate();
 
   const handleSelectTrip = (trip) => {
@@ -57,7 +59,8 @@ function MyTripsPage() {
               key={trip.tripId}
               tripName={trip.tripName}
               locationData={trip.locationData}
-              headerImageUrl={trip.headerImageUrl?.image_url}
+              // headerImageUrl={trip.headerImageUrl?.image_url}
+              headerImageUrl={trip.headerImageUrl}
               clickable={true}
               selectTrip={() => handleSelectTrip(trip)}
             />

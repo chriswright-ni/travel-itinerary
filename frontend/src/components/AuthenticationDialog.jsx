@@ -8,17 +8,17 @@ import Box from "@mui/material/Box";
 import { useAuthenticationContext } from "../contexts/AuthenticationContext";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import {useState} from "react"
+import { useState } from "react";
 import { useNotificationContext } from "../contexts/NotificationContext";
+import { useItineraryContext } from "../contexts/ItineraryContext";
 
 function AuthenticationDialog() {
-
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [passwordConfirm, setPasswordConfirm] = useState("")
-  const [errorMsgEmail, setErrorMsgEmail] = useState("")
-  const [errorMsgPassword, setErrorMsgPassword] = useState("")
-  const [errorMsgPasswordConfirm, setErrorMsgPasswordConfirm] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [errorMsgEmail, setErrorMsgEmail] = useState("");
+  const [errorMsgPassword, setErrorMsgPassword] = useState("");
+  const [errorMsgPasswordConfirm, setErrorMsgPasswordConfirm] = useState("");
 
   const {
     authenticationDialogOpen,
@@ -27,119 +27,117 @@ function AuthenticationDialog() {
     setAuthenticationDialogMode,
     token,
     setToken,
-    setIsLoggedIn
+    setIsLoggedIn,
   } = useAuthenticationContext();
 
   const { showNotification } = useNotificationContext();
+  
+  const { fetchTrips } = useItineraryContext();
 
   const handleClose = () => {
     setAuthenticationDialogOpen(false);
-    setEmail("")
-    setPassword("")
-    setPasswordConfirm("")
+    setEmail("");
+    setPassword("");
+    setPasswordConfirm("");
   };
 
   const handleLogin = async () => {
-    console.log("In Handle Login")
+    console.log("In Handle Login");
     try {
-
-      const response = await fetch(
-        `http://127.0.0.1:5000/api/auth/login`, {
+      const response = await fetch(`http://127.0.0.1:5000/api/auth/login`, {
         // `http://localhost:5000/api/auth/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({email, password})
-        }
-      );
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
       const data = await response.json();
       if (!response.ok) {
-        console.log(`Error logging in: ${response.status}`)
-        console.log(data.msg)
-        setErrorMsgEmail(data.msg)
+        console.log(`Error logging in: ${response.status}`);
+        console.log(data.msg);
+        setErrorMsgEmail(data.msg);
       } else {
-        console.log("Log in successful")
-        console.log(data)
-        setErrorMsgEmail("")
-        setErrorMsgPassword("")
-        handleClose()
-        setToken(data.access_token)
-        setIsLoggedIn(true)
-        
-        showNotification("Login successful")
-      }
+        console.log("Log in successful");
+        console.log(data);
+        setErrorMsgEmail("");
+        setErrorMsgPassword("");
+        handleClose();
+        setToken(data.access_token);
+        setIsLoggedIn(true);
+        await fetchTrips(data.access_token)
 
+        showNotification("Login successful");
+      }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   };
 
+  
+
   const handleCreateAccount = async () => {
-
-    console.log("In create account")
-    console.log(`email: ${email}`)
-    console.log(`password: ${password}`)
-    console.log(`passwordConfirm: ${passwordConfirm}`)
+    console.log("In create account");
+    console.log(`email: ${email}`);
+    console.log(`password: ${password}`);
+    console.log(`passwordConfirm: ${passwordConfirm}`);
     try {
-
       const response = await fetch(
-        `http://127.0.0.1:5000/api/auth/createaccount`, {
+        `http://127.0.0.1:5000/api/auth/createaccount`,
+        {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({email, password, passwordConfirm})
+          body: JSON.stringify({ email, password, passwordConfirm }),
         }
       );
       const data = await response.json();
       if (!response.ok) {
-        console.log(`Error creating account: ${response.status}`)
-        console.log(data.msg)
-        setErrorMsgEmail(data.msg)
+        console.log(`Error creating account: ${response.status}`);
+        console.log(data.msg);
+        setErrorMsgEmail(data.msg);
       } else {
-        console.log("Account created")
-        console.log(data)
-        setErrorMsgEmail("")
-        setErrorMsgPassword("")
-        setAuthenticationDialogOpen(false)
-        setToken(data.access_token)
-        setIsLoggedIn(true)
-        showNotification("Account created successfully")
+        console.log("Account created");
+        console.log(data);
+        setErrorMsgEmail("");
+        setErrorMsgPassword("");
+        setAuthenticationDialogOpen(false);
+        setToken(data.access_token);
+        setIsLoggedIn(true);
+        showNotification("Account created successfully");
       }
-
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log("In handleSubmit")
+    e.preventDefault();
+    console.log("In handleSubmit");
 
-    setErrorMsgEmail("")
-    setErrorMsgPassword("")
-    setErrorMsgPasswordConfirm("")
-    
+    setErrorMsgEmail("");
+    setErrorMsgPassword("");
+    setErrorMsgPasswordConfirm("");
+
     if (!email) {
-      setErrorMsgEmail("Email is required")
+      setErrorMsgEmail("Email is required");
       return;
     }
-    
+
     if (password.length < 8) {
-      setErrorMsgPassword("Password must be at least 8 characters")
+      setErrorMsgPassword("Password must be at least 8 characters");
       return;
     }
 
     if (authenticationDialogMode === "login") {
       handleLogin();
     } else if (authenticationDialogMode === "create") {
-
       if (password !== passwordConfirm) {
-        setErrorMsgPasswordConfirm("Passwords do not match")
+        setErrorMsgPasswordConfirm("Passwords do not match");
         return;
       } else {
-        setErrorMsgPasswordConfirm("")
+        setErrorMsgPasswordConfirm("");
       }
       handleCreateAccount();
     } else {
