@@ -94,6 +94,7 @@ export const ItineraryProvider = ({ children }) => {
         console.log("Trips loaded");
         console.log(data);
         setTrips(formatTrips(data.trips))
+        // setCurrentTrip(formatTrips(data.trips)[0])
 
       }
     } catch (error) {
@@ -107,7 +108,10 @@ export const ItineraryProvider = ({ children }) => {
       tripId: trip.trip_id,
       tripName: trip.trip_name,
       headerImageUrl: trip.trip_image_url,
-      itinerary: [] // UPDATE THIS
+      itinerary: trip.days.map((day) => ({
+        dayNumber: day.day_number,
+        itineraryItems: []
+      }))
 
 
     }))
@@ -334,8 +338,8 @@ export const ItineraryProvider = ({ children }) => {
   // This is iniitiated using the day starting time
   // Buffer is the time between items - this will later be updated using travel times and optional pacing buffers
   const calculateItineraryTimes = (day, buffer) => {
-    const startHour = Number(day.dayStartTime.split(":")[0]);
-    const startMin = Number(day.dayStartTime.split(":")[1]);
+    const startHour = Number(day.dayStartTime?.split(":")[0]);
+    const startMin = Number(day.dayStartTime?.split(":")[1]);
 
     let currentTime = dayjs().hour(startHour).minute(startMin).second(0);
     // console.log("current time: ", currentTime.format("HH:mm"))

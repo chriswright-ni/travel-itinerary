@@ -29,5 +29,6 @@ class Trip(db.Model):
       "country_id": self.country_id,
       "longitude": self.longitude,
       "latitude": self.latitude,
-      "trip_image_url": self.trip_image_url
+      "trip_image_url": self.trip_image_url,
+      "days": [day.to_json() for day in self.days]
     }

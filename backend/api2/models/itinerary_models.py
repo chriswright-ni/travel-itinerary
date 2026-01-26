@@ -14,6 +14,13 @@ class Day(db.Model):
   trip_id = db.Column(db.String(36), db.ForeignKey("trip.trip_id"), nullable=False)
   itinerary_items = db.relationship("Itinerary_Item", backref="day")
 
+  def to_json(self):
+    return {
+      "day_id": self.day_id,
+      "day_number": self.day_number,
+     
+    }
+
 
 class Itinerary_Item(db.Model):
   itinerary_item_id = db.Column(db.Integer, primary_key=True)

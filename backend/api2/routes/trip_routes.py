@@ -5,6 +5,7 @@ import requests
 import os
 from ..models.user_models import User
 from ..models.trip_models import Trip
+from ..models.itinerary_models import Day
 from api2.models.user_models import db
 from datetime import datetime
 
@@ -20,6 +21,9 @@ def get_trips():
   trips = Trip.query.filter_by(user_id=user_id).all()
   trips_json = list(map(lambda trip: trip.to_json(), trips))
 
+  print("DATA BACK TO FRONTEND")
+  print(trips_json)
+
   return jsonify({"trips": trips_json}), 200
 
 
@@ -31,22 +35,37 @@ def save_trip():
 
   userId = get_jwt_identity()
 
-
+  # print(trip)
   tripId = trip.get("tripId")
   tripName = trip.get("tripName")
   headerImageUrl = trip.get("headerImageUrl")
-  print(headerImageUrl)
+  # print(trip.ge)
   startDate = datetime.fromisoformat(trip.get("startDate")[0:10]).date()
-  print(startDate)
+  # print(startDate)
   days = trip.get("days")
+
+  
 
   trip_exists = Trip.query.filter_by(trip_id=tripId).first()
 
   if trip_exists:
     print("Trip exists, not currently added")
   else:
-    trip = Trip(trip_id=tripId, trip_name=tripName, trip_image_url=headerImageUrl, start_date=startDate, country_id=1, user_id=userId)
-    db.session.add(trip)
+    new_trip = Trip(trip_id=tripId, trip_name=tripName, trip_image_url=headerImageUrl, start_date=startDate, country_id=1, user_id=userId)
+    db.session.add(new_trip)
+
+    itinerary = trip.get("itinerary", [])
+    # Itinerary data:
+    for day in itinerary:
+      dayNumber = day.get("dayNumber")
+      print(dayNumber)
+
+      day = Day(
+        day_number = dayNumber,
+        trip_id = tripId,
+      )
+      db.session.add(day)
+
     db.session.commit()
     print("Trip added")
 
