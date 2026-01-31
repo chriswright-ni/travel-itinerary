@@ -1,7 +1,7 @@
 import Box from '@mui/joy/Box';
 import OptionChip from './OptionChip';
 
-const interests = ["Museums", "Food & Drink", "History", "Shopping", "Iconic Sights", "Nature & Scenery"];
+const interests = ["History", "Restaurants & Cafes", "Shopping", "Landmarks", "Nature"];
 
 function InterestSelector({onInterestSelect, selected}) {
 

@@ -27,13 +27,18 @@ jwt = JWTManager()
 def create_app():
     
     app = Flask(__name__)
-    CORS(app,
-        resources={r"/api/*": {"origins": "*"}})
+    # CORS(app, resources={r"*": {"origins": "http://localhost:5173"}})
+    # CORS(app)
+    # CORS(app, resources={r"/*": {"origins": "*"}})
     # CORS(app,
-    #     resources={r"/api/*": {"origins": "http://127.0.0.1:5173"}})
+    #     resources={r"/api/*": {"origins": "*"}})
+    # CORS(app,
+    #     resources={r"*": {"origins": ["http://127.0.0.1:5173", "http://localhost:5173"]}})
     # CORS(app,
     #     resources={r"/api/*": {"origins": "http://localhost:5173"}})
-    # CORS(app, origins = "http://localhost:5173")
+    CORS(app, origins = "http://localhost:5173")
+
+    # CORS(app, origins = "*")
    
     # SQL Alchemy configuration per documentation
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///travel_itinerary.db"

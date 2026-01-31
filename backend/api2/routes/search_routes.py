@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from dotenv import load_dotenv
+# from ..interest_categories import INTEREST_CATEGORY_ICONS
 import requests
 import os
 
@@ -103,6 +104,12 @@ def get_places():
   longitude = float(request.args.get("longitude"))
   ll = f"{latitude:.4f},{longitude:.4f}"
   
+  # foursquare_categories = INTEREST_CATEGORIES.get(interest_category)
+
+  # print(foursquare_categories)
+
+
+  
 
   if not interest_category:
     print("No interest category selected") # Update this
@@ -114,26 +121,41 @@ def get_places():
       "X-Places-Api-Version": "2025-06-17",
       "Authorization": f"Bearer {PLACES_API_KEY}"
   }
-  print(ll)
+  # print(ll)
 
-  params = {f"query": {interest_category}, "ll": {ll}, "radius": 5000, "limit": 50} # FSQ places result limit is 50, unless pagination is used
-  
+  params = {f"query": {interest_category}, "ll": {ll}, "radius": 5000, "limit": 50, "sort": "RATING"}
+  # params = {"categories": ",".join(foursquare_categories), "ll": ll, "radius": 5000, "limit": 50} 
+  # params = {
+  #   "fsq_category_ids": "4bf58dd8d48988d12d941735",
+  #   "ll": ll,
+  #   "radius": 5300,
+  #   "limit": 10,
+  #   "sort": "DISTANCE",
+  #   } 
+  # params = {"ll": ll, "radius": 5000, "limit": 50} 
+  # print(params)
   response = requests.get(url, headers=headers, params=params)
   data = response.json()
   place_data = data.get("results", []) # The second argument, [], is the default value if the get method produces a type error
+  # print(place_data)
   print(f"Finding places with interest category: {interest_category}")
   # The results data from the Foursquare Places API is an array of objects
   # Cleaning the data to remove unnecessary fields - creating a smaller array of objects
   places = []
   for i, place in enumerate(place_data):
     categories = place.get("categories", [])
+    
+    if categories:
+      category_name = categories[0].get("name")
+    else:
+      category_name = "Unknown"
     place_cleaned = {
       "id": i + 1,
       "name": place.get("name"),
-      "category": categories[0].get("name"),
+      "category": category_name,
       "distance": place.get("distance")
     }
-    print(place.get("name"))
+    # print(place_cleaned.get("category"))
     places.append(place_cleaned);
 
   return jsonify(places)
