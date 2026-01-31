@@ -4,17 +4,18 @@ const theme = createTheme(
   {
     palette: {
       primary: {
-        main: "#2A9D8F",
+        // main: "#2A9D8F",
+        main: "#2FA4A9",
         light: "#E0F2F1",
         dark: "#1F6F63",
         selected: "#D6E7FF"
         
       },
       secondary: {
-        main: "#FF6A7A",
+        main: "#FF8A5C",
         // main: "#F39C12",
         // dark: "#E85050",
-        // light: "#FFEDED"
+        light: "#FFD1B3"
       },
       accent: {
         main: "#FFD85A",

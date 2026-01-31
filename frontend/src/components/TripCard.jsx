@@ -23,6 +23,7 @@ function TripCard({ tripName, locationData, headerImageUrl, clickable, selectTri
           mb: 3,
           bgcolor: "background.paper",
           position: "relative",
+          boxShadow: "0px 8px 24px rgba(255, 138, 92, 0.2)",
         }}
       >
         <CardMedia
