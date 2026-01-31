@@ -23,6 +23,14 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import LocationPinIcon from "@mui/icons-material/LocationPin";
+import EventIcon from "@mui/icons-material/Event";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import tripSetupImage from "../images/unsplash-trip-setup-image.jpg";
 
 function TripSetupPage() {
   const [days, setDays] = useState(3);
@@ -34,9 +42,10 @@ function TripSetupPage() {
 
   const { locationData, setLocationData } = useSearchContext();
 
-  const { setTripDetails, initialiseItinerary, itinerary, setCurrentTrip } = useItineraryContext();
+  const { setTripDetails, initialiseItinerary, itinerary, setCurrentTrip } =
+    useItineraryContext();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // This function retrives the coordinates from the user's location search selection
   const handleLocationSelect = async (userSelection) => {
@@ -50,9 +59,9 @@ function TripSetupPage() {
     );
     const data = await response.json(); // Array of objects
     console.log("Inside retrieve API call");
-    console.log(data)
+    console.log(data);
     setLocationData(data);
-  }
+  };
 
   const handleClickAddDay = () => {
     setDays((prev) => prev + 1);
@@ -63,28 +72,29 @@ function TripSetupPage() {
   };
 
   const getHeaderImageUrl = async (country, place) => {
-
-    const query = encodeURIComponent(place ? place : country)
+    const query = encodeURIComponent(place ? place : country);
 
     const response = await fetch(
       `http://127.0.0.1:5000/api/images/search?query=${query}`
     );
     const imageUrl = await response.json();
-    console.log(imageUrl)
-    return imageUrl.image_url
-  }
+    console.log(imageUrl);
+    return imageUrl.image_url;
+  };
 
   const handleClickTripSetup = async () => {
-    
     let headerImageUrl = null;
 
     // ADD VALIDATION IF REQUIRED - i.e. if the user hasn't made any selections
     if (locationData) {
-      headerImageUrl = await getHeaderImageUrl(locationData.country, locationData.place);
+      headerImageUrl = await getHeaderImageUrl(
+        locationData.country,
+        locationData.place
+      );
     }
 
-    console.log("header image:")
-    console.log(headerImageUrl)
+    console.log("header image:");
+    console.log(headerImageUrl);
 
     // setTripDetails({
     //   days: days,
@@ -104,12 +114,11 @@ function TripSetupPage() {
       tripName: tripName,
       headerImageUrl: headerImageUrl,
       itinerary: initialiseItinerary(days),
-      locationData: locationData
-    }
+      locationData: locationData,
+    };
 
-    setCurrentTrip(newTrip)
-    navigate("/itinerary")
-
+    setCurrentTrip(newTrip);
+    navigate("/itinerary");
   };
 
   return (
@@ -123,82 +132,182 @@ function TripSetupPage() {
           px: 2,
           py: 2,
           gap: 3,
+          background: "linear-gradient(135deg, #FFE5D6 0%, #FFF4EC 60%, #FFFFFF 85%)"
         }}
       >
-        <Typography>Let's set your trip up!</Typography>
-
-        <LocationSearch onLocationSelect={handleLocationSelect} placeholderText={"Where would you like to go?"} />
-        <UseMyLocation />
-
-        <Typography>How many days?</Typography>
-        <Box
+        <Card
+        elevation={0}
+        sx={{
+          borderRadius: 2,
+          mx: 2,
+          mt: 3,
+          mb: 3,
+          bgcolor: "background.paper",
+          position: "relative",
+          boxShadow: "0px 8px 24px rgba(255, 138, 92, 0.2)",
+        }}
+      >
+        <CardMedia
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
+            height: 200,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            position: "relative",
+            zIndex: 1,
+            
+          }}
+          image={tripSetupImage}
+          
+        />
+        <CardContent
+          sx={{
+            position: "absolute",
+            bottom: 10,
+            left: 10,
+            zIndex: 10,
+            // bgcolor: "rgba(0, 0, 0, 0.5)",
+            borderRadius: 2,
+            py: 0.5,
           }}
         >
-          <IconButton
-            aria-label="Remove day"
-            size="small"
-            onClick={() => handleClickRemoveDay()}
-            disabled={days === minDays ? true : false}
-            sx={{
-              "& svg": {
-                color: days === minDays ? "primary.disabled" : "primary.main",
-              },
-            }}
-          >
-            <RemoveIcon
-              fontSize="large"
-              color={days === minDays ? "primary.disabled" : "primary.main"}
-            />
-          </IconButton>
-          <Typography variant="h6">
-            {days} {days > 1 ? "Days" : "Day"}
-          </Typography>
-          <IconButton
-            aria-label="Add day"
-            size="small"
-            onClick={() => handleClickAddDay()}
-            disabled={days === maxDays ? true : false}
-            sx={{
-              "& svg": {
-                color: days === maxDays ? "primary.disabled" : "primary.main",
-              },
-            }}
-          >
-            <AddIcon fontSize="large" color="primary" />
-          </IconButton>
-        </Box>
-        <Typography>When is your trip starting?</Typography>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            minDate={dayjs()} // Set min date to today
-            sx={{
-              borderRadius: 3,
-              backgroundColor: "background.default",
-              // boxShadow: 1,
-              "& fieldset": {
-                border: "none",
-              },
-            }}
-            onChange={(newValue) => setDate(newValue)}
-            value={date}
-            format="DD-MMM-YYYY"
+        <Typography variant="h5" sx={{ fontWeight: 700 }}>
+          Let's set your trip up ✨
+        </Typography>
+          
+        </CardContent>
+        
+      </Card>
+
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+            boxShadow: "0px 3px 6px rgba(0,0,0,0.08)",
+            borderRadius: 3,
+            p: 2,
+            mb: 2
+          }}
+        >
+          <Box sx={{ display: "flex", mb: 1 }}>
+            <LocationPinIcon color={"primary"} sx={{ mr: 1 }} />
+            <Typography variant="subtitle1" sx={{fontWeight: 600}}>Where would you like to go?</Typography>
+          </Box>
+          <LocationSearch
+            onLocationSelect={handleLocationSelect}
+            placeholderText={"Search for a location..."}
           />
-        </LocalizationProvider>
+        </Box>
 
-        <TextField
-          id="standard-basic"
-          label="What is your trip called?"
-          variant="outlined"
-          onChange={(e) => setTripName(e.target.value)}
-        />
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+            boxShadow: "0px 3px 6px rgba(0,0,0,0.08)",
+            borderRadius: 3,
+            p: 2,
+            mb: 2
+          }}
+        >
+          <Box sx={{ display: "flex", mb: 1 }}>
+            <EventIcon color={"primary"} sx={{ mr: 1 }} />
+            <Typography variant="subtitle1" sx={{fontWeight: 600}}>How many days?</Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 2,
+            }}
+          >
+            <IconButton
+              aria-label="Remove day"
+              size="small"
+              onClick={() => handleClickRemoveDay()}
+              disabled={days === minDays ? true : false}
+              sx={{
+                "& svg": {
+                  color: days === minDays ? "primary.disabled" : "primary.main",
+                },
+              }}
+            >
+              <RemoveIcon
+                fontSize="large"
+                color={days === minDays ? "primary.disabled" : "primary.main"}
+              />
+            </IconButton>
+            <Typography variant="h6">
+              {days} {days > 1 ? "Days" : "Day"}
+            </Typography>
+            <IconButton
+              aria-label="Add day"
+              size="small"
+              onClick={() => handleClickAddDay()}
+              disabled={days === maxDays ? true : false}
+              sx={{
+                "& svg": {
+                  color: days === maxDays ? "primary.disabled" : "primary.main",
+                },
+              }}
+            >
+              <AddIcon fontSize="large" color="primary" />
+            </IconButton>
+          </Box>
+        </Box>
 
-        <Button variant="outlined" onClick={handleClickTripSetup}>
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+            boxShadow: "0px 3px 6px rgba(0,0,0,0.08)",
+            borderRadius: 3,
+            p: 2,
+            mb: 2
+          }}
+        >
+          <Box sx={{ display: "flex", mb: 1 }}>
+            <CalendarMonthIcon color={"primary"} sx={{ mr: 1 }} />
+            <Typography variant="subtitle1" sx={{fontWeight: 600}}>When is your trip?</Typography>
+          </Box>
+
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              minDate={dayjs()} // Set min date to today
+              sx={{
+                borderRadius: 3,
+                backgroundColor: "background.default",
+                // boxShadow: 1,
+                "& fieldset": {
+                  border: "none",
+                },
+              }}
+              onChange={(newValue) => setDate(newValue)}
+              value={date}
+              format="DD-MMM-YYYY"
+            />
+          </LocalizationProvider>
+        </Box>
+
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+            boxShadow: "0px 3px 6px rgba(0,0,0,0.08)",
+            borderRadius: 3,
+            p: 2,
+            mb: 2
+          }}
+        >
+          <Box sx={{ display: "flex", mb: 1 }}>
+            <DriveFileRenameOutlineIcon color={"primary"} sx={{ mr: 1 }} />
+            <Typography variant="subtitle1" sx={{fontWeight: 600}}>Give your trip a name</Typography>
+          </Box>
+          <TextField
+            id="standard-basic"
+            label="Enter a name..."
+            variant="outlined"
+            onChange={(e) => setTripName(e.target.value)}
+          />
+        </Box>
+
+        <Button variant="contained" sx={{fontWeight: 700, borderRadius: 3}} onClick={handleClickTripSetup}>
           Start Planning!
         </Button>
       </Box>
