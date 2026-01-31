@@ -65,7 +65,6 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import Chip from "@mui/material/Chip";
 import Flag from "react-world-flags";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 function ItineraryPage() {
   const {
@@ -449,25 +448,17 @@ function ItineraryPage() {
                   }}
                   sx={{
                     borderRadius: 2,
-                    // boxShadow: "0px 3px 6px rgba(0,0,0, 0.1)",
-                    boxShadow:
-                      expanded === itineraryDay.dayNumber
-                        ? "0px 8px 24px rgba(255, 138, 92, 0.18)"
-                        : "0px 3px 6px rgba(0,0,0,0.08)",
+                    boxShadow: "0px 3px 6px rgba(0,0,0, 0.1)",
                     mx: 2,
                     mb: 2,
                     "&:before": {
                       display: "none",
                     },
                     // overflow: "hidden",
-                    // backgroundColor:
-                    //   expanded === itineraryDay.dayNumber
-                    //     ? "primary.light"
-                    //     : "background.paper",
-                    background:
+                    backgroundColor:
                       expanded === itineraryDay.dayNumber
-                        ? "linear-gradient(135deg, #FFE5D6 0%, #FFF4EC 40%, #FFFFFF 85%)"
-                        : "linear-gradient(135deg, #FAFAF7 0%, #FFFFFF 100%)",
+                        ? "primary.light"
+                        : "background.paper",
                   }}
                   elevation={0}
                 >
@@ -512,10 +503,7 @@ function ItineraryPage() {
                           sx={{
                             fontSize: "0.375rem",
                             mx: 1,
-                            color:
-                              expanded === itineraryDay.dayNumber
-                                ? "secondary.main"
-                                : "text.secondary",
+                            color: "text.secondary",
                           }}
                         />
                         <Typography
@@ -530,16 +518,7 @@ function ItineraryPage() {
                         }`}</Typography>
                       </Box>
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <ScheduleIcon
-                          sx={{
-                            fontSize: "1rem",
-                            mr: 1,
-                            color:
-                              expanded === itineraryDay.dayNumber
-                                ? "secondary.main"
-                                : "text.secondary",
-                          }}
-                        />
+                        <ScheduleIcon sx={{ fontSize: "1rem", mr: 1 }} />
 
                         <Typography
                           variant="body2"
@@ -555,16 +534,7 @@ function ItineraryPage() {
                             color: "text.secondary",
                           }}
                         /> */}
-                        <ListAltIcon
-                          sx={{
-                            fontSize: "1rem",
-                            mx: 1,
-                            color:
-                              expanded === itineraryDay.dayNumber
-                                ? "secondary.main"
-                                : "text.secondary",
-                          }}
-                        />
+                        <ListAltIcon sx={{ fontSize: "1rem", mx: 1 }} />
                         <Typography variant="body2" color="text.secondary">{`${
                           itineraryDay.itineraryItems.length
                         } ${
@@ -613,14 +583,7 @@ function ItineraryPage() {
                   <AccordionDetails sx={{ pt: 0, mt: 0 }}>
                     <ListItemButton
                       onClick={handleClickStartingLocation}
-                      sx={{
-                        mb: 2,
-                        borderRadius: 3,
-                        py: 2,
-                        display: "flex",
-                        justifyContent: "space-between",
-                        bgcolor: "rgba(255, 209, 179, 0.2)",
-                      }}
+                      sx={{ mb: 2, borderRadius: 2, py: 2 }}
                     >
                       <Box sx={{ display: "flex", alignItems: "center" }}>
                         <LocationPinIcon color={"primary"} sx={{ mr: 1 }} />
@@ -639,9 +602,6 @@ function ItineraryPage() {
                           )}
                         </Box>
                       </Box>
-                      <ArrowForwardIosIcon
-                        sx={{ fontSize: 16, color: "text.secondary" }}
-                      />
                     </ListItemButton>
                     <DndContext
                       sensors={sensors}
@@ -661,11 +621,10 @@ function ItineraryPage() {
                           {itineraryDay.itineraryItems.length === 0 ? (
                             <Box
                               sx={{
-                                border: `2px dashed ${theme.palette.secondary.light}`,
+                                border: `2px dashed #D1D5DB`,
                                 borderRadius: 2,
                                 height: "120px",
-                                // backgroundColor: "background.paper",
-                                backgroundColor: "transparent",
+                                backgroundColor: "background.paper",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
@@ -673,8 +632,7 @@ function ItineraryPage() {
                               }}
                             >
                               <Typography>
-                                This day is empty — time to fill it with
-                                memories! 🌄
+                                Tap below to add your first activity
                               </Typography>
                               <AddItemButton
                                 handleClickAddItemToDay={() =>
