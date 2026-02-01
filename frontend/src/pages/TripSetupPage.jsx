@@ -132,51 +132,50 @@ function TripSetupPage() {
           px: 2,
           py: 2,
           gap: 3,
-          background: "linear-gradient(135deg, #FFE5D6 0%, #FFF4EC 60%, #FFFFFF 85%)"
-        }}
-      >
-        <Card
-        elevation={0}
-        sx={{
-          borderRadius: 2,
-          mx: 2,
-          mt: 3,
-          mb: 3,
-          bgcolor: "background.paper",
+          background:
+            "linear-gradient(135deg, #FFE5D6 0%, #FFF4EC 60%, #FFFFFF 85%)",
           position: "relative",
-          boxShadow: "0px 8px 24px rgba(255, 138, 92, 0.2)",
         }}
       >
-        <CardMedia
+        <Box
           sx={{
-            height: 200,
+            backgroundImage: `url(${tripSetupImage})`,
             backgroundSize: "cover",
-            backgroundPosition: "center",
-            position: "relative",
-            zIndex: 1,
-            
-          }}
-          image={tripSetupImage}
-          
-        />
-        <CardContent
-          sx={{
-            position: "absolute",
-            bottom: 10,
-            left: 10,
-            zIndex: 10,
-            // bgcolor: "rgba(0, 0, 0, 0.5)",
-            borderRadius: 2,
-            py: 0.5,
+            width: "100%",
+            height: 230,
+            maskImage:
+              "linear-gradient(to bottom, black 75%, transparent 100%)",
+            display: "flex",
+            // alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 3,
           }}
         >
-        <Typography variant="h5" sx={{ fontWeight: 700 }}>
-          Let's set your trip up ✨
-        </Typography>
-          
-        </CardContent>
-        
-      </Card>
+          <Box
+            sx={{
+              bgcolor: "rgba(0, 0, 0, 0.3)",
+              position: "absolute",
+              height: "50px",
+              mt: 5,
+              display: "flex",
+              alignItems: "center",
+              px: 2,
+              borderRadius: 3
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 700,
+                // mt: 4,
+                fontSize: "30px",
+                color: "#ffffff",
+              }}
+            >
+              Let's set your trip up ✨
+            </Typography>
+          </Box>
+        </Box>
 
         <Box
           sx={{
@@ -184,12 +183,13 @@ function TripSetupPage() {
             boxShadow: "0px 3px 6px rgba(0,0,0,0.08)",
             borderRadius: 3,
             p: 2,
-            mb: 2
           }}
         >
           <Box sx={{ display: "flex", mb: 1 }}>
             <LocationPinIcon color={"primary"} sx={{ mr: 1 }} />
-            <Typography variant="subtitle1" sx={{fontWeight: 600}}>Where would you like to go?</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              Where would you like to go?
+            </Typography>
           </Box>
           <LocationSearch
             onLocationSelect={handleLocationSelect}
@@ -203,12 +203,13 @@ function TripSetupPage() {
             boxShadow: "0px 3px 6px rgba(0,0,0,0.08)",
             borderRadius: 3,
             p: 2,
-            mb: 2
           }}
         >
           <Box sx={{ display: "flex", mb: 1 }}>
             <EventIcon color={"primary"} sx={{ mr: 1 }} />
-            <Typography variant="subtitle1" sx={{fontWeight: 600}}>How many days?</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              How many days?
+            </Typography>
           </Box>
           <Box
             sx={{
@@ -260,12 +261,13 @@ function TripSetupPage() {
             boxShadow: "0px 3px 6px rgba(0,0,0,0.08)",
             borderRadius: 3,
             p: 2,
-            mb: 2
           }}
         >
           <Box sx={{ display: "flex", mb: 1 }}>
             <CalendarMonthIcon color={"primary"} sx={{ mr: 1 }} />
-            <Typography variant="subtitle1" sx={{fontWeight: 600}}>When is your trip?</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              When is your trip?
+            </Typography>
           </Box>
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -282,6 +284,7 @@ function TripSetupPage() {
               onChange={(newValue) => setDate(newValue)}
               value={date}
               format="DD-MMM-YYYY"
+              slotProps={{ textField: { fullWidth: true } }}
             />
           </LocalizationProvider>
         </Box>
@@ -292,22 +295,28 @@ function TripSetupPage() {
             boxShadow: "0px 3px 6px rgba(0,0,0,0.08)",
             borderRadius: 3,
             p: 2,
-            mb: 2
           }}
         >
           <Box sx={{ display: "flex", mb: 1 }}>
             <DriveFileRenameOutlineIcon color={"primary"} sx={{ mr: 1 }} />
-            <Typography variant="subtitle1" sx={{fontWeight: 600}}>Give your trip a name</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              Give your trip a name
+            </Typography>
           </Box>
           <TextField
             id="standard-basic"
             label="Enter a name..."
             variant="outlined"
             onChange={(e) => setTripName(e.target.value)}
+            fullWidth
           />
         </Box>
 
-        <Button variant="contained" sx={{fontWeight: 700, borderRadius: 3}} onClick={handleClickTripSetup}>
+        <Button
+          variant="contained"
+          sx={{ fontWeight: 700, borderRadius: 3 }}
+          onClick={handleClickTripSetup}
+        >
           Start Planning!
         </Button>
       </Box>
