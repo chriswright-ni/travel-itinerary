@@ -210,7 +210,7 @@ function SearchPage() {
                 justifyContent: "space-between",
               }}
             >
-              <UseMyLocation />
+              
               {/* <ListMapToggle /> */}
             </Box>
           </Box>

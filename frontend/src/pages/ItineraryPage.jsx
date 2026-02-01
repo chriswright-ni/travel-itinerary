@@ -66,6 +66,7 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import Chip from "@mui/material/Chip";
 import Flag from "react-world-flags";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
 
 function ItineraryPage() {
   const {
@@ -611,6 +612,35 @@ function ItineraryPage() {
                     </Box>
                   </AccordionSummary>
                   <AccordionDetails sx={{ pt: 0, mt: 0 }}>
+                    <Box sx={{display: "flex", mb: 2}}>
+                      <Chip
+                        label="Foodie 🍲"
+                        sx={{
+                          bgcolor: "#FFB347",
+                          color: "white",
+                          fontWeight: 600,
+                          mr: 1
+                        }}
+                      />
+                      <Chip
+                        label="Time Traveler ⏳"
+                        sx={{
+                          bgcolor: "#6C5B7B",
+                          color: "white",
+                          fontWeight: 600,
+                          mr: 1
+                        }}
+                      />
+                      <Chip
+                        label="Explorer 🌲"
+                        sx={{
+                          bgcolor: "#81C784",
+                          color: "white",
+                          fontWeight: 600,
+                          mr: 1
+                        }}
+                      />
+                    </Box>
                     <ListItemButton
                       onClick={handleClickStartingLocation}
                       sx={{
