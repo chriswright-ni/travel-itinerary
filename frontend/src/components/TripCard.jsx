@@ -9,10 +9,18 @@ import Flag from "react-world-flags";
 import headerPlaceholder from "../images/unsplash-travel-placeholder.jpg";
 import Box from "@mui/material/Box";
 import CardActionArea from "@mui/material/CardActionArea";
+import dayjs from "dayjs";
 
-function TripCard({ tripName, locationData, headerImageUrl, clickable, selectTrip }) {
+function TripCard({
+  tripName,
+  locationData,
+  headerImageUrl,
+  clickable,
+  selectTrip,
+  startDate,
+  dayCount,
+}) {
   return (
-    
     <CardActionArea disabled={!clickable} onClick={selectTrip}>
       <Card
         elevation={0}
@@ -63,12 +71,15 @@ function TripCard({ tripName, locationData, headerImageUrl, clickable, selectTri
             variant="body2"
             sx={{ color: "#ffffff", textAlign: "left", fontSize: "1rem" }}
           >
-            Mon 15 Jan - Fri 19 Jan
+            { startDate ? `${dayjs(startDate).format("ddd D MMM")} - ${dayjs(startDate)
+                    .add(dayCount - 1, "day")
+                    .format("ddd D MMM")}` : null
+            }
           </Typography>
         </CardContent>
         <Box sx={{ position: "absolute", zIndex: 11, top: 15, right: 15 }}>
           <Chip
-            label={locationData?.place || locationData?.country}
+            label={`${locationData?.place}, ${locationData?.country}` || locationData?.country}
             icon={
               <Flag code={locationData?.country_code || "GB"} height={14} />
             }

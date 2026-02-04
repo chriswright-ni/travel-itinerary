@@ -361,6 +361,8 @@ function ItineraryPage() {
             locationData={currentTrip.locationData}
             headerImageUrl={currentTrip.headerImageUrl}
             clickable={false}
+            startDate={currentTrip.startDate}
+            dayCount={currentTrip.days}
           />
           {/* <Card
             elevation={0}
@@ -523,11 +525,11 @@ function ItineraryPage() {
                           variant="subtitle1"
                           sx={{ fontWeight: 600 }}
                         >{`${
-                          tripDetails.startDate
-                            ? dayjs(tripDetails.startDate)
+                          currentTrip.startDate
+                            ? dayjs(currentTrip.startDate)
                                 .add(index, "day")
                                 .format("ddd D MMM")
-                            : "Mon 22 Dec" // CHANGE THIS
+                            : "No Date Selected" // CHANGE THIS
                         }`}</Typography>
                       </Box>
                       <Box sx={{ display: "flex", alignItems: "center" }}>

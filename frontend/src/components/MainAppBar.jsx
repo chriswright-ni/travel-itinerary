@@ -24,7 +24,7 @@ import Divider from "@mui/material/Divider";
 import { useAuthenticationContext } from "../contexts/AuthenticationContext";
 import { useNavigate } from "react-router-dom";
 import { useNotificationContext } from "../contexts/NotificationContext";
-import Chip from '@mui/material/Chip';
+import Chip from "@mui/material/Chip";
 
 function MainAppBar({ page }) {
   const { saveItinerary } = useSaveItinerary();
@@ -60,17 +60,22 @@ function MainAppBar({ page }) {
   };
 
   const handleLogin = () => {
-    setAuthenticationDialogMode("login")
-    setAuthenticationDialogOpen(true)
-  }
+    setAuthenticationDialogMode("login");
+    setAuthenticationDialogOpen(true);
+  };
 
   const handleCreateAccount = () => {
-    setAuthenticationDialogMode("create")
-    setAuthenticationDialogOpen(true)
-  }
+    setAuthenticationDialogMode("create");
+    setAuthenticationDialogOpen(true);
+  };
 
   return (
-    <AppBar position="static" color="transparent" elevation={0}>
+    <AppBar
+      position="static"
+      color="transparent"
+      elevation={0}
+      sx={{ background: "linear-gradient(135deg, #FFE5D6 0%, #FFF4EC 40%, #FFFFFF 85%)", boxShadow: "0px 3px 6px rgba(0,0,0,0.08)" }}
+    >
       <Toolbar>
         <IconButton
           size="large"
@@ -85,7 +90,12 @@ function MainAppBar({ page }) {
           {page}
         </Typography>
         {/* <Button color="inherit">Login</Button> */}
-        <Chip icon={<BookmarkBorderIcon />} label="Save" onClick={saveItinerary} sx={{ mr: 2 }} />
+        <Chip
+          icon={<BookmarkBorderIcon />}
+          label="Save"
+          onClick={saveItinerary}
+          sx={{ mr: 2 }}
+        />
         <IconButton
           size="large"
           edge="start"
@@ -147,10 +157,12 @@ function MainAppBar({ page }) {
             My Trips
           </MenuItem>
         ) : (
-          <MenuItem onClick={() => {
-            handleClose();
-            handleCreateAccount();
-          }}>
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              handleCreateAccount();
+            }}
+          >
             <ListItemIcon>
               <PersonAddIcon fontSize="small" />
             </ListItemIcon>
@@ -171,10 +183,12 @@ function MainAppBar({ page }) {
             Log Out
           </MenuItem>
         ) : (
-          <MenuItem onClick={() => {
-            handleClose();
-            handleLogin();
-          }}>
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              handleLogin();
+            }}
+          >
             <ListItemIcon>
               <LoginIcon fontSize="small" />
             </ListItemIcon>

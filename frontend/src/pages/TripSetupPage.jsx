@@ -172,7 +172,7 @@ function TripSetupPage() {
                 color: "#ffffff",
               }}
             >
-              Let's set your trip up ✨
+              Let's set your trip up
             </Typography>
           </Box>
         </Box>
