@@ -12,6 +12,7 @@ class Trip(db.Model):
   end_date = db.Column(db.Date)
   place = db.Column(db.String(255))
   country_id = db.Column(db.Integer, db.ForeignKey("country.country_id"), nullable=False)
+  city_id = db.Column(db.Integer, db.ForeignKey("city.city_id"), nullable=False)
   longitude = db.Column(db.Float)
   latitude = db.Column(db.Float)
   trip_image_url = db.Column(db.String(2083))
@@ -25,7 +26,7 @@ class Trip(db.Model):
       "user_id": self.user_id,
       "start_date": self.start_date.isoformat(),
       "end_date": self.end_date,
-      "place": self.place,
+      "city_id": self.city_id,
       "country_id": self.country_id,
       "longitude": self.longitude,
       "latitude": self.latitude,

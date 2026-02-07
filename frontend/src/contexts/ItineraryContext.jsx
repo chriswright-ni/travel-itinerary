@@ -87,12 +87,14 @@ export const ItineraryProvider = ({ children }) => {
         }
       });
       const data = await response.json();
+      console.log("Trip data when received from backend:")
+      console.log(data)
       if (!response.ok) {
         console.log(`Error logging in: ${response.status}`);
         console.log(data.msg);
       } else {
-        console.log("Trips loaded");
-        console.log(data);
+        // console.log("Trips loaded");
+        // console.log(data);
         setTrips(formatTrips(data.trips))
         // setCurrentTrip(formatTrips(data.trips)[0])
 
@@ -108,6 +110,8 @@ export const ItineraryProvider = ({ children }) => {
       tripId: trip.trip_id,
       tripName: trip.trip_name,
       headerImageUrl: trip.trip_image_url,
+      startDate: trip.start_date,
+      days: trip.days,
       itinerary: trip.days.map((day) => ({
         dayNumber: day.day_number,
         itineraryItems: []
@@ -174,6 +178,13 @@ export const ItineraryProvider = ({ children }) => {
     };
     // prev is current value of the state
     setItinerary((prev) => [...prev, newDay]);
+
+    // console.log("Current trip structure:")
+    // console.log(currentTrip)
+    // console.log("Location data structure:")
+    // console.log(currentTrip.locationData)
+    // console.log("Itinerary structure:")
+    // console.log(currentTrip.itinerary)
 
     return newDayNumber;
   };

@@ -29,8 +29,8 @@ import TripCard from "../components/TripCard.jsx";
 function MyTripsPage() {
   const { trips, setCurrentTrip } = useItineraryContext();
 
-  console.log("Trips")
-  console.log(trips)
+  // console.log("Trips")
+  // console.log(trips)
   const navigate = useNavigate();
 
   const handleSelectTrip = (trip) => {
