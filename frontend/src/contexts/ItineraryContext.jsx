@@ -96,7 +96,7 @@ export const ItineraryProvider = ({ children }) => {
         console.log("Trips loaded");
         // console.log(data);
         setTrips(formatTrips(data.trips))
-        // setCurrentTrip(formatTrips(data.trips)[0])
+        setCurrentTrip(formatTrips(data.trips)[0])
 
       }
     } catch (error) {
@@ -116,6 +116,7 @@ export const ItineraryProvider = ({ children }) => {
       days: trip.days.length,
       itinerary: trip.days.map((day) => ({
         dayNumber: day.day_number,
+        dayStartTime: day.start_time,
         itineraryItems: []
       })),
       locationData: {
@@ -190,8 +191,8 @@ export const ItineraryProvider = ({ children }) => {
     // console.log(currentTrip)
     // console.log("Location data structure:")
     // console.log(currentTrip.locationData)
-    // console.log("Itinerary structure:")
-    // console.log(currentTrip.itinerary)
+    console.log("Itinerary structure:")
+    console.log(currentTrip.itinerary)
 
     return newDayNumber;
   };

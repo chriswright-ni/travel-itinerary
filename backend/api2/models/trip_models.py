@@ -26,8 +26,6 @@ class Trip(db.Model):
       "user_id": self.user_id,
       "start_date": self.start_date.isoformat(),
       "end_date": self.end_date.isoformat(),
-      # "city_id": self.city_id,
-      # "country_id": self.country_id,
       "location_data": {
         "country_name": self.country.country_name,
         "country_code": self.country.country_code,

@@ -63,7 +63,7 @@ def save_trip():
     print("Country exists, not currently added")
   else:
     country = Country(country_name=countryName, country_code=countryCode)
-    db.session.add(new_country)
+    db.session.add(country)
     db.session.flush()
     print("New country added")
 
@@ -73,8 +73,8 @@ def save_trip():
   if city:
     print("City exists, not currently added")
   else:
-    city = City(city_name=cityName, country_id=new_country.country_id)
-    db.session.add(new_city)
+    city = City(city_name=cityName, country_id=country.country_id)
+    db.session.add(city)
     db.session.flush()
     print("New city added")
 
@@ -88,10 +88,12 @@ def save_trip():
     # Itinerary data:
     for day in itinerary:
       dayNumber = day.get("dayNumber")
-      print(dayNumber)
+      dayStartTime = datetime.strptime(day.get("dayStartTime"), "%H:%M").time()
+      # print(dayNumber)
 
       day = Day(
         day_number = dayNumber,
+        start_time = dayStartTime,
         trip_id = tripId,
       )
       db.session.add(day)

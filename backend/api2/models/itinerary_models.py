@@ -6,7 +6,7 @@ from api2.extensions import db
 class Day(db.Model):
   day_id = db.Column(db.Integer, primary_key=True)
   day_number = db.Column(db.Integer)
-  date = db.Column(db.Date)
+  date = db.Column(db.Date) # Date field probably isn't need - confirm this
   start_time = db.Column(db.Time)
   start_longitude = db.Column(db.Float)
   start_latitude = db.Column(db.Float)
@@ -18,6 +18,11 @@ class Day(db.Model):
     return {
       "day_id": self.day_id,
       "day_number": self.day_number,
+      "start_time": self.start_time.strftime("%H:%M") if self.start_time else None,
+      "start_longitude": self.start_longitude,
+      "start_latitude": self.start_latitude,
+      "start_location_name": self.start_location_name,
+
      
     }
 

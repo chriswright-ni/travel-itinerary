@@ -63,6 +63,8 @@ function MyTripsPage() {
               headerImageUrl={trip.headerImageUrl}
               clickable={true}
               selectTrip={() => handleSelectTrip(trip)}
+              startDate={trip.startDate}
+              dayCount={trip.days}
             />
           ))}
         </Box>
