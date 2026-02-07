@@ -22,7 +22,7 @@ class Day(db.Model):
       "start_longitude": self.start_longitude,
       "start_latitude": self.start_latitude,
       "start_location_name": self.start_location_name,
-
+      "itinerary_items": [itinerary_item.to_json() for itinerary_item in self.itinerary_items]
      
     }
 
@@ -35,4 +35,12 @@ class Itinerary_Item(db.Model):
   day_id = db.Column(db.Integer, db.ForeignKey("day.day_id"), nullable=False)
   place_id = db.Column(db.Integer, db.ForeignKey("place.place_id"), nullable=False)
 
-  
+  def to_json(self):
+    return {
+      "itinerary_item_id": self.itinerary_item_id,
+      "start_time": self.start_time.strftime("%H:%M") if self.start_time else None,
+      "end_time": self.end_time.strftime("%H:%M") if self.end_time else None,
+      "place_name": self.place.place_name,
+      "place_recommended_duration": self.place.place_recommended_duration,
+    
+    }

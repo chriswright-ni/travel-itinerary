@@ -357,12 +357,12 @@ function ItineraryPage() {
         <AppBar page={"Itinerary"} />
         <Box sx={{ pb: 23, overflowY: "auto", flex: 1 }}>
           <TripCard
-            tripName={currentTrip.tripName}
-            locationData={currentTrip.locationData}
-            headerImageUrl={currentTrip.headerImageUrl}
+            tripName={currentTrip?.tripName}
+            locationData={currentTrip?.locationData}
+            headerImageUrl={currentTrip?.headerImageUrl}
             clickable={false}
-            startDate={currentTrip.startDate}
-            dayCount={currentTrip.days}
+            startDate={currentTrip?.startDate}
+            dayCount={currentTrip?.days}
           />
           {/* <Card
             elevation={0}
