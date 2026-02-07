@@ -53,6 +53,15 @@ def save_trip():
   countryCode = locationData.get("country_code")
   cityName = locationData.get("place")
 
+  # Itinerary item data
+  itineraryItems = trip.get("itineraryItems", [])
+  itemStartTime = datetime.strptime(itineraryItems.get("startTime"), "%H:%M").time()
+  itemEndTime = datetime.strptime(itineraryItems.get("endTime"), "%H:%M").time()
+  recommendedDuration = itineraryItems.get("recommendedDuration")
+
+  # Place data
+  fsqPlacesId = itineraryItems.get("placeId")
+  placeName = itineraryItems.get("name")
 
   trip_exists = Trip.query.filter_by(trip_id=tripId).first()
 
@@ -78,28 +87,56 @@ def save_trip():
     db.session.flush()
     print("New city added")
 
+
+
+
+
   if trip_exists:
     print("Trip exists, not currently added")
   else:
     new_trip = Trip(trip_id=tripId, trip_name=tripName, trip_image_url=headerImageUrl, start_date=startDate, end_date=endDate, country_id=country.country_id, city_id=city.city_id, user_id=userId)
     db.session.add(new_trip)
+    db.session.flush()
+    # print("New trip added")
 
-    itinerary = trip.get("itinerary", [])
-    # Itinerary data:
-    for day in itinerary:
-      dayNumber = day.get("dayNumber")
-      dayStartTime = datetime.strptime(day.get("dayStartTime"), "%H:%M").time()
-      # print(dayNumber)
+  itinerary = trip.get("itinerary", [])
+  # Itinerary data:
+  for day in itinerary:
+    dayNumber = day.get("dayNumber")
+    dayStartTime = datetime.strptime(day.get("dayStartTime"), "%H:%M").time()
+    # print(dayNumber)
 
-      day = Day(
-        day_number = dayNumber,
-        start_time = dayStartTime,
-        trip_id = tripId,
-      )
-      db.session.add(day)
+    day = Day(
+      day_number = dayNumber,
+      start_time = dayStartTime,
+      trip_id = tripId,
+    )
+    db.session.add(day)
 
-    db.session.commit()
-    print("Trip added")
+    place = Place.query.filter_by(fsq_places_id=fsqPlacesId).first()
+
+    if place:
+      print("Place exists, not currently added")
+    else:
+      place = Place(place_name=placeName, fsq_places_id=fsqPlacesId, city_id=city.city_id)
+      db.session.add(place)
+      db.session.flush()
+      print("New place added")
+
+    itinerary_item = Itinerary_Item.query.filter_by(day_id=).first()
+
+    if place:
+      print("Place exists, not currently added")
+    else:
+      place = Place(place_name=placeName, fsq_places_id=fsqPlacesId, city_id=city.city_id)
+      db.session.add(place)
+      db.session.flush()
+      print("New place added")
+
+
+
+  db.session.commit()
+  print("Trip added")
 
   return jsonify({"msg": "Trip saved"}), 201
 
