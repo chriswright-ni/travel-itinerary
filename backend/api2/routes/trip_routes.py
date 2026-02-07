@@ -32,6 +32,8 @@ def get_trips():
 @jwt_required()
 def save_trip():
 
+  print("in save trip route")
+
   trip = request.json
   print("currentTrip when it reaches backend:")
   print(trip)
@@ -46,7 +48,7 @@ def save_trip():
   endDate = startDate + timedelta(days - 1)
   
   # Location data
-  locationData = trip.get("locationData")
+  locationData = trip.get("locationData", {})
   countryName = locationData.get("country")
   countryCode = locationData.get("country_code")
   cityName = locationData.get("place")
@@ -54,22 +56,24 @@ def save_trip():
 
   trip_exists = Trip.query.filter_by(trip_id=tripId).first()
 
-  country_exists = Country.query.filter_by(country_code=countryCode).first()
+  
+  country = Country.query.filter_by(country_code=countryCode).first()
 
-  if country_exists:
+  if country:
     print("Country exists, not currently added")
   else:
-    new_country = Country(country_name=countryName, country_code=countryCode)
+    country = Country(country_name=countryName, country_code=countryCode)
     db.session.add(new_country)
     db.session.flush()
     print("New country added")
 
-  city_exists = City.query.filter_by(city_name=cityName).first()
+  
+  city = City.query.filter_by(city_name=cityName).first()
 
-  if city_exists:
+  if city:
     print("City exists, not currently added")
   else:
-    new_city = City(city_name=countryName, country_code=countryCode)
+    city = City(city_name=cityName, country_id=new_country.country_id)
     db.session.add(new_city)
     db.session.flush()
     print("New city added")
@@ -77,7 +81,7 @@ def save_trip():
   if trip_exists:
     print("Trip exists, not currently added")
   else:
-    new_trip = Trip(trip_id=tripId, trip_name=tripName, trip_image_url=headerImageUrl, start_date=startDate, end_date=endDate, country_id=new_country.country_id, city_id=new_city.city_id, user_id=userId)
+    new_trip = Trip(trip_id=tripId, trip_name=tripName, trip_image_url=headerImageUrl, start_date=startDate, end_date=endDate, country_id=country.country_id, city_id=city.city_id, user_id=userId)
     db.session.add(new_trip)
 
     itinerary = trip.get("itinerary", [])

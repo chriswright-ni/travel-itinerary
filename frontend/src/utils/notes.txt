@@ -87,3 +87,20 @@ currentTrip when it reaches backend:
       {'dayNumber': 3, 'dayStartTime': '09:00', 'dayStartLocation': None, 'itineraryItems': []}, 
       {'dayNumber': 4, 'dayStartTime': '09:00', 'dayStartLocation': None, 'itineraryItems': []}],
   'locationData': {'country': 'France', 'country_code': 'FR', 'latitude': 48.853495, 'longitude': 2.348392, 'name': 'Paris, Île-de-France, France', 'place': 'Paris'}}
+
+
+
+  DATA BACK TO FRONTEND
+[{
+  'trip_id': '6ff69623-6643-403a-9c09-9d7b59cddabf',
+  'trip_name': 'Paris',
+  'created_at': datetime.datetime(2026, 2, 7, 13, 48, 2),
+  'user_id': 1,
+  'start_date':'2026-02-07',
+  'end_date': datetime.date(2026, 2, 9),
+  'city_id': 1,
+  'country_id': 1,
+  'longitude': None,
+  'latitude': None,
+  'trip_image_url': 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NTUwOTh8MHwxfHNlYXJjaHwxfHxQYXJpc3xlbnwwfDB8fHwxNzcwNDY0MDk3fDA&ixlib=rb-4.1.0&q=80&w=1080',
+  'days': [{'day_id': 1, 'day_number': 1}, {'day_id': 2, 'day_number': 2}, {'day_id': 3, 'day_number': 3}]}]

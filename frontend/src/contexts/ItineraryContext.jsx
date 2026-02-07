@@ -93,7 +93,7 @@ export const ItineraryProvider = ({ children }) => {
         console.log(`Error logging in: ${response.status}`);
         console.log(data.msg);
       } else {
-        // console.log("Trips loaded");
+        console.log("Trips loaded");
         // console.log(data);
         setTrips(formatTrips(data.trips))
         // setCurrentTrip(formatTrips(data.trips)[0])
@@ -106,16 +106,23 @@ export const ItineraryProvider = ({ children }) => {
 
   const formatTrips = (tripData) => {
 
+    console.log("In formatTrips")
+    console.log(tripData)
     const formattedTrips = tripData.map((trip) => ({
       tripId: trip.trip_id,
       tripName: trip.trip_name,
       headerImageUrl: trip.trip_image_url,
       startDate: trip.start_date,
-      days: trip.days,
+      days: trip.days.length,
       itinerary: trip.days.map((day) => ({
         dayNumber: day.day_number,
         itineraryItems: []
-      }))
+      })),
+      locationData: {
+        country: trip.location_data.country_name,
+        countryCode: trip.location_data.country_code,
+        place: trip.location_data.city_name,
+      }
 
 
     }))
