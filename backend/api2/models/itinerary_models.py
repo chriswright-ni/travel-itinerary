@@ -28,7 +28,8 @@ class Day(db.Model):
 
 
 class Itinerary_Item(db.Model):
-  itinerary_item_id = db.Column(db.Integer, primary_key=True)
+  # itinerary_item_id = db.Column(db.Integer, primary_key=True)
+  itinerary_item_id = db.Column(db.String(36), primary_key=True)
   start_time = db.Column(db.Time)
   end_time = db.Column(db.Time)
   order_number = db.Column(db.Integer)
@@ -42,5 +43,7 @@ class Itinerary_Item(db.Model):
       "end_time": self.end_time.strftime("%H:%M") if self.end_time else None,
       "place_name": self.place.place_name,
       "place_recommended_duration": self.place.place_recommended_duration,
+      "place_id": self.place.place_id,
+      "fsq_places_id": self.place.fsq_places_id
     
     }

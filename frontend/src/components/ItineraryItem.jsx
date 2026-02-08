@@ -26,12 +26,6 @@ function ItineraryItem({
 
 }) {
   // console.log("item: ", itineraryItem)
-  console.log(
-    itineraryItem.startTime,
-    typeof itineraryItem.startTime,
-    itineraryItem.endTime,
-    typeof itineraryItem.endTime
-  );
   return (
     <Card
       elevation={0}

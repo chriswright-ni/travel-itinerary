@@ -1,0 +1,39 @@
+No items in itinerary, then log in
+
+DATA BACK TO FRONTEND
+[{'trip_id': 'bba007bd-ec98-4dee-b719-04302383754b', 'trip_name': 'Paris 2026', 'created_at': datetime.datetime(2026, 2, 7, 23, 18, 19), 'user_id': 1, 'start_date': '2026-02-18', 'end_date': '2026-02-21', 'location_data': {'country_name': 'France', 'country_code': None, 'city_name': 'Paris'}, 'longitude': None, 'latitude': None, 'trip_image_url': 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NTUwOTh8MHwxfHNlYXJjaHwxfHxQYXJpc3xlbnwwfDB8fHwxNzcwNDY0MDk3fDA&ixlib=rb-4.1.0&q=80&w=1080',
+'days': [{'day_id': 1, 'day_number': 1, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None,
+'itinerary_items': []}, {'day_id': 2, 'day_number': 2, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None, 'itinerary_items': []}, {'day_id': 3, 'day_number': 3, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None, 'itinerary_items': []}, {'day_id': 4, 'day_number': 4, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None, 'itinerary_items': []}]}]
+
+Adding eiffel tower and LV
+
+currentTrip when it reaches backend:
+{'tripId': 'bba007bd-ec98-4dee-b719-04302383754b', 'tripName': 'Paris 2026', 'headerImageUrl': 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NTUwOTh8MHwxfHNlYXJjaHwxfHxQYXJpc3xlbnwwfDB8fHwxNzcwNDY0MDk3fDA&ixlib=rb-4.1.0&q=80&w=1080', 'startDate': '2026-02-18', 'days': 4, 'itinerary': [{'dayNumber': 1, 'dayStartTime': '09:00',
+'itineraryItems': [{'id': 1, 'name': 'Eiffel Tower', 'recommendedDuration': 90, 'placeId': 1, 'startTime': '09:05', 'endTime': '11:00', 'latitude': 48.8584, 'longitude': 2.2945},
+{'id': 2, 'name': 'Louis Vuitton', 'recommendedDuration': 90, 'placeId': 2, 'startTime': '09:05', 'endTime': '11:00', 'latitude': 48.87, 'longitude': 2.31}], 'route': None, 'optimised': False}, {'dayNumber': 2, 'dayStartTime': '09:00', 'itineraryItems': []}, {'dayNumber': 3, 'dayStartTime': '09:00', 'itineraryItems': []}, {'dayNumber': 4, 'dayStartTime': '09:00', 'itineraryItems': []}], 'locationData': {'country': 'France', 'countryCode': None, 'place': 'Paris'}}
+
+Logging back in again
+
+DATA BACK TO FRONTEND
+[{'trip_id': 'bba007bd-ec98-4dee-b719-04302383754b', 'trip_name': 'Paris 2026', 'created_at': datetime.datetime(2026, 2, 7, 23, 18, 19), 'user_id': 1, 'start_date': '2026-02-18', 'end_date': '2026-02-21', 'location_data': {'country_name': 'France', 'country_code': None, 'city_name': 'Paris'}, 'longitude': None, 'latitude': None, 'trip_image_url': 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NTUwOTh8MHwxfHNlYXJjaHwxfHxQYXJpc3xlbnwwfDB8fHwxNzcwNDY0MDk3fDA&ixlib=rb-4.1.0&q=80&w=1080',
+'days': [{'day_id': 1, 'day_number': 1, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None,
+'itinerary_items': [{'itinerary_item_id': 1, 'start_time': '09:05', 'end_time': '11:00', 'place_name': 'Eiffel Tower', 'place_recommended_duration': 90},
+{'itinerary_item_id': 2, 'start_time': '09:05', 'end_time': '11:00', 'place_name': 'Louis Vuitton', 'place_recommended_duration': 90}]}, {'day_id': 2, 'day_number': 2, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None, 'itinerary_items': []}, {'day_id': 3, 'day_number': 3, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None, 'itinerary_items': []}, {'day_id': 4, 'day_number': 4, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None, 'itinerary_items': []}]}]
+
+all good so far...
+now im reordering the items
+
+currentTrip when it reaches backend:
+{'tripId': 'bba007bd-ec98-4dee-b719-04302383754b', 'tripName': 'Paris 2026', 'headerImageUrl': 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NTUwOTh8MHwxfHNlYXJjaHwxfHxQYXJpc3xlbnwwfDB8fHwxNzcwNDY0MDk3fDA&ixlib=rb-4.1.0&q=80&w=1080', 'startDate': '2026-02-18', 'days': 4, 'itinerary': [{'dayNumber': 1, 'dayStartTime': '09:00',
+'itineraryItems': [{'id': 2, 'name': 'Louis Vuitton', 'startTime': '09:05', 'endTime': '11:00', 'recommendedDuration': 90},
+{'id': 1, 'name': 'Eiffel Tower', 'startTime': '09:05', 'endTime': '11:00', 'recommendedDuration': 90}], 'route': None, 'optimised': False}, {'dayNumber': 2, 'dayStartTime': '09:00', 'itineraryItems': []}, {'dayNumber': 3, 'dayStartTime': '09:00', 'itineraryItems': []}, {'dayNumber': 4, 'dayStartTime': '09:00', 'itineraryItems': []}], 'locationData': {'country': 'France', 'countryCode': None, 'place': 'Paris'}}
+
+logging back in again
+
+DATA BACK TO FRONTEND
+[{'trip_id': 'bba007bd-ec98-4dee-b719-04302383754b', 'trip_name': 'Paris 2026', 'created_at': datetime.datetime(2026, 2, 7, 23, 18, 19), 'user_id': 1, 'start_date': '2026-02-18', 'end_date': '2026-02-21', 'location_data': {'country_name': 'France', 'country_code': None, 'city_name': 'Paris'}, 'longitude': None, 'latitude': None, 'trip_image_url': 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NTUwOTh8MHwxfHNlYXJjaHwxfHxQYXJpc3xlbnwwfDB8fHwxNzcwNDY0MDk3fDA&ixlib=rb-4.1.0&q=80&w=1080',
+'days': [{'day_id': 1, 'day_number': 1, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None,
+'itinerary_items': [{'itinerary_item_id': 1, 'start_time': '09:05', 'end_time': '11:00', 'place_name': 'Notre Dame', 'place_recommended_duration': 90},
+{'itinerary_item_id': 2, 'start_time': '09:05', 'end_time': '11:00', 'place_name': 'Notre Dame', 'place_recommended_duration': 90}]}, {'day_id': 2, 'day_number': 2, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None, 'itinerary_items': []}, {'day_id': 3, 'day_number': 3, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None, 'itinerary_items': []}, {'day_id': 4, 'day_number': 4, 'start_time': '09:00', 'start_longitude': None, 'start_latitude': None, 'start_location_name': None, 'itinerary_items': []}]}]
+
+showing notre dame for both items...

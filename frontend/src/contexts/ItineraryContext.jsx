@@ -124,6 +124,7 @@ export const ItineraryProvider = ({ children }) => {
             startTime: item.start_time,
             endTime: item.end_time,
             recommendedDuration: item.place_recommended_duration,
+            placeId: item.fsq_places_id
           }
         ))
       })),
@@ -197,12 +198,12 @@ export const ItineraryProvider = ({ children }) => {
     // prev is current value of the state
     setItinerary((prev) => [...prev, newDay]);
 
-    // console.log("Current trip structure:")
-    // console.log(currentTrip)
+    console.log("Current trip structure:")
+    console.log(currentTrip)
     // console.log("Location data structure:")
     // console.log(currentTrip.locationData)
-    console.log("Itinerary structure:")
-    console.log(currentTrip.itinerary)
+    // console.log("Itinerary structure:")
+    // console.log(currentTrip.itinerary)
 
     return newDayNumber;
   };
@@ -228,17 +229,18 @@ export const ItineraryProvider = ({ children }) => {
 
     // Create itinerary item from the place details
     const itineraryItem = {
-      id: nextItineraryItemId,
+      // id: nextItineraryItemId,
+      id: crypto.randomUUID(),
       name: place.name,
       recommendedDuration: 90,
       placeId: placeId,
-      startTime: "09:05",
+      startTime: "09:00",
       endTime: "11:00",
       latitude: place.latitude,
       longitude: place.longitude,
     };
 
-    setNextItineraryItemId((prev) => prev + 1);
+    // setNextItineraryItemId((prev) => prev + 1);
 
     // Map through the current array state
     // If the day object day number is 1, create a new object

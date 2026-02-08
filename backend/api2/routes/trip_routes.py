@@ -33,7 +33,7 @@ def get_trips():
 @jwt_required()
 def save_trip():
 
-  print("in save trip route")
+  # print("in save trip route")
 
   trip = request.json
   print("currentTrip when it reaches backend:")
@@ -55,12 +55,7 @@ def save_trip():
   cityName = locationData.get("place")
 
   
-
-  trip_exists = Trip.query.filter_by(trip_id=tripId).first()
-
-  
   country = Country.query.filter_by(country_code=countryCode).first()
-
   if country:
     print("Country exists, not currently added")
   else:
@@ -71,7 +66,6 @@ def save_trip():
 
   
   city = City.query.filter_by(city_name=cityName).first()
-
   if city:
     print("City exists, not currently added")
   else:
@@ -83,14 +77,31 @@ def save_trip():
 
 
 
+  trip_exists = Trip.query.filter_by(trip_id=tripId).first()
 
   if trip_exists:
-    print("Trip exists, not currently added")
+    print("Updating trip info")
+    trip_exists.trip_name = tripName
+    trip_exists.trip_image_url = headerImageUrl
+    trip_exists.start_date = startDate
+    trip_exists.end_date = endDate
+    trip_exists.country_id = country.country_id
+    trip_exists.city_id = city.city_id
   else:
-    new_trip = Trip(trip_id=tripId, trip_name=tripName, trip_image_url=headerImageUrl, start_date=startDate, end_date=endDate, country_id=country.country_id, city_id=city.city_id, user_id=userId)
-    db.session.add(new_trip)
+    trip_exists = Trip(trip_id=tripId, trip_name=tripName, trip_image_url=headerImageUrl, start_date=startDate, end_date=endDate, country_id=country.country_id, city_id=city.city_id, user_id=userId)
+    db.session.add(trip_exists)
     db.session.flush()
     # print("New trip added")
+
+  # Delete previous itinerary item info
+  day_subquery = db.session.query(Day.day_id).filter_by(trip_id=tripId)
+  Itinerary_Item.query.filter(Itinerary_Item.day_id.in_(day_subquery)).delete(synchronize_session=False)
+
+  # Delete provious day info
+  Day.query.filter_by(trip_id=tripId).delete()
+
+  db.session.flush()
+  db.session.expire_all()
 
   itinerary = trip.get("itinerary", [])
   # Itinerary data:
@@ -109,14 +120,20 @@ def save_trip():
 
     # Itinerary item data
     itineraryItems = day_object.get("itineraryItems", [])
+    # print("Itinerary Items")
+    # print(itineraryItems)
 
+    # print("Items in backend")
     for item in itineraryItems:
+      # print(item)
+      itemId = item.get("id")
       itemStartTime = datetime.strptime(item.get("startTime"), "%H:%M").time()
       itemEndTime = datetime.strptime(item.get("endTime"), "%H:%M").time()
       recommendedDuration = item.get("recommendedDuration")
 
       # Place data
       fsqPlacesId = item.get("placeId")
+      # placeId = item.get("placeId")
       placeName = item.get("name")
 
       place = Place.query.filter_by(fsq_places_id=fsqPlacesId).first()
@@ -129,15 +146,11 @@ def save_trip():
         db.session.flush()
         print("New place added")
 
-      itinerary_item = Itinerary_Item.query.filter_by(day_id=day.day_id, place_id=place.place_id).first()
-
-      if itinerary_item:
-        print("Itinerary item exists, not currently added")
-      else:
-        itinerary_item = Itinerary_Item(start_time=itemStartTime, end_time=itemEndTime, day_id=day.day_id, place_id=place.place_id)
-        db.session.add(itinerary_item)
-        db.session.flush()
-        print("New itinerary item added")
+      
+      itinerary_item = Itinerary_Item(itinerary_item_id=itemId, start_time=itemStartTime, end_time=itemEndTime, day_id=day.day_id, place_id=place.place_id)
+      db.session.add(itinerary_item)
+      db.session.flush()
+      print("New itinerary item added")
 
 
 
