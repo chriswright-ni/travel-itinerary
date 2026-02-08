@@ -158,7 +158,7 @@ export const ItineraryProvider = ({ children }) => {
 
   // Creates a set of all placeIds that have been added to the itinerary
   const getAddedPlaceIds = () => {
-    // console.log("In getAddedPlaceIds")
+    console.log("In getAddedPlaceIds")
     return new Set(
       currentTrip?.itinerary.flatMap((day) =>
         day.itineraryItems.map((item) => item.placeId)
@@ -170,6 +170,9 @@ export const ItineraryProvider = ({ children }) => {
     () => getAddedPlaceIds(),
     [currentTrip?.itinerary]
   );
+
+  console.log("addPlaceIds:")
+  console.log(getAddedPlaceIds())
 
   // Creates an object to store places by their id
   const updatePlacesById = (places) => {
@@ -198,12 +201,14 @@ export const ItineraryProvider = ({ children }) => {
     // prev is current value of the state
     setItinerary((prev) => [...prev, newDay]);
 
-    console.log("Current trip structure:")
-    console.log(currentTrip)
+    // console.log("Current trip structure:")
+    // console.log(currentTrip)
     // console.log("Location data structure:")
     // console.log(currentTrip.locationData)
     // console.log("Itinerary structure:")
     // console.log(currentTrip.itinerary)
+    // console.log("addPlaceIds:")
+    // console.log(getAddedPlaceIds())
 
     return newDayNumber;
   };

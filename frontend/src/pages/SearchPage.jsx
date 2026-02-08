@@ -53,7 +53,7 @@ function SearchPage() {
   // const longitude = "2.2945";
   const placesTemp = [
     {
-      id: 1,
+      id: "1",
       name: "Eiffel Tower",
       category: "Landmark",
       distance: 400,
@@ -63,7 +63,7 @@ function SearchPage() {
       longitude: 2.2945
     },
     {
-      id: 2,
+      id: "2",
       name: "Louis Vuitton",
       category: "Shopping",
       distance: 680,
@@ -72,10 +72,10 @@ function SearchPage() {
       latitude: 48.8700,
       longitude: 2.3100
     },
-    { id: 3, name: "Le Louvre", category: "Art", distance: 1045, rating: 4.5, imageUrl: leLouvreImg, latitude: 48.8606,
+    { id: "3", name: "Le Louvre", category: "Art", distance: 1045, rating: 4.5, imageUrl: leLouvreImg, latitude: 48.8606,
       longitude: 2.3376 },
     {
-      id: 4,
+      id: "4",
       name: "Notre Dame",
       category: "History",
       distance: 300,
@@ -84,7 +84,7 @@ function SearchPage() {
       latitude: 48.8530,
       longitude: 2.3499
     },
-    { id: 5, name: "Chanel", category: "Shopping", distance: 378, rating: 4.6, imageUrl: chanelImg, latitude: 48.8690,
+    { id: "5", name: "Chanel", category: "Shopping", distance: 378, rating: 4.6, imageUrl: chanelImg, latitude: 48.8690,
       longitude: 2.3230 }
   ];
 
