@@ -54,12 +54,11 @@ export const ItineraryProvider = ({ children }) => {
     });
 
     try {
-    
       const response = await fetch(`http://127.0.0.1:5000/api/trips`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(currentTrip),
       });
@@ -78,26 +77,23 @@ export const ItineraryProvider = ({ children }) => {
   };
 
   const fetchTrips = async (token) => {
-
     try {
-   
       const response = await fetch(`http://127.0.0.1:5000/api/trips`, {
         headers: {
-          "Authorization": `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = await response.json();
-      console.log("Trip data when received from backend:")
-      console.log(data)
+      console.log("Trip data when received from backend:");
+      console.log(data);
       if (!response.ok) {
         console.log(`Error logging in: ${response.status}`);
         console.log(data.msg);
       } else {
         // console.log("Trips loaded");
         // console.log(data);
-        setTrips(formatTrips(data.trips))
+        setTrips(formatTrips(data.trips));
         // setCurrentTrip(formatTrips(data.trips)[0])
-
       }
     } catch (error) {
       console.log(error.message);
@@ -105,7 +101,6 @@ export const ItineraryProvider = ({ children }) => {
   };
 
   const formatTrips = (tripData) => {
-
     // console.log("In formatTrips")
     // console.log(tripData)
     const formattedTrips = tripData.map((trip) => ({
@@ -117,30 +112,25 @@ export const ItineraryProvider = ({ children }) => {
       itinerary: trip.days.map((day) => ({
         dayNumber: day.day_number,
         dayStartTime: day.start_time,
-        itineraryItems: day.itinerary_items.map((item) => (
-          {
-            id: item.itinerary_item_id,
-            name: item.place_name,
-            startTime: item.start_time,
-            endTime: item.end_time,
-            recommendedDuration: item.place_recommended_duration,
-            placeId: item.fsq_places_id
-          }
-        ))
+        itineraryItems: day.itinerary_items.map((item) => ({
+          id: item.itinerary_item_id,
+          name: item.place_name,
+          startTime: item.start_time,
+          endTime: item.end_time,
+          recommendedDuration: item.place_recommended_duration,
+          placeId: item.fsq_places_id,
+        })),
       })),
       locationData: {
         country: trip.location_data.country_name,
         countryCode: trip.location_data.country_code,
         place: trip.location_data.city_name,
-      }
-
-
-    }))
-    console.log("formatted trips:")
-    console.log(formattedTrips)
-    return formattedTrips
-  }
-
+      },
+    }));
+    console.log("formatted trips:");
+    console.log(formattedTrips);
+    return formattedTrips;
+  };
 
   // const loadTrip = (tripId) => {
   //   const trip = trips.find((trip) => trip.tripId === tripId);
@@ -201,6 +191,8 @@ export const ItineraryProvider = ({ children }) => {
     // prev is current value of the state
     setItinerary((prev) => [...prev, newDay]);
 
+    setCurrentTrip((prev) => ({ ...prev, days: prev.days + 1 }));
+
     // console.log("Current trip structure:")
     // console.log(currentTrip)
     // console.log("Location data structure:")
@@ -226,6 +218,8 @@ export const ItineraryProvider = ({ children }) => {
 
       return updatedDaysRenumbered;
     });
+
+    setCurrentTrip((prev) => ({ ...prev, days: prev.days - 1 }));
   };
 
   // Adds the selected item to the itinerary under day 1
@@ -484,17 +478,18 @@ export const ItineraryProvider = ({ children }) => {
     // console.log(trips)
 
     try {
-    
-      const response = await fetch(`http://127.0.0.1:5000/api/trips/${tripIdToDelete}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-      });
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/trips/${tripIdToDelete}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (!response.ok) {
         console.log(`Error logging in: ${response.status}`);
-        
       } else {
         setTrips((prev) =>
           prev.filter((trip) => trip.tripId !== tripIdToDelete)
@@ -504,29 +499,44 @@ export const ItineraryProvider = ({ children }) => {
     } catch (error) {
       console.log(error.message);
     }
-
-    
   };
 
-  // Removes the selected trip from the user's trip list
-  // const renameTrip = (tripIdToRename, newTripName) => {
-  const renameTrip = () => {
-    // setItinerary((prev) =>
-    //   prev.map((day) =>
-    //     day.dayNumber === dayNumber
-    //       ? {
-    //           ...day,
-    //           itineraryItems: [
-    //             ...day.itineraryItems.filter(
-    //               (item) => item.id !== itemIdToRemove
-    //             ),
-    //           ],
-    //           route: null,
-    //           optimised: false,
-    //         }
-    //       : day
-    //   )
-    // );
+  // Renames the selected trip
+  const renameTrip = (tripIdToRename, newTripName) => {
+    console.log("In renameTrip");
+    console.log(tripIdToRename);
+    console.log(newTripName);
+    setTrips((prev) =>
+      prev.map((trip) =>
+        trip.tripId === tripIdToRename
+          ? { ...trip, tripName: newTripName }
+          : trip
+      )
+    );
+
+    setCurrentTrip((prev) =>
+      prev.tripId === tripIdToRename ? { ...prev, tripName: newTripName } : prev
+    );
+  };
+
+  // Updates the selected trip date
+  const updateTripDate = (tripIdToUpdate, newTripDate) => {
+    console.log("In update Trip date");
+    // console.log(tripIdToRename);
+    // console.log(newTripName);
+    setTrips((prev) =>
+      prev.map((trip) =>
+        trip.tripId === tripIdToUpdate
+          ? { ...trip, startDate: newTripDate }
+          : trip
+      )
+    );
+
+    setCurrentTrip((prev) =>
+      prev.tripId === tripIdToUpdate
+        ? { ...prev, startDate: newTripDate }
+        : prev
+    );
   };
 
   const value = {
@@ -564,7 +574,8 @@ export const ItineraryProvider = ({ children }) => {
     setTrips,
     fetchTrips,
     deleteTrip,
-    renameTrip
+    renameTrip,
+    updateTripDate,
   };
 
   return (

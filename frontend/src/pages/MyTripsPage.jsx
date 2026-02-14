@@ -45,10 +45,7 @@ function MyTripsPage() {
     deleteTrip(tripId)
   }
   
-  const handleClickRenameTrip = (tripId) => {
-    
-    console.log("Rename trip selected")
-  }
+ 
 
   return (
     <>
@@ -77,7 +74,6 @@ function MyTripsPage() {
               selectTrip={() => handleSelectTrip(trip)}
               startDate={trip.startDate}
               dayCount={trip.days}
-              handleClickRenameTrip={handleClickRenameTrip}
               handleClickDeleteTrip={handleClickDeleteTrip}
             />
           ))}

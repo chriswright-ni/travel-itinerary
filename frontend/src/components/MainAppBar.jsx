@@ -71,41 +71,58 @@ function MainAppBar({ page }) {
 
   return (
     <AppBar
-      position="static"
+      position="fixed"
       color="transparent"
       elevation={0}
-      sx={{ background: "linear-gradient(135deg, #FFE5D6 0%, #FFF4EC 40%, #FFFFFF 85%)", boxShadow: "0px 3px 6px rgba(0,0,0,0.08)" }}
+      sx={{
+        background:
+          "linear-gradient(-135deg, #FFE5D6 0%, #FFF4EC 40%, #FFFFFF 85%)",
+        boxShadow: "0px 3px 6px rgba(0,0,0,0.08)",
+      }}
     >
-      <Toolbar>
+      <Toolbar
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <IconButton
           size="large"
           edge="start"
           color="inherit"
           aria-label="menu"
-          sx={{ mr: 4 }}
+          sx={{ ml: 0 }}
+          onClick={() => navigate(-1)}
         >
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
           {page}
-        </Typography>
-        {/* <Button color="inherit">Login</Button> */}
-        <Chip
-          icon={<BookmarkBorderIcon />}
-          label="Save"
-          onClick={saveItinerary}
-          sx={{ mr: 2 }}
-        />
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 0 }}
-          onClick={handleClick}
-        >
-          <AccountCircleIcon />
-        </IconButton>
+          </Typography>
+        <Box>
+          <Button
+            size={"small"}
+            variant={"contained"}
+            startIcon={<BookmarkBorderIcon />}
+            onClick={saveItinerary}
+            sx={{ mr: 2, borderRadius: "20px", fontWeight: 600 }}
+          >
+            Save
+          </Button>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 0 }}
+            onClick={handleClick}
+          >
+            <AccountCircleIcon
+              sx={{ color: "primary.main", fontSize: "30px" }}
+            />
+          </IconButton>
+        </Box>
       </Toolbar>
       <Menu
         anchorEl={anchorEl}

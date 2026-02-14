@@ -43,6 +43,8 @@ import TripCard from "../components/TripCard.jsx";
 import theme from "../themes/theme_five.js";
 import AddItemButton from "../components/AddItemButton";
 import DeleteDayDialog from "../components/DeleteDayDialog";
+import RenameTripDialog from "../components/RenameTripDialog";
+import UpdateTripDateDialog from "../components/UpdateTripDateDialog";
 import DistanceDurationConnector from "../components/DistanceDurationConnector";
 import { useNotificationContext } from "../contexts/NotificationContext";
 import { useMapContext } from "../contexts/MapContext";
@@ -106,6 +108,8 @@ function ItineraryPage() {
   const [selectedItem, setSelectedItem] = useState(null); // Selected itinerary item for moving to another day or changing time
   const [isDayStartTime, setIsDayStartTime] = useState(false); // Boolean sets to true if the day starting time is being changed
   const [deleteDayDialogOpen, setDeleteDayDialogOpen] = useState(false); // State to control the delete day dialog
+  const [renameTripDialogOpen, setRenameTripDialogOpen] = useState(false); // State to control the rename trip dialog
+  const [updateTripDateDialogOpen, setUpdateTripDateDialogOpen] = useState(false); // State to control the update trip date dialog
   const [dayNumberToRemove, setDayNumberToRemove] = useState(null); // The day to be removed to provide data to confirmation dialog
 
   // useEffect(() => {
@@ -233,9 +237,18 @@ function ItineraryPage() {
     deleteTrip(tripId);
   }
   
-  const handleClickRenameTrip = (tripId) => {
+  const handleClickRenameTrip = () => {
     
     console.log("Rename trip selected")
+    setRenameTripDialogOpen(true);
+  }
+
+  const handleClickUpdateTripDate = () => {
+    
+    console.log("Update trip date selected")
+    console.log("current trip:")
+    console.log(currentTrip)
+    setUpdateTripDateDialogOpen(true);
   }
 
   // Gets the total itinerary time in seconds
@@ -368,8 +381,9 @@ function ItineraryPage() {
         }}
       >
         <AppBar page={"Itinerary"} />
-        <Box sx={{ pb: 23, overflowY: "auto", flex: 1 }}>
+        <Box sx={{ pb: 23, pt: 6, overflowY: "auto", flex: 1 }}>
           <TripCard
+            tripId={currentTrip?.tripId}
             tripName={currentTrip?.tripName}
             locationData={currentTrip?.locationData}
             headerImageUrl={currentTrip?.headerImageUrl}
@@ -377,6 +391,7 @@ function ItineraryPage() {
             startDate={currentTrip?.startDate}
             dayCount={currentTrip?.days}
             handleClickRenameTrip={handleClickRenameTrip}
+            handleClickUpdateTripDate={handleClickUpdateTripDate}
             handleClickDeleteTrip={handleClickDeleteTrip}
           />
           {/* <Card
@@ -838,6 +853,18 @@ function ItineraryPage() {
           onClose={() => setDeleteDayDialogOpen(false)}
           dayNumber={dayNumberToRemove}
           handleRemoveDay={handleRemoveDay}
+        />
+        <RenameTripDialog
+          open={renameTripDialogOpen}
+          onClose={() => setRenameTripDialogOpen(false)}
+          tripId={currentTrip?.tripId}
+          tripName={currentTrip?.tripName}
+        />
+        <UpdateTripDateDialog
+          open={updateTripDateDialogOpen}
+          onClose={() => setUpdateTripDateDialogOpen(false)}
+          tripId={currentTrip?.tripId}
+          date={currentTrip?.startDate}
         />
         <BottomNav />
       </Box>

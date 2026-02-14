@@ -9,11 +9,14 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import EditIcon from '@mui/icons-material/Edit';
 
 function TripCardMenu({
   tripId,
   handleClickDeleteTrip,
   handleClickRenameTrip,
+  handleClickUpdateTripDate,
  
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -60,9 +63,22 @@ function TripCardMenu({
           }}
         >
           <ListItemIcon>
-            <SwapHorizIcon fontSize="small" />
+            <EditIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Rename Trip</ListItemText>
+          <ListItemText>Rename trip</ListItemText>
+        </MenuItem>
+
+        <MenuItem
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClickUpdateTripDate(tripId);
+            handleClose();
+          }}
+        >
+          <ListItemIcon>
+            <EditCalendarIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Change date</ListItemText>
         </MenuItem>
 
         <MenuItem
@@ -75,7 +91,7 @@ function TripCardMenu({
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Delete Trip</ListItemText>
+          <ListItemText>Remove trip</ListItemText>
         </MenuItem>
       </Menu>
     </Box>

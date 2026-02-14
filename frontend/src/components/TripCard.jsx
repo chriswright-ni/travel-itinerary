@@ -11,6 +11,8 @@ import Box from "@mui/material/Box";
 import CardActionArea from "@mui/material/CardActionArea";
 import dayjs from "dayjs";
 import TripCardMenu from "../components/TripCardMenu";
+import { useItineraryContext } from "../contexts/ItineraryContext";
+import TextField from "@mui/material/TextField";
 
 function TripCard({
   tripId,
@@ -22,8 +24,13 @@ function TripCard({
   startDate,
   dayCount,
   handleClickDeleteTrip,
-  handleClickRenameTrip
+  handleClickRenameTrip,
+  handleClickUpdateTripDate
 }) {
+
+  
+
+  
   return (
     <Card
         elevation={0}
@@ -43,6 +50,7 @@ function TripCard({
         tripId={tripId}
         handleClickDeleteTrip={handleClickDeleteTrip}
         handleClickRenameTrip={handleClickRenameTrip}
+        handleClickUpdateTripDate={handleClickUpdateTripDate}
       />
         {/* <CardActionArea disabled={!clickable} onClick={selectTrip}> */}
         <CardMedia
@@ -67,6 +75,7 @@ function TripCard({
             py: 0.5,
           }}
         >
+          
           <Typography
             variant="h6"
             sx={{
@@ -78,12 +87,14 @@ function TripCard({
           >
             {tripName || locationData?.place || "My Trip"}
           </Typography>
+
+          
           <Typography
             variant="body2"
             sx={{ color: "#ffffff", textAlign: "left", fontSize: "1rem" }}
           >
             { startDate ? `${dayjs(startDate).format("ddd D MMM")} - ${dayjs(startDate)
-                    .add(dayCount - 1, "day")
+                    .add(dayCount > 0 ?  dayCount - 1 : 0, "day")
                     .format("ddd D MMM")}` : null
             }
           </Typography>

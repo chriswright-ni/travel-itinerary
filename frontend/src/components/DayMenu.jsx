@@ -73,17 +73,7 @@ function DayMenu({
           </ListItemIcon>
           <ListItemText>Optimise Route</ListItemText>
         </MenuItem>
-        <MenuItem
-          onClick={(e) => {
-            
-            handleClose(e);
-          }}
-        >
-          <ListItemIcon>
-            <EditCalendarIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Change date</ListItemText>
-        </MenuItem>
+     
 
         <MenuItem
           onClick={(e) => {
