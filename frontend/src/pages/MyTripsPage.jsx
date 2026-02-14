@@ -27,7 +27,7 @@ import AppBar from "../components/MainAppBar.jsx";
 import TripCard from "../components/TripCard.jsx";
 
 function MyTripsPage() {
-  const { trips, setCurrentTrip } = useItineraryContext();
+  const { trips, setCurrentTrip, deleteTrip, renameTrip } = useItineraryContext();
 
   // console.log("Trips")
   // console.log(trips)
@@ -37,6 +37,16 @@ function MyTripsPage() {
 
     setCurrentTrip(trip)
     navigate("/itinerary")
+  }
+
+  const handleClickDeleteTrip = (tripId) => {
+
+    console.log("Delete trip selected")
+  }
+  
+  const handleClickRenameTrip = (tripId) => {
+    
+    console.log("Rename trip selected")
   }
 
   return (
@@ -57,6 +67,7 @@ function MyTripsPage() {
           {trips.map((trip) => (
             <TripCard
               key={trip.tripId}
+              tripId={trip.tripId}
               tripName={trip.tripName}
               locationData={trip.locationData}
               // headerImageUrl={trip.headerImageUrl?.image_url}
@@ -65,6 +76,8 @@ function MyTripsPage() {
               selectTrip={() => handleSelectTrip(trip)}
               startDate={trip.startDate}
               dayCount={trip.days}
+              handleClickRenameTrip={handleClickRenameTrip}
+              handleClickDeleteTrip={handleClickDeleteTrip}
             />
           ))}
         </Box>

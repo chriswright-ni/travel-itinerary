@@ -87,6 +87,8 @@ function ItineraryPage() {
     expanded,
     setExpanded,
     currentTrip,
+    deleteTrip,
+    renameTrip
   } = useItineraryContext();
 
   const { showNotification } = useNotificationContext();
@@ -224,6 +226,16 @@ function ItineraryPage() {
 
     return durationString;
   };
+
+  const handleClickDeleteTrip = (tripId) => {
+
+    console.log("Delete trip selected")
+  }
+  
+  const handleClickRenameTrip = (tripId) => {
+    
+    console.log("Rename trip selected")
+  }
 
   // Gets the total itinerary time in seconds
   // This includes the recommended duration of each itinerary item
@@ -363,6 +375,8 @@ function ItineraryPage() {
             clickable={false}
             startDate={currentTrip?.startDate}
             dayCount={currentTrip?.days}
+            handleClickRenameTrip={handleClickRenameTrip}
+            handleClickDeleteTrip={handleClickDeleteTrip}
           />
           {/* <Card
             elevation={0}

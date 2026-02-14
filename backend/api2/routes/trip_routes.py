@@ -160,3 +160,32 @@ def save_trip():
   return jsonify({"msg": "Trip saved"}), 201
 
 
+@trip_bp.route("/api/trips/<int:trip_id>", methods=["DELETE"])
+@jwt_required()
+def delete_trip():
+
+  userId = get_jwt_identity()
+
+  trip = Trip.query.filter_by(trip_id=tripId, user_id=userId).first()
+
+  if trip:
+
+    # Delete previous itinerary item info
+    day_subquery = db.session.query(Day.day_id).filter_by(trip_id=tripId)
+    Itinerary_Item.query.filter(Itinerary_Item.day_id.in_(day_subquery)).delete(synchronize_session=False)
+
+    # Delete provious day info
+    Day.query.filter_by(trip_id=tripId).delete()
+
+    db.session.flush()
+    db.session.expire_all()
+
+    db.session.delete(trip)
+
+  else:
+    return jsonify({"msg": "Trip not found"}), 404
+
+
+  return jsonify({"msg": "Trip deleted"}), 200
+
+

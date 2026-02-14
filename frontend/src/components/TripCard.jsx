@@ -10,8 +10,10 @@ import headerPlaceholder from "../images/unsplash-travel-placeholder.jpg";
 import Box from "@mui/material/Box";
 import CardActionArea from "@mui/material/CardActionArea";
 import dayjs from "dayjs";
+import TripCardMenu from "../components/TripCardMenu";
 
 function TripCard({
+  tripId,
   tripName,
   locationData,
   headerImageUrl,
@@ -19,11 +21,14 @@ function TripCard({
   selectTrip,
   startDate,
   dayCount,
+  handleClickDeleteTrip,
+  handleClickRenameTrip
 }) {
   return (
-    <CardActionArea disabled={!clickable} onClick={selectTrip}>
-      <Card
+    <Card
         elevation={0}
+        onClick={selectTrip}
+        disabled={!clickable}
         sx={{
           borderRadius: 2,
           mx: 2,
@@ -34,6 +39,12 @@ function TripCard({
           boxShadow: "0px 8px 24px rgba(255, 138, 92, 0.2)",
         }}
       >
+        <TripCardMenu
+        tripId={tripId}
+        handleClickDeleteTrip={handleClickDeleteTrip}
+        handleClickRenameTrip={handleClickRenameTrip}
+      />
+        {/* <CardActionArea disabled={!clickable} onClick={selectTrip}> */}
         <CardMedia
           sx={{
             height: 200,
@@ -91,8 +102,8 @@ function TripCard({
             }}
           />
         </Box>
+    {/* </CardActionArea> */}
       </Card>
-    </CardActionArea>
   );
 }
 

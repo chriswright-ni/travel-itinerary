@@ -478,6 +478,48 @@ export const ItineraryProvider = ({ children }) => {
     );
   };
 
+  // Removes the selected trip from the user's trip list
+  // const deleteTrip = (tripIdToDelete) => {
+  const deleteTrip = () => {
+    // setItinerary((prev) =>
+    //   prev.map((day) =>
+    //     day.dayNumber === dayNumber
+    //       ? {
+    //           ...day,
+    //           itineraryItems: [
+    //             ...day.itineraryItems.filter(
+    //               (item) => item.id !== itemIdToRemove
+    //             ),
+    //           ],
+    //           route: null,
+    //           optimised: false,
+    //         }
+    //       : day
+    //   )
+    // );
+  };
+
+  // Removes the selected trip from the user's trip list
+  // const renameTrip = (tripIdToRename, newTripName) => {
+  const renameTrip = () => {
+    // setItinerary((prev) =>
+    //   prev.map((day) =>
+    //     day.dayNumber === dayNumber
+    //       ? {
+    //           ...day,
+    //           itineraryItems: [
+    //             ...day.itineraryItems.filter(
+    //               (item) => item.id !== itemIdToRemove
+    //             ),
+    //           ],
+    //           route: null,
+    //           optimised: false,
+    //         }
+    //       : day
+    //   )
+    // );
+  };
+
   const value = {
     // itinerary,
     setItinerary,
@@ -511,7 +553,9 @@ export const ItineraryProvider = ({ children }) => {
     // loadTrip,
     trips,
     setTrips,
-    fetchTrips
+    fetchTrips,
+    deleteTrip,
+    renameTrip
   };
 
   return (
