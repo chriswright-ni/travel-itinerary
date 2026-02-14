@@ -160,9 +160,9 @@ def save_trip():
   return jsonify({"msg": "Trip saved"}), 201
 
 
-@trip_bp.route("/api/trips/<int:trip_id>", methods=["DELETE"])
+@trip_bp.route("/api/trips/<string:tripId>", methods=["DELETE"])
 @jwt_required()
-def delete_trip():
+def delete_trip(tripId):
 
   userId = get_jwt_identity()
 
@@ -181,6 +181,7 @@ def delete_trip():
     db.session.expire_all()
 
     db.session.delete(trip)
+    db.session.commit()
 
   else:
     return jsonify({"msg": "Trip not found"}), 404

@@ -479,12 +479,33 @@ export const ItineraryProvider = ({ children }) => {
   };
 
   // Removes the selected trip from the user's trip list
-  const deleteTrip = (tripIdToDelete) => {
-    console.log("Trips in frontend:")
-    console.log(trips)
-    setTrips((prev) =>
-      prev.filter((trip) => trip.tripId !== tripIdToDelete)
-    );
+  const deleteTrip = async (tripIdToDelete) => {
+    // console.log("Trips in frontend:")
+    // console.log(trips)
+
+    try {
+    
+      const response = await fetch(`http://127.0.0.1:5000/api/trips/${tripIdToDelete}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+      });
+      if (!response.ok) {
+        console.log(`Error logging in: ${response.status}`);
+        
+      } else {
+        setTrips((prev) =>
+          prev.filter((trip) => trip.tripId !== tripIdToDelete)
+        );
+        showNotification("Trip Deleted");
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+
+    
   };
 
   // Removes the selected trip from the user's trip list
