@@ -230,6 +230,7 @@ function ItineraryPage() {
   const handleClickDeleteTrip = (tripId) => {
 
     console.log("Delete trip selected")
+    deleteTrip(tripId);
   }
   
   const handleClickRenameTrip = (tripId) => {

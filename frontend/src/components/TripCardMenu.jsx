@@ -53,7 +53,8 @@ function TripCardMenu({
         }}
       >
         <MenuItem
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             handleClickRenameTrip(tripId);
             handleClose();
           }}
@@ -65,7 +66,8 @@ function TripCardMenu({
         </MenuItem>
 
         <MenuItem
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             handleClickDeleteTrip(tripId);
             handleClose();
           }}

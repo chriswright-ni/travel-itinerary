@@ -158,7 +158,7 @@ export const ItineraryProvider = ({ children }) => {
 
   // Creates a set of all placeIds that have been added to the itinerary
   const getAddedPlaceIds = () => {
-    console.log("In getAddedPlaceIds")
+    // console.log("In getAddedPlaceIds")
     return new Set(
       currentTrip?.itinerary.flatMap((day) =>
         day.itineraryItems.map((item) => item.placeId)
@@ -171,8 +171,8 @@ export const ItineraryProvider = ({ children }) => {
     [currentTrip?.itinerary]
   );
 
-  console.log("addPlaceIds:")
-  console.log(getAddedPlaceIds())
+  // console.log("addPlaceIds:")
+  // console.log(getAddedPlaceIds())
 
   // Creates an object to store places by their id
   const updatePlacesById = (places) => {
@@ -479,24 +479,12 @@ export const ItineraryProvider = ({ children }) => {
   };
 
   // Removes the selected trip from the user's trip list
-  // const deleteTrip = (tripIdToDelete) => {
-  const deleteTrip = () => {
-    // setItinerary((prev) =>
-    //   prev.map((day) =>
-    //     day.dayNumber === dayNumber
-    //       ? {
-    //           ...day,
-    //           itineraryItems: [
-    //             ...day.itineraryItems.filter(
-    //               (item) => item.id !== itemIdToRemove
-    //             ),
-    //           ],
-    //           route: null,
-    //           optimised: false,
-    //         }
-    //       : day
-    //   )
-    // );
+  const deleteTrip = (tripIdToDelete) => {
+    console.log("Trips in frontend:")
+    console.log(trips)
+    setTrips((prev) =>
+      prev.filter((trip) => trip.tripId !== tripIdToDelete)
+    );
   };
 
   // Removes the selected trip from the user's trip list
