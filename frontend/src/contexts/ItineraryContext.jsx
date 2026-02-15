@@ -36,6 +36,7 @@ export const ItineraryProvider = ({ children }) => {
   });
   const [trips, setTrips] = useState([]);
   const [expanded, setExpanded] = useState(1); // Management of accordion day expanded status - default to day 1 expanded on 1st render
+  const [hasChanges, setHasChanges] =useState(false); // State to track if changes has been made to the trip
 
   const saveCurrentTrip = async () => {
     console.log("Saving current trip...");
@@ -70,10 +71,12 @@ export const ItineraryProvider = ({ children }) => {
         console.log("Trip saved");
         console.log(data);
         showNotification("Trip Saved");
+        setHasChanges(false);
       }
     } catch (error) {
       console.log(error.message);
     }
+    console.log("save status: " + hasChanges)
   };
 
   const fetchTrips = async (token) => {
@@ -193,6 +196,8 @@ export const ItineraryProvider = ({ children }) => {
 
     setCurrentTrip((prev) => ({ ...prev, days: prev.days + 1 }));
 
+    setHasChanges(true);
+
     // console.log("Current trip structure:")
     // console.log(currentTrip)
     // console.log("Location data structure:")
@@ -220,6 +225,7 @@ export const ItineraryProvider = ({ children }) => {
     });
 
     setCurrentTrip((prev) => ({ ...prev, days: prev.days - 1 }));
+    setHasChanges(true);
   };
 
   // Adds the selected item to the itinerary under day 1
@@ -257,6 +263,7 @@ export const ItineraryProvider = ({ children }) => {
           : day
       )
     );
+    setHasChanges(true);
     // console.log(itineraryItem);
   };
 
@@ -278,6 +285,7 @@ export const ItineraryProvider = ({ children }) => {
           : day
       )
     );
+    setHasChanges(true);
   };
 
   // Creates a new itinerary based on the user's number of days selection
@@ -296,6 +304,7 @@ export const ItineraryProvider = ({ children }) => {
     // setItinerary(newItinerary);
     // setActiveDay(null);
     // setNextItineraryItemId(1);
+    setHasChanges(true);
     return newItinerary;
   };
 
@@ -333,6 +342,7 @@ export const ItineraryProvider = ({ children }) => {
         return day;
       });
     });
+    setHasChanges(true);
   };
 
   // Changes the start and end time of the itinerary item, using the time selecter from the time select drawer
@@ -392,6 +402,7 @@ export const ItineraryProvider = ({ children }) => {
         };
       }),
     };
+    setHasChanges(true);
     return updatedDay;
   };
 
@@ -410,6 +421,7 @@ export const ItineraryProvider = ({ children }) => {
           : day
       );
     });
+    setHasChanges(true);
   };
 
   // Save the route in the itinerary day object
@@ -431,6 +443,7 @@ export const ItineraryProvider = ({ children }) => {
           : day
       );
     });
+    setHasChanges(true);
   };
 
   // Sets route object to null
@@ -449,6 +462,7 @@ export const ItineraryProvider = ({ children }) => {
           : day
       );
     });
+    setHasChanges(true);
   };
 
   const updateDayStartLocation = (dayNumber, locationData) => {
@@ -470,6 +484,7 @@ export const ItineraryProvider = ({ children }) => {
           : day
       )
     );
+    setHasChanges(true);
   };
 
   // Removes the selected trip from the user's trip list
@@ -513,10 +528,11 @@ export const ItineraryProvider = ({ children }) => {
           : trip
       )
     );
-
+    
     setCurrentTrip((prev) =>
       prev.tripId === tripIdToRename ? { ...prev, tripName: newTripName } : prev
-    );
+  );
+    setHasChanges(true);
   };
 
   // Updates the selected trip date
@@ -537,6 +553,7 @@ export const ItineraryProvider = ({ children }) => {
         ? { ...prev, startDate: newTripDate }
         : prev
     );
+    setHasChanges(true);
   };
 
   const value = {
@@ -576,6 +593,8 @@ export const ItineraryProvider = ({ children }) => {
     deleteTrip,
     renameTrip,
     updateTripDate,
+    hasChanges,
+    setHasChanges
   };
 
   return (

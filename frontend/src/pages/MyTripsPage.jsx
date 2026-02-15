@@ -27,6 +27,7 @@ import AppBar from "../components/MainAppBar.jsx";
 import TripCard from "../components/TripCard.jsx";
 import RenameTripDialog from "../components/RenameTripDialog";
 import UpdateTripDateDialog from "../components/UpdateTripDateDialog";
+import DeleteTripDialog from "../components/DeleteTripDialog";
 
 function MyTripsPage() {
   const { trips, setCurrentTrip, deleteTrip, renameTrip } = useItineraryContext();
@@ -34,6 +35,7 @@ function MyTripsPage() {
   const [renameTripDialogOpen, setRenameTripDialogOpen] = useState(false); // State to control the rename trip dialog
   const [updateTripDateDialogOpen, setUpdateTripDateDialogOpen] = useState(false); // State to control the update trip date dialog
   const [selectedTrip, setSelectedTrip] = useState(null); // State to store the selected trip to allow the dialog to open for the correct trip
+  const [deleteTripDialogOpen, setDeleteTripDialogOpen] = useState(false); // State to control the delete trip dialog
 
   // console.log("Trips")
   // console.log(trips)
@@ -45,10 +47,18 @@ function MyTripsPage() {
     navigate("/itinerary")
   }
 
-  const handleClickDeleteTrip = (tripId) => {
+  const handleClickDeleteTrip = (trip) => {
 
     console.log("Delete trip selected")
-    deleteTrip(tripId)
+    setSelectedTrip(trip)
+    setDeleteTripDialogOpen(true);
+    console.log(selectedTrip)
+  }
+
+  const handleRemoveTrip = (tripId) => {
+
+    deleteTrip(tripId);
+    navigate("/mytrips")
   }
 
   const handleClickRenameTrip = (trip) => {
@@ -96,7 +106,7 @@ function MyTripsPage() {
               selectTrip={() => handleSelectTrip(trip)}
               startDate={trip.startDate}
               dayCount={trip.days}
-              handleClickDeleteTrip={handleClickDeleteTrip}
+              handleClickDeleteTrip={() => handleClickDeleteTrip(trip)}
               handleClickRenameTrip={() => handleClickRenameTrip(trip)}
               handleClickUpdateTripDate={() => handleClickUpdateTripDate(trip)}
             />
@@ -113,6 +123,13 @@ function MyTripsPage() {
           onClose={() => setUpdateTripDateDialogOpen(false)}
           tripId={selectedTrip?.tripId}
           date={selectedTrip?.startDate}
+        />
+        <DeleteTripDialog
+          open={deleteTripDialogOpen}
+          onClose={() => setDeleteTripDialogOpen(false)}
+          tripName={selectedTrip?.tripName}
+          tripId = {selectedTrip?.tripId}
+          handleRemoveTrip={handleRemoveTrip}
         />
         <BottomNav />
       </Box>

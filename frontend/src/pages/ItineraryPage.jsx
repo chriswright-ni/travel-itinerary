@@ -43,6 +43,7 @@ import TripCard from "../components/TripCard.jsx";
 import theme from "../themes/theme_five.js";
 import AddItemButton from "../components/AddItemButton";
 import DeleteDayDialog from "../components/DeleteDayDialog";
+import DeleteTripDialog from "../components/DeleteTripDialog";
 import RenameTripDialog from "../components/RenameTripDialog";
 import UpdateTripDateDialog from "../components/UpdateTripDateDialog";
 import DistanceDurationConnector from "../components/DistanceDurationConnector";
@@ -108,6 +109,7 @@ function ItineraryPage() {
   const [selectedItem, setSelectedItem] = useState(null); // Selected itinerary item for moving to another day or changing time
   const [isDayStartTime, setIsDayStartTime] = useState(false); // Boolean sets to true if the day starting time is being changed
   const [deleteDayDialogOpen, setDeleteDayDialogOpen] = useState(false); // State to control the delete day dialog
+  const [deleteTripDialogOpen, setDeleteTripDialogOpen] = useState(false); // State to control the delete trip dialog
   const [renameTripDialogOpen, setRenameTripDialogOpen] = useState(false); // State to control the rename trip dialog
   const [updateTripDateDialogOpen, setUpdateTripDateDialogOpen] = useState(false); // State to control the update trip date dialog
   const [dayNumberToRemove, setDayNumberToRemove] = useState(null); // The day to be removed to provide data to confirmation dialog
@@ -231,9 +233,14 @@ function ItineraryPage() {
     return durationString;
   };
 
-  const handleClickDeleteTrip = (tripId) => {
+  const handleClickDeleteTrip = () => {
 
     console.log("Delete trip selected")
+    setDeleteTripDialogOpen(true);
+  }
+
+  const handleRemoveTrip = (tripId) => {
+
     deleteTrip(tripId);
     navigate("/mytrips")
   }
@@ -866,6 +873,13 @@ function ItineraryPage() {
           onClose={() => setUpdateTripDateDialogOpen(false)}
           tripId={currentTrip?.tripId}
           date={currentTrip?.startDate}
+        />
+        <DeleteTripDialog
+          open={deleteTripDialogOpen}
+          onClose={() => setDeleteTripDialogOpen(false)}
+          tripName={currentTrip?.tripName}
+          tripId = {currentTrip?.tripId}
+          handleRemoveTrip={handleRemoveTrip}
         />
         <BottomNav />
       </Box>

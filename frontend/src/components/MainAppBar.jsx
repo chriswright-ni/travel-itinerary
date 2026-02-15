@@ -10,6 +10,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import useSaveItinerary from "../hooks/useSaveItinerary";
 import Menu from "@mui/material/Menu";
@@ -25,9 +26,14 @@ import { useAuthenticationContext } from "../contexts/AuthenticationContext";
 import { useNavigate } from "react-router-dom";
 import { useNotificationContext } from "../contexts/NotificationContext";
 import Chip from "@mui/material/Chip";
+import { useItineraryContext } from "../contexts/ItineraryContext";
 
 function MainAppBar({ page }) {
   const { saveItinerary } = useSaveItinerary();
+
+  const {
+    hasChanges
+  } = useItineraryContext();
 
   const {
     authenticationDialogOpen,
@@ -104,7 +110,7 @@ function MainAppBar({ page }) {
           <Button
             size={"small"}
             variant={"contained"}
-            startIcon={<BookmarkBorderIcon />}
+            startIcon={hasChanges ? <BookmarkBorderIcon /> : <BookmarkIcon />}
             onClick={saveItinerary}
             sx={{ mr: 2, borderRadius: "20px", fontWeight: 600 }}
           >
