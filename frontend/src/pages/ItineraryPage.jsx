@@ -38,7 +38,7 @@ import DaySelectDrawer from "../components/DaySelectDrawer";
 import TimeSelectDrawer from "../components/TimeSelectDrawer";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import DayMenu from "../components/DayMenu";
-import AppBar from "../components/MainAppBar.jsx";
+import MainAppBar from "../components/MainAppBar.jsx";
 import TripCard from "../components/TripCard.jsx";
 import theme from "../themes/theme_five.js";
 import AddItemButton from "../components/AddItemButton";
@@ -388,7 +388,7 @@ function ItineraryPage() {
           bgcolor: "background.default",
         }}
       >
-        <AppBar page={"Itinerary"} />
+        <MainAppBar page={"Itinerary"} />
         <Box sx={{ pb: 23, pt: 6, overflowY: "auto", flex: 1 }}>
           <TripCard
             tripId={currentTrip?.tripId}

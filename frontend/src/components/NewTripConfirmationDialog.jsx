@@ -6,15 +6,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Box from "@mui/material/Box";
 
-function NewTripConfirmationDialog({ open, onClose, tripName, handleRemoveTrip, tripId }) {
-  // if (!day) return null; // This component still gets rendered, without deleting a day - day can be null in this case
-  // console.log("day object in dialog: ", day)
-  // console.log("day number in dialog: ", day.dayNumber)
+function NewTripConfirmationDialog({ open, onClose, handleNewTripConfirm }) {
+
   return (
     <Box>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button> */}
+      
       <Dialog
         open={open}
         onClose={onClose}
@@ -22,23 +18,23 @@ function NewTripConfirmationDialog({ open, onClose, tripName, handleRemoveTrip, 
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Remove ${tripName} Trip?`}
+          {`Unsaved Changes`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {"This trip will be permanently removed."}
+            {"You have unsaved changes. Are you sure you want to start a new trip?"}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
           <Button
             onClick={() => {
-              handleRemoveTrip(tripId);
+              handleNewTripConfirm();
               onClose();
             }}
             autoFocus
           >
-            Remove
+            Confirm
           </Button>
         </DialogActions>
       </Dialog>

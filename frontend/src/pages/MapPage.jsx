@@ -15,7 +15,7 @@ import { useNotificationContext } from "../contexts/NotificationContext";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import LocationSearch from "../components/LocationSearch";
 import { useSearchContext } from "../contexts/SearchContext";
-import AppBar from "../components/MainAppBar.jsx";
+import MainAppBar from "../components/MainAppBar.jsx";
 
 function MapPage({ showMap }) {
   // const mapboxAccessToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN;
@@ -210,7 +210,7 @@ function MapPage({ showMap }) {
           minHeight: "100vh",
         }}
       >
-        <AppBar page={"Map"}/>
+        <MainAppBar page={"Map"}/>
         <Box>
           <Typography>Header</Typography>
         </Box>

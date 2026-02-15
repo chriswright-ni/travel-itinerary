@@ -23,14 +23,14 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import AppBar from "../components/MainAppBar.jsx";
+import MainAppBar from "../components/MainAppBar.jsx";
 import TripCard from "../components/TripCard.jsx";
 import RenameTripDialog from "../components/RenameTripDialog";
 import UpdateTripDateDialog from "../components/UpdateTripDateDialog";
 import DeleteTripDialog from "../components/DeleteTripDialog";
 
 function MyTripsPage() {
-  const { trips, setCurrentTrip, deleteTrip, renameTrip } = useItineraryContext();
+  const { trips, setCurrentTrip, deleteTrip, renameTrip, setHasChanges } = useItineraryContext();
 
   const [renameTripDialogOpen, setRenameTripDialogOpen] = useState(false); // State to control the rename trip dialog
   const [updateTripDateDialogOpen, setUpdateTripDateDialogOpen] = useState(false); // State to control the update trip date dialog
@@ -44,6 +44,7 @@ function MyTripsPage() {
   const handleSelectTrip = (trip) => {
 
     setCurrentTrip(trip)
+    setHasChanges(false)
     navigate("/itinerary")
   }
 
@@ -90,7 +91,7 @@ function MyTripsPage() {
           bgcolor: "background.default",
         }}
       >
-        <AppBar page={"My Trips"} />
+        <MainAppBar page={"My Trips"} />
         <Typography>My Trips</Typography>
 
         <Box>

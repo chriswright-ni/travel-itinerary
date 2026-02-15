@@ -39,7 +39,7 @@ export const ItineraryProvider = ({ children }) => {
   const [hasChanges, setHasChanges] =useState(false); // State to track if changes has been made to the trip
 
   const saveCurrentTrip = async () => {
-    console.log("Saving current trip...");
+    // console.log("Saving current trip...");
     setTrips((prev) => {
       const tripExists = prev.some(
         (trip) => trip.tripId === currentTrip.tripId
@@ -68,8 +68,8 @@ export const ItineraryProvider = ({ children }) => {
         console.log(`Error logging in: ${response.status}`);
         console.log(data.msg);
       } else {
-        console.log("Trip saved");
-        console.log(data);
+        // console.log("Trip saved");
+        // console.log(data);
         showNotification("Trip Saved");
         setHasChanges(false);
       }
@@ -402,7 +402,6 @@ export const ItineraryProvider = ({ children }) => {
         };
       }),
     };
-    setHasChanges(true);
     return updatedDay;
   };
 

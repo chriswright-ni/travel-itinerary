@@ -7,11 +7,20 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AddIcon from "@mui/icons-material/Add";
 import Paper from '@mui/material/Paper';
 import {Link, useLocation} from "react-router-dom"
+import NewTripConfirmationDialog from "./NewTripConfirmationDialog";
+import { useItineraryContext } from "../contexts/ItineraryContext";
+import { useNavigate } from "react-router-dom";
 
 function BottomNav() {
-  // const [value, setValue] = useState("search");
+
+  const [newTripConfirmationDialogOpen, setNewTripConfirmationDialogOpen] = useState(false); // State to control the new trip confirmation dialog
+
+  const {
+    hasChanges
+  } = useItineraryContext();
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   const pathToValue = {
     "/search": "search",
@@ -25,6 +34,20 @@ function BottomNav() {
   const handleChange = (event, newValue) => {
     // setValue(newValue);
   };
+
+  const handleNewTrip = () => {
+    if (hasChanges) {
+      setNewTripConfirmationDialogOpen(true);
+    } else {
+      navigate("/")
+    }
+  }
+
+  const handleNewTripConfirm = () => {
+    
+      navigate("/")
+    }
+  
 
   return (
     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
@@ -61,10 +84,14 @@ function BottomNav() {
           label="New Trip"
           value="newtrip"
           icon={<AddIcon />}
-          component={Link}
-          to='/'
+          onClick={handleNewTrip}
         />
       </BottomNavigation>
+      <NewTripConfirmationDialog
+          open={newTripConfirmationDialogOpen}
+          onClose={() => setNewTripConfirmationDialogOpen(false)}
+          handleNewTripConfirm={handleNewTripConfirm}
+        />
     </Paper>
   );
 }
