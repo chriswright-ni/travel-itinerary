@@ -49,7 +49,7 @@ def save_trip():
   endDate = startDate + timedelta(days - 1)
   
   # Location data
-  locationData = trip.get("locationData", {})
+  locationData = trip.get("locationData") or {}
   countryName = locationData.get("country")
   countryCode = locationData.get("country_code")
   cityName = locationData.get("place")

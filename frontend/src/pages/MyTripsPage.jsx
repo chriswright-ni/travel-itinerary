@@ -25,9 +25,15 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import AppBar from "../components/MainAppBar.jsx";
 import TripCard from "../components/TripCard.jsx";
+import RenameTripDialog from "../components/RenameTripDialog";
+import UpdateTripDateDialog from "../components/UpdateTripDateDialog";
 
 function MyTripsPage() {
   const { trips, setCurrentTrip, deleteTrip, renameTrip } = useItineraryContext();
+
+  const [renameTripDialogOpen, setRenameTripDialogOpen] = useState(false); // State to control the rename trip dialog
+  const [updateTripDateDialogOpen, setUpdateTripDateDialogOpen] = useState(false); // State to control the update trip date dialog
+  const [selectedTrip, setSelectedTrip] = useState(null); // State to store the selected trip to allow the dialog to open for the correct trip
 
   // console.log("Trips")
   // console.log(trips)
@@ -43,6 +49,22 @@ function MyTripsPage() {
 
     console.log("Delete trip selected")
     deleteTrip(tripId)
+  }
+
+  const handleClickRenameTrip = (trip) => {
+    
+    console.log("Rename trip selected")
+    setSelectedTrip(trip);
+    setRenameTripDialogOpen(true);
+  }
+
+  const handleClickUpdateTripDate = (trip) => {
+    
+    console.log("Update trip date selected")
+    console.log("current trip:")
+    console.log(currentTrip)
+    setSelectedTrip(trip);
+    setUpdateTripDateDialogOpen(true);
   }
   
  
@@ -75,9 +97,23 @@ function MyTripsPage() {
               startDate={trip.startDate}
               dayCount={trip.days}
               handleClickDeleteTrip={handleClickDeleteTrip}
+              handleClickRenameTrip={() => handleClickRenameTrip(trip)}
+              handleClickUpdateTripDate={() => handleClickUpdateTripDate(trip)}
             />
           ))}
         </Box>
+        <RenameTripDialog
+          open={renameTripDialogOpen}
+          onClose={() => setRenameTripDialogOpen(false)}
+          tripId={selectedTrip?.tripId}
+          tripName={selectedTrip?.tripName}
+        />
+        <UpdateTripDateDialog
+          open={updateTripDateDialogOpen}
+          onClose={() => setUpdateTripDateDialogOpen(false)}
+          tripId={selectedTrip?.tripId}
+          date={selectedTrip?.startDate}
+        />
         <BottomNav />
       </Box>
     </>
