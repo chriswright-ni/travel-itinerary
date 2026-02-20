@@ -98,10 +98,15 @@ def hello():
 @search_bp.route("/places", methods=["GET"])
 def get_places():
 
+  print("In place search")
+
   # Get interest category from query string
-  interest_category = request.args.get("interestCategory")
-  latitude = float(request.args.get("latitude"))
-  longitude = float(request.args.get("longitude"))
+  # interest_category = request.args.get("interestCategory")
+  interest_category = "landmarks"
+  # latitude = float(request.args.get("latitude"))
+  latitude = 48.8584
+  # longitude = float(request.args.get("longitude"))
+  longitude = 2.2945
   ll = f"{latitude:.4f},{longitude:.4f}"
   
   # foursquare_categories = INTEREST_CATEGORIES.get(interest_category)
@@ -153,10 +158,38 @@ def get_places():
       "id": i + 1,
       "name": place.get("name"),
       "category": category_name,
-      "distance": place.get("distance")
+      "distance": place.get("distance"),
+      "fsq_place_id": place.get("fsq_place_id")
     }
     # print(place_cleaned.get("category"))
     places.append(place_cleaned);
 
   return jsonify(places)
   # return jsonify(place_data)
+
+
+@search_bp.route("/places/id", methods=["GET"])
+def get_place_details():
+
+  fsq_place_id="51a2445e5019c80b56934c75"
+
+  url = f"https://places-api.foursquare.com/places/{fsq_place_id}"
+
+  headers = {
+      "accept": "application/json",
+      "X-Places-Api-Version": "2025-06-17",
+      "Authorization": f"Bearer {PLACES_API_KEY}"
+  }
+
+  params = {"fields": "rating,description,photos"}
+  # print(ll)
+
+  # params = {f"query": {interest_category}, "ll": {ll}, "radius": 5000, "limit": 50, "sort": "RATING"}
+
+  response = requests.get(url, headers=headers, params=params)
+  data = response.json()
+  # place_data = data.get("photos")
+  print("Place details:")
+  print(data)
+
+  return jsonify(data)
