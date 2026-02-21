@@ -144,13 +144,14 @@ function SearchPage() {
     );
 
     const data = await response.json(); // Array of objects
-    console.log("Inside API call");
-    console.log(data);
+    // console.log("Inside API call");
+    // console.log(data);
     setPlaces(data);
+    updatePlacesById(data);
   }
 
   function handleInterestSelect(interest) {
-    console.log(`${interest} clicked!`);
+    // console.log(`${interest} clicked!`);
     if (interest === selectedInterest) {
       return;
     }
@@ -171,7 +172,7 @@ function SearchPage() {
       `http://127.0.0.1:5000/api/location/retrieve?id=${mapbox_id}`
     );
     const data = await response.json(); // Array of objects
-    console.log("Inside retrieve API call");
+    // console.log("Inside retrieve API call");
     setLocationData(data);
   }
 
@@ -229,7 +230,7 @@ function SearchPage() {
             {places.map((place) => (
               <Grid key={place.id}>
                 {/* Key to be in outer map element*/}
-                {place.id < 4 ? (
+                {place.orderId < 4 ? (
                   <PlaceCardTopPick
                   place={place}
                   handleClickAddToItinerary={handleClickAddToItinerary}

@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 # from ..interest_categories import INTEREST_CATEGORY_ICONS
 import requests
 import os
+import uuid
 
 search_bp = Blueprint("search_routes", __name__)
 
@@ -156,11 +157,14 @@ def get_places():
       category_name = "Unknown"
     
     place_cleaned = {
-      "id": i + 1,
+      # "id": i + 1,
+      # "id": str(uuid.uuid4()),
+      "id": place.get("fsq_place_id"),
       "name": place.get("name"),
       "category": category_name,
       "distance": place.get("distance"),
-      "fsqPlaceId": place.get("fsq_place_id")
+      # "fsqPlaceId": place.get("fsq_place_id"),
+      "orderId": i + 1
     }
 
     if i == 0:

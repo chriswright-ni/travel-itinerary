@@ -162,6 +162,7 @@ export const ItineraryProvider = ({ children }) => {
   const addedPlaceIds = useMemo(
     () => getAddedPlaceIds(),
     [currentTrip?.itinerary]
+    // [currentTrip?.itinerary]
   );
 
   // console.log("addPlaceIds:")
@@ -169,6 +170,7 @@ export const ItineraryProvider = ({ children }) => {
 
   // Creates an object to store places by their id
   const updatePlacesById = (places) => {
+
     setPlacesById((prev) => {
       // console.log(prev)
       const placesCopy = { ...prev }; // REMEMBER not to mutate objects in state (this avoids the issue of not triggering re-renders)
