@@ -154,6 +154,7 @@ def get_places():
       category_name = categories[0].get("name")
     else:
       category_name = "Unknown"
+    
     place_cleaned = {
       "id": i + 1,
       "name": place.get("name"),
@@ -170,33 +171,47 @@ def get_places():
       details_response = requests.get(details_url, headers=headers, params=details_params)
       print("Premium endpoint called")
 
-      details_data = response.json()
+      details_data = details_response.json()
 
-      # stats = details_data.get("stats")
-      # if stats:
-      #   total_ratings = stats.get("total_ratings")
-      # hours = details_data.get("hours")
-      # if hours:
-      #   open_now = hours.get("open_now")
+      # print("Details data:")
+      # print(details_data)
 
-      # photos = details_data.get("photos")
-      # if photos:
-      #   prefix = photos[0].get("prefix")
-      #   suffix = photos[0].get("suffix")
-      #   width = photos[0].get("width")
-      #   height = photos[0].get("height")
+      stats = details_data.get("stats")
+      if stats:
+        total_ratings = stats.get("total_ratings")
+      else:
+        total_ratings = None 
 
-      # image_url = f"{prefix}{width}x{height}{suffix}"
+      hours = details_data.get("hours")
+      if hours:
+        open_now = hours.get("open_now")
+      else:
+        open_now = None
+
+      photos = details_data.get("photos")
+      if photos:
+        prefix = photos[0].get("prefix")
+        suffix = photos[0].get("suffix")
+        width = photos[0].get("width")
+        height = photos[0].get("height")
+
+      image_url = f"{prefix}{width}x{height}{suffix}"
+
+      description = details_data.get("description")
+
+      print("image url:")
+      print(image_url)
 
       place_cleaned["rating"] = details_data.get("rating")
-      # place_cleaned["description"] = details_data.get("description")
-      # place_cleaned["totalRatings"] = total_ratings
-      # place_cleaned["imageUrl"] = image_url
+      place_cleaned["description"] = details_data.get("description")
+      place_cleaned["totalRatings"] = total_ratings
+      place_cleaned["imageUrl"] = image_url
+      place_cleaned["openNow"] = image_url
 
 
     # print(place_cleaned.get("category"))
     places.append(place_cleaned);
-    print(places)
+    # print(places)
 
   return jsonify(places)
   # return jsonify(place_data)

@@ -59,7 +59,7 @@ function PlaceCardTopPick({
             <Typography
               variant="h6"
               component="div"
-              sx={{ fontSize: "1.25rem" }}
+              sx={{ fontSize: "1.25rem", textAlign: "left" }}
             >
               {place.name}
             </Typography>
