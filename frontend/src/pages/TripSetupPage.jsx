@@ -1,5 +1,5 @@
 import LocationSearch from "../components/LocationSearch";
-import PlaceCard from "../components/PlaceCard";
+import PlaceCardTopPick from "../components/PlaceCardTopPick";
 import InterestSelector from "../components/InterestSelector";
 import LocationName from "../components/LocationName";
 import UseMyLocation from "../components/UseMyLocation";

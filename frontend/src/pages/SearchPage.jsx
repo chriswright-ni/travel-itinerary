@@ -1,5 +1,6 @@
 import LocationSearch from "../components/LocationSearch";
-import PlaceCard from "../components/PlaceCard";
+import PlaceCardTopPick from "../components/PlaceCardTopPick.jsx";
+import PlaceCardStandard from "../components/PlaceCardStandard.jsx";
 import InterestSelector from "../components/InterestSelector";
 import LocationName from "../components/LocationName";
 import UseMyLocation from "../components/UseMyLocation";
@@ -225,13 +226,24 @@ function SearchPage() {
             // {places.map((place) => (
               <Grid key={place.id}>
                 {/* Key to be in outer map element*/}
-                <PlaceCard
+                {place.id < 4 ? (
+                  <PlaceCardTopPick
                   place={place}
                   handleClickAddToItinerary={handleClickAddToItinerary}
                   isAdded={addedPlaceIds.has(place.id)}
                   isSelected={place.id === selectedPlaceId}
                   imageUrl={place.imageUrl}
                 />
+                ) : (
+                  <PlaceCardStandard
+                  place={place}
+                  handleClickAddToItinerary={handleClickAddToItinerary}
+                  isAdded={addedPlaceIds.has(place.id)}
+                  isSelected={place.id === selectedPlaceId}
+                  // imageUrl={place.imageUrl}
+                />
+                )}
+                
               </Grid>
             ))}
           </Grid>

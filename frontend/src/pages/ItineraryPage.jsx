@@ -10,7 +10,6 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useItineraryContext } from "../contexts/ItineraryContext";
 import Grid from "@mui/material/Grid";
-import PlaceCard from "../components/PlaceCard";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";

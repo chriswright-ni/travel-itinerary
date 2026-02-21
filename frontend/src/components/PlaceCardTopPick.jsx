@@ -17,7 +17,7 @@ import theme from "../themes/theme_five.js";
 import Chip from "@mui/material/Chip";
 import StarIcon from '@mui/icons-material/Star';
 
-function PlaceCard({
+function PlaceCardTopPick({
   place,
   handleClickAddToItinerary,
   isAdded,
@@ -73,7 +73,7 @@ function PlaceCard({
               <Typography
                 variant="h6"
                 component="div"
-                sx={{ fontSize: "1.15rem", color: "text.secondary", fontSize: "0.875rem" }}
+                sx={{ color: "text.secondary", fontSize: "0.875rem" }}
               >
                 ({place.totalRatings})
               </Typography>
@@ -141,30 +141,10 @@ function PlaceCard({
           {isAdded ? "Added" : "Add to Itinerary"}
         </Button>
 
-        {/* {isAdded ? (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <IconButton
-              aria-label="Added to Itinerary"
-              size="small"
-              disabled
-              // onClick={() => handleClickAddToItinerary(place.id)}
-            >
-              <CheckIcon fontSize="large" />
-            </IconButton>
-            <Typography sx={{ color: "text.secondary" }}>Added</Typography>
-          </Box>
-        ) : (
-          <IconButton
-            aria-label="Add to Itinerary"
-            size="small"
-            onClick={() => handleClickAddToItinerary(place.id)}
-          >
-            <AddIcon fontSize="large" color="primary" />
-          </IconButton>
-        )} */}
+       
       </CardActions>
     </Card>
   );
 }
 
-export default PlaceCard;
+export default PlaceCardTopPick;
