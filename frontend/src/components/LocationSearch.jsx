@@ -71,7 +71,7 @@ function LocationSearch({ onLocationSelect, placeholderText }) {
           placeholder={placeholderText}
           variant="outlined"
           sx={{
-            borderRadius: 3,
+            borderRadius: 5,
             backgroundColor: "background.default",
             // boxShadow: 1,
             '& fieldset': {

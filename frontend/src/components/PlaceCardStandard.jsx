@@ -34,7 +34,7 @@ function PlaceCardStandard({
         boxShadow:
           isSelected && !isAdded
             ? `0 0 8px 2px ${theme.palette.primary.main}`
-            : "2",
+            : "0px 2px 6px rgba(0, 0, 0, 0.18)",
         bgcolor: isAdded ? "background.secondary" : "background.paper",
         // height: "100px"
       }}

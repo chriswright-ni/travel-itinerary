@@ -31,10 +31,11 @@ function PlaceCardTopPick({
         // display: "flex",
         alignItems: "center",
         borderRadius: 2,
-        boxShadow:
-          isSelected && !isAdded
-            ? `0 0 8px 2px ${theme.palette.primary.main}`
-            : "2",
+        boxShadow: "0px 6px 20px rgba(255, 138, 92, 0.18)",
+        // boxShadow:
+        //   isSelected && !isAdded
+        //     ? `0 0 8px 2px ${theme.palette.primary.main}`
+        //     : "2",
         bgcolor: isAdded ? "background.secondary" : "background.paper",
         // height: "100px"
       }}

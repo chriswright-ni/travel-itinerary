@@ -5,8 +5,8 @@ import LocationPinIcon from "@mui/icons-material/LocationPin";
 function LocationName({locationName}) {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <LocationPinIcon sx={{ mr: 1 }} />
-      <Typography>{locationName}</Typography>
+      <LocationPinIcon sx={{ mr: 1, color: "secondary.main"}} />
+      <Typography sx={{fontSize: "0.875rem"}}>{locationName}</Typography>
     </Box>
   );
 }

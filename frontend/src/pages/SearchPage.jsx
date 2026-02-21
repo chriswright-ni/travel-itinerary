@@ -72,6 +72,7 @@ function SearchPage() {
       category: "Shopping",
       distance: 680,
       rating: 4.9,
+      totalRatings: 587,
       imageUrl: louisVuittonImg,
       latitude: 48.8700,
       longitude: 2.3100,
@@ -198,13 +199,13 @@ function SearchPage() {
           }}
         >
           <LocationSearch onLocationSelect={handleLocationSelect} placeholderText={"Where would you like to go?"}/>
-          <Box sx={{ mt: 1 }}>
+          <Box sx={{ mt: 2 }}>
             <InterestSelector
               onInterestSelect={handleInterestSelect}
               selected={selectedInterest}
             />
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "column", mt: 1 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", mt: 1, mb: 2 }}>
             <LocationName
               locationName={locationData?.name ?? "No location selected"}
             />
@@ -220,7 +221,7 @@ function SearchPage() {
             </Box>
           </Box>
         </Box>
-        <Box sx={{ mb: 9, mt: 28, px: 2 }}>
+        <Box sx={{ mb: 9, mt: 34, px: 2 }}>
           <Grid container spacing={2} direction={"column"}>
             {placesTemp.map((place) => (
             // {places.map((place) => (
