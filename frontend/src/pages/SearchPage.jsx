@@ -47,10 +47,10 @@ function SearchPage() {
   const navigate = useNavigate();
 
   // Temporary location data for development with location search API calling
-  const latitude = "50.0755";
-  const longitude = "14.4378";
-  // const latitude = "48.8584";
-  // const longitude = "2.2945";
+  // const latitude = "50.0755";
+  // const longitude = "14.4378";
+  const latitude = "48.8584";
+  const longitude = "2.2945";
   const placesTemp = [
     {
       id: "1",
@@ -58,9 +58,12 @@ function SearchPage() {
       category: "Landmark",
       distance: 400,
       rating: 4.8,
+      totalRatings: 1234,
       imageUrl: eiffelTowerImg,
       latitude: 48.8584,
-      longitude: 2.2945
+      longitude: 2.2945,
+      openNow: true,
+      description: "Iconic Paris landmark with stunning city views, restaurants, and observation decks."
     },
     {
       id: "2",
@@ -70,7 +73,8 @@ function SearchPage() {
       rating: 4.9,
       imageUrl: louisVuittonImg,
       latitude: 48.8700,
-      longitude: 2.3100
+      longitude: 2.3100,
+      openNow: false
     },
     { id: "3", name: "Le Louvre", category: "Art", distance: 1045, rating: 4.5, imageUrl: leLouvreImg, latitude: 48.8606,
       longitude: 2.3376 },

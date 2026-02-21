@@ -102,7 +102,7 @@ def get_places():
 
   # Get interest category from query string
   # interest_category = request.args.get("interestCategory")
-  interest_category = "landmarks"
+  interest_category = "Landmarks"
   # latitude = float(request.args.get("latitude"))
   latitude = 48.8584
   # longitude = float(request.args.get("longitude"))
@@ -128,7 +128,7 @@ def get_places():
   }
   # print(ll)
 
-  params = {f"query": {interest_category}, "ll": {ll}, "radius": 5000, "limit": 50, "sort": "RATING"}
+  params = {f"query": {interest_category}, "ll": {ll}, "radius": 3000, "limit": 10, "sort": "RATING"}
   # params = {"categories": ",".join(foursquare_categories), "ll": ll, "radius": 5000, "limit": 50} 
   # params = {
   #   "fsq_category_ids": "4bf58dd8d48988d12d941735",
@@ -163,6 +163,7 @@ def get_places():
     }
     # print(place_cleaned.get("category"))
     places.append(place_cleaned);
+    print(places)
 
   return jsonify(places)
   # return jsonify(place_data)

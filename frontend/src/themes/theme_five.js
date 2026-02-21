@@ -24,7 +24,7 @@ const theme = createTheme(
         // light: "#FFEDED"
       },
       success: {
-        main: "#1CC7B4"
+        main: "#2E7D32"
       },
       warning: {
         main: "#FFD93D"
@@ -45,7 +45,8 @@ const theme = createTheme(
       text: {
         primary: "#0E1F3F",
         secondary: "#6B7280",
-        disabled: "#9E9E9E"
+        // disabled: "#9E9E9E"
+        disabled: "#757575"
       },
     }
   }
