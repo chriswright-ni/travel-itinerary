@@ -159,8 +159,41 @@ def get_places():
       "name": place.get("name"),
       "category": category_name,
       "distance": place.get("distance"),
-      "fsq_place_id": place.get("fsq_place_id")
+      "fsqPlaceId": place.get("fsq_place_id")
     }
+
+    if i == 0:
+      
+      details_url = f"https://places-api.foursquare.com/places/{place.get("fsq_place_id")}"
+      details_params = {"fields": "rating,description,photos,stats,hours"}
+      
+      details_response = requests.get(details_url, headers=headers, params=details_params)
+      print("Premium endpoint called")
+
+      details_data = response.json()
+
+      # stats = details_data.get("stats")
+      # if stats:
+      #   total_ratings = stats.get("total_ratings")
+      # hours = details_data.get("hours")
+      # if hours:
+      #   open_now = hours.get("open_now")
+
+      # photos = details_data.get("photos")
+      # if photos:
+      #   prefix = photos[0].get("prefix")
+      #   suffix = photos[0].get("suffix")
+      #   width = photos[0].get("width")
+      #   height = photos[0].get("height")
+
+      # image_url = f"{prefix}{width}x{height}{suffix}"
+
+      place_cleaned["rating"] = details_data.get("rating")
+      # place_cleaned["description"] = details_data.get("description")
+      # place_cleaned["totalRatings"] = total_ratings
+      # place_cleaned["imageUrl"] = image_url
+
+
     # print(place_cleaned.get("category"))
     places.append(place_cleaned);
     print(places)

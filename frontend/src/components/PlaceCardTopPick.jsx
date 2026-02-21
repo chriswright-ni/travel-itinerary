@@ -49,7 +49,8 @@ function PlaceCardTopPick({
         component="img"
         image={imageUrl}
         // sx={{ width: "20%", height: "100%", objectFit: "cover" }}
-        sx={{ height: 160, objectFit: "cover" }}
+        // sx={{ height: 160, objectFit: "cover" }}
+        sx={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover" }}
       />
       {/* <PlaceIcon sx={{ mx: 2 }} /> */}
       <CardContent>
